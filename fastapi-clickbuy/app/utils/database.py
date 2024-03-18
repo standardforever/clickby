@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 
-local_client = AsyncIOMotorClient('mongodb://admin:supersecret@localhost:27017')
+local_client = AsyncIOMotorClient('mongodb://localhost:27017')
 filter = local_client['local_database']['filter_data']
 
 # Retrieve environment variables
