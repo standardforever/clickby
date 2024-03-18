@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  clickbuy:
+    build:
+      dockerfile: Dockerfile
+      context: ./fastapi-clickbuy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./fastapi-clickbuy:/usr/src/app
+    environment:
+      - MONGO_USER=fiverr_user
+      - MONGO_PASS=fiverr_user
+    restart: always
+    command: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: supersecret
