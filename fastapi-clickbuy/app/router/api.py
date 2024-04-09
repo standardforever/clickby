@@ -40,8 +40,10 @@ async def get_store_price():
 
 
 
-@router.post('/home') #, response_model=ResponseModel)
+@router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 async def home(
+    limit: int,
+    skip: int,
     filter: FilterModel
 ):
     try:
@@ -92,8 +94,8 @@ async def home(
 
         pipeline = [
             {"$match": query_params},  # Match stage to filter documents
-            {"$skip": filter.skip},  # Skip documents based on the offset
-            {"$limit": filter.limit},  # Limit the number of documents returned
+            {"$skip": skip},  # Skip documents based on the offset
+            {"$limit": limit},  # Limit the number of documents returned
              {"$project":
                         {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
                         'upc': 0, "ref_up": 0}}

@@ -11,8 +11,6 @@ class FilterModel(BaseModel):
     market_place: List[str] = []
     store_price: List[str] = []
     search_term: str = None
-    skip: int = 0
-    limit: int = 40
     
 
 
