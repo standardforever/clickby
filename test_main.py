@@ -18,15 +18,19 @@ mvp2_collection = mvp2["supplier_lookup"]
 # Function to fetch and save records
 def fetch_and_save_records():
     # Retrieve the first 100 records
-    cursor = mvp2_collection.find().limit(1000)
+    skip = 0
+    limit = 2000
+    for i in range(20):
+        cursor = mvp2_collection.find().skip(skip).limit(limit)
 
-    # Insert all records into the local database
-    records_to_insert = list(cursor)
-    if records_to_insert:
-        local_collection.insert_many(records_to_insert)
-        print("Records saved to local database successfully!")
-    else:
-        print("No records found to save.")
+        # Insert all records into the local database
+        records_to_insert = list(cursor)
+        if records_to_insert:
+            local_collection.insert_many(records_to_insert)
+            print("Records saved to local database successfully!")
+        else:
+            print("No records found to save.")
+    skip += 2000
 
 # Call the function to fetch and save records
 fetch_and_save_records()
