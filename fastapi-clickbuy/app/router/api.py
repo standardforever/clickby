@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 import logging
 from typing import List
-from app.utils.database import filter
+from app.utils import collection
 from app.utils import helper_function
 from app.schemas import api_schema
 import re
@@ -16,13 +16,13 @@ router = APIRouter()
 router = APIRouter()
 @router.get("/category")
 async def get_categroy():
-    category = await helper_function.get_unique_field(filter, 'Categories: Root')
+    category = await helper_function.get_unique_field(collection, 'category')
     return category
 
 
 @router.get('/supplier-name')
 async def get_supplier_name():
-    supplier_name = await helper_function.get_unique_field(filter, 'scraped_data.seller_name')
+    supplier_name = await helper_function.get_unique_field(collection, 'seller_name')
     return supplier_name
 
 @router.get('/roi')
@@ -38,15 +38,12 @@ async def get_store_price():
     ]
 
 
-@router.get('/home')
-async def home(
-    skip: int = 0, limit: int = 40, roi_range: str = None, 
-    store_price: str = None, supplier_name: str = None, category: str = None,
-    search_term: str = None
 
+@router.post('/home')
+async def home(
+    filter: api_schema.Filter
 ):
     try:
-
         #=========================================================
         roi_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100)}
         store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
@@ -56,46 +53,47 @@ async def home(
 
         query_params = {}
 
-        # Store Price query params
-        if store_price in store_price_ranges:
-            if store_price != "100>":
-                min_roi, max_roi = store_price_ranges[store_price]
-                roi_range = {"$gte": min_roi, "$lte": max_roi}
-                query_params['scraped_data.seller_price'] = roi_range
-            else:
-                min_roi = store_price_ranges[store_price]
-                roi_range = {"$gte": min_roi}
-                query_params['scraped_data.seller_price'] = roi_range
+        # # Store Price query params
+        # if store_price in store_price_ranges:
+        #     if store_price != "100>":
+        #         min_roi, max_roi = store_price_ranges[store_price]
+        #         roi_range = {"$gte": min_roi, "$lte": max_roi}
+        #         query_params['scraped_data.seller_price'] = roi_range
+        #     else:
+        #         min_roi = store_price_ranges[store_price]
+        #         roi_range = {"$gte": min_roi}
+        #         query_params['scraped_data.seller_price'] = roi_range
 
-        # Sort_by ROI query Params
-        if roi_range in roi_ranges:
-            min_roi, max_roi = roi_ranges[roi_range]
-            roi_range = {"$gte": min_roi, "$lte": max_roi}
-            query_params['scraped_data.roi'] = roi_range
-
-        # Category Price query Params
-        if category:
-            query_params['Categories: Root'] = category
+        # # Sort_by ROI query Params
+        # if roi_range in roi_ranges:
+        #     min_roi, max_roi = roi_ranges[roi_range]
+        #     roi_range = {"$gte": min_roi, "$lte": max_roi}
+        #     query_params['scraped_data.roi'] = roi_range
 
         # Category Price query Params
-        if supplier_name:
-            query_params['scraped_data.seller_name'] = supplier_name
+        if filter.categories:
+            query_params['category'] = {"$in": filter.categories}
+
+        # seller_name  query Params
+        if filter.supplier_name:
+            query_params['seller_name'] = {"$in": filter.supplier_name}
+
 
 
         pipeline = [
                     {"$match": query_params},  # Match stage to filter documents
-                    {"$skip": skip},  # Skip documents based on the offset
-                    {"$limit": limit},  # Limit the number of documents returned
-                    {"$project": {"_id": 0}}
+                    {"$skip": filter.skip},  # Skip documents based on the offset
+                    {"$limit": 1},  # Limit the number of documents returned
+                    {"$project":
+                      {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+                        'upc': 0, "ref_up": 0}}
                 ]
         
-        print(pipeline)
-        
-        google_data_cursor =  filter.aggregate(pipeline)
+        google_data_cursor =  collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
-        total_count = await filter.count_documents(query_params)
-        
+        total_count = await collection.count_documents(query_params)
+        print(google_data)
         return {
             "data": google_data,
             "total_count": total_count,
