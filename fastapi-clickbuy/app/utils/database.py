@@ -24,7 +24,7 @@ def database_live_connect():
 
 
 def database_local_connect():
-    local_client = AsyncIOMotorClient('mongodb://admin:supersecret@localhost:27017')
+    local_client = AsyncIOMotorClient('mongodb://admin:supersecret@mongodb:27017')
     local_collection = local_client['local_db']
     local_collection = local_collection['supplier_lookup']
     return local_collection
