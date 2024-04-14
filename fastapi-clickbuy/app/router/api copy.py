@@ -46,7 +46,31 @@ async def home(
     filter: FilterModel
 ):
     try:
+        #=========================================================
+        roi_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100)}
+        store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
+        uk_profit_ranges = {"1>": 1,"2>": 2, "3>": 3, "4>": 4, "5>": 5, "6>": 6, "7>": 7, "8>": 8, "9>": 9, "10>": 10}
+        amazon_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
+        sales_rank_ranges = {"<10k": 10000, "<25k": 25000, "<40k": 40000, "40k>": 40000}
+
         query_params = {}
+
+        # # Store Price query params
+        # if store_price in store_price_ranges:
+        #     if store_price != "100>":
+        #         min_roi, max_roi = store_price_ranges[store_price]
+        #         roi_range = {"$gte": min_roi, "$lte": max_roi}
+        #         query_params['scraped_data.seller_price'] = roi_range
+        #     else:
+        #         min_roi = store_price_ranges[store_price]
+        #         roi_range = {"$gte": min_roi}
+        #         query_params['scraped_data.seller_price'] = roi_range
+
+        # # Sort_by ROI query Params
+        # if roi_range in roi_ranges:
+        #     min_roi, max_roi = roi_ranges[roi_range]
+        #     roi_range = {"$gte": min_roi, "$lte": max_roi}
+        #     query_params['scraped_data.roi'] = roi_range
 
         if filter.search_term:
             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
@@ -77,7 +101,6 @@ async def home(
         ]
         google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
-
         google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
         total_count = await app.collection.count_documents(query_params)
       
@@ -85,7 +108,6 @@ async def home(
             "data": google_data,
             "total_count": total_count,
         }
-
     except Exception as e:
         print(e)
         return 'ol'

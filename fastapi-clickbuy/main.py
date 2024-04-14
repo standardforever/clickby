@@ -1,19 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pymongo import MongoClient
-# from app.utils.database import database_local
-from app.router import api
+from app.utils.database import connection
+
+
 
 app = FastAPI()
 
 
-# @app.on_event("startup")
-# async def startup_events():
-#     await database_local().create_index("scraped_data.roi_category")
-#     # await database_local.create_index("Categories: Root")
-#     # await database_local.create_index("scraped_data.seller_name")
-#     # await database_local.create_index("Amazon Price")
-#     # await database_local.create_index("last_update_time")
+@app.on_event("startup")
+async def startup_events():
+    app.collection = await connection()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,7 +20,7 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-
+from app.router import api
 app.include_router(api.router,
                     tags=['ClickByApi'],
                     prefix='/api/v1')
