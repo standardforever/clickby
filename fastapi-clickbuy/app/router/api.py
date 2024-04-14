@@ -39,7 +39,7 @@ async def get_store_price():
          '<25%', '25-50', '50-100' 
     ]
 
-from bson import ObjectId
+
 
 @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 async def home(
@@ -48,23 +48,7 @@ async def home(
     filter: FilterModel
 ):
     try:
-        query_params = {
-            "supplier_code": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "asin": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "category": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "last_update_time": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "seller_name": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "seller_price": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "amazon_price": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "brand": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "marketplace_id": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "Total_fees_UK": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "profit_uk": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "roi_category": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "roi_uk": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "total_fees_UK": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""},
-            "amz_uk_link": {"$exists": True, "$ne": None, "$ne": "NaN", "$ne": ""}
-        }
+        query_params = {}
 
         if filter.search_term:
             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
@@ -76,6 +60,7 @@ async def home(
                 {"title": {"$regex": regex_pattern}},
                 {"seller_name": {"$regex": regex_pattern}},
                 {"amz_Title": {"$regex": regex_pattern}},
+                
             ]
 
         if filter.categories:
@@ -88,20 +73,19 @@ async def home(
             {"$match": query_params},  # Match stage to filter documents
             {"$skip": skip},  # Skip documents based on the offset
             {"$limit": limit},  # Limit the number of documents returned
-            {"$project": {
-                "_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
-                'upc': 0, "ref_up": 0
-            }}
+             {"$project":
+                        {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+                        'upc': 0, "ref_up": 0}}
         ]
-        google_data_cursor = app.collection.aggregate(pipeline)
+        google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
-        # google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-        # total_count = await app.collection.count_documents(query_params)
-
+        google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
+        total_count = await app.collection.count_documents(query_params)
+      
         return {
             "data": google_data,
-            # "total_count": total_count,
+            "total_count": total_count,
         }
 
     except Exception as e:
