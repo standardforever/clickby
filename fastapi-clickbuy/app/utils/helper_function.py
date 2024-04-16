@@ -3,8 +3,9 @@ from urllib.parse import urlparse
 async def get_all_categories(collection):
     return await collection.distinct("Categories: Root")
 
-async def get_unique_field(collecion, column):
-    return await collecion.distinct(column)
+async def get_unique_field(collection, column):
+    distinct_values = await collection.distinct(column)
+    return distinct_values
 
 
 def is_ebay_url(url):
