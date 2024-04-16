@@ -2,3 +2,4 @@
 ./myredis/*
 mongodb
 myredis
+__pycache__/
