@@ -92,7 +92,7 @@ function getObjectPath(headerTitle, item) {
 
             // amazon link
         case "Amazon UK Link":
-            return  item.amz_uk_link;
+            return  item.asin;
         case "Amazon GER Link":
             return  item.amz_ger_link;
         case "Amazon FR Link":

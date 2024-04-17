@@ -40,63 +40,63 @@ async def get_store_price():
 
 
 
-@router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
-async def home(
-    limit: int,
-    skip: int,
-    filter: FilterModel
-):
-    try:
-        query_params = {}
+# @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
+# async def home(
+#     limit: int,
+#     skip: int,
+#     filter: FilterModel
+# ):
+#     try:
+#         query_params = {}
 
-        if filter.search_term:
-            regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
-            # Build the query for searching across all fields
-            query_params["$or"] = [
-                {"brand": {"$regex": regex_pattern}},
-                {"category": {"$regex": regex_pattern}},
-                {'search_term': {"$regex": regex_pattern}},
-                {"title": {"$regex": regex_pattern}},
-                {"seller_name": {"$regex": regex_pattern}},
-                {"amz_Title": {"$regex": regex_pattern}},
+#         if filter.search_term:
+#             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
+#             # Build the query for searching across all fields
+#             query_params["$or"] = [
+#                 {"brand": {"$regex": regex_pattern}},
+#                 {"category": {"$regex": regex_pattern}},
+#                 {'search_term': {"$regex": regex_pattern}},
+#                 {"title": {"$regex": regex_pattern}},
+#                 {"seller_name": {"$regex": regex_pattern}},
+#                 {"amz_Title": {"$regex": regex_pattern}},
                 
-            ]
+#             ]
 
-        if filter.categories:
-            query_params['category'] = {"$in": filter.categories}
+#         if filter.categories:
+#             query_params['category'] = {"$in": filter.categories}
 
-        if filter.supplier_name:
-            query_params['seller_name'] = {"$in": filter.supplier_name}
+#         if filter.supplier_name:
+#             query_params['seller_name'] = {"$in": filter.supplier_name}
 
-        pipeline = [
-            {"$match": query_params},  # Match stage to filter documents
-            {"$skip": skip},  # Skip documents based on the offset
-            {"$limit": limit},  # Limit the number of documents returned
-             {"$project":
-                        {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
-                        'upc': 0, "ref_up": 0}}
-        ]
-        google_data_cursor =  app.collection.aggregate(pipeline)
-        google_data = await google_data_cursor.to_list(length=None)
+#         pipeline = [
+#             {"$match": query_params},  # Match stage to filter documents
+#             {"$skip": skip},  # Skip documents based on the offset
+#             {"$limit": limit},  # Limit the number of documents returned
+#              {"$project":
+#                         {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+#                         'upc': 0, "ref_up": 0}}
+#         ]
+#         google_data_cursor =  app.collection.aggregate(pipeline)
+#         google_data = await google_data_cursor.to_list(length=None)
 
-        google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-        # total_count = await app.collection.count_documents(query_params)
+#         google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
+#         # total_count = await app.collection.count_documents(query_params)
       
-        return {
-            "data": google_data,
-            "total_count": 200,
-        }
+#         return {
+#             "data": google_data,
+#             "total_count": 200,
+#         }
 
 
-    except Exception as e:
-        print(e)
-        return 'ol'
-
-
-
+#     except Exception as e:
+#         print(e)
+#         return 'ol'
 
 
 
+
+
+# from app.utils.database import connection
 # @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 # async def home(
 #     limit: int,
@@ -108,7 +108,7 @@ async def home(
 #         profit_stage = {"$match": {"profit_uk": {"$gt": 1}}}
 
 #         # Second stage of the pipeline for the remaining filters and pagination
-#         query_params = {}
+#         query_params = {"profit_uk": {"$gt": 1}}
 
 #         if filter.search_term:
 #             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
@@ -139,17 +139,18 @@ async def home(
 #         ]
 
 #         # Merge the two stages of the pipeline
-#         pipeline = [profit_stage] + remaining_pipeline
+#         # pipeline = [profit_stage] + remaining_pipeline
 
-#         google_data_cursor =  app.collection.aggregate(pipeline)
-#         google_data = await google_data_cursor.to_list(length=None)
+#         # google_data_cursor =  app.collection.aggregate(pipeline)
+#         # google_data = await google_data_cursor.to_list(length=None)
 
-#         google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-#         # total_count = await app.collection.count_documents(query_params)
+#         # google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
+#         print('done')
+#         total_count = await app.collection.count_documents(query_params)
       
 #         return {
-#             "data": google_data,
-#             "total_count": 200,
+#             "data": "google_data",
+#             "total_count": total_count,
 #         }
 
 #     except Exception as e:
@@ -160,58 +161,58 @@ async def home(
 
 
 
-# @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
-# async def home(
-#     limit: int,
-#     skip: int,
-#     filter: FilterModel
-# ):
-#     try:
-#         # Pipeline to filter documents based on profit_uk and apply pagination
-#         pipeline = [
-#             {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
-#             {"$skip": skip},  # Skip documents based on the offset
-#             {"$limit": limit},  # Limit the number of documents returned
-#             {"$project":
-#                 {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
-#                 'upc': 0, "ref_up": 0}}
-#         ]
+@router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
+async def home(
+    limit: int,
+    skip: int,
+    filter: FilterModel
+):
+    try:
+        # Pipeline to filter documents based on profit_uk and apply pagination
+        pipeline = [
+            {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
+            {"$skip": skip},  # Skip documents based on the offset
+            {"$limit": limit},  # Limit the number of documents returned
+            {"$project":
+                {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+                'upc': 0, "ref_up": 0}}
+        ]
 
-#         # Apply additional filters if provided
-#         query_params = {}
+        # Apply additional filters if provided
+        query_params = {}
 
-#         if filter.search_term:
-#             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
-#             # Build the query for searching across all fields
-#             query_params["$or"] = [
-#                 {"brand": {"$regex": regex_pattern}},
-#                 {"category": {"$regex": regex_pattern}},
-#                 {'search_term': {"$regex": regex_pattern}},
-#                 {"title": {"$regex": regex_pattern}},
-#                 {"seller_name": {"$regex": regex_pattern}},
-#                 {"amz_Title": {"$regex": regex_pattern}},
-#             ]
+        if filter.search_term:
+            regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
+            # Build the query for searching across all fields
+            query_params["$or"] = [
+                {"brand": {"$regex": regex_pattern}},
+                {"category": {"$regex": regex_pattern}},
+                {'search_term': {"$regex": regex_pattern}},
+                {"title": {"$regex": regex_pattern}},
+                {"seller_name": {"$regex": regex_pattern}},
+                {"amz_Title": {"$regex": regex_pattern}},
+            ]
 
-#         if filter.categories:
-#             query_params['category'] = {"$in": filter.categories}
+        if filter.categories:
+            query_params['category'] = {"$in": filter.categories}
 
-#         if filter.supplier_name:
-#             query_params['seller_name'] = {"$in": filter.supplier_name}
+        if filter.supplier_name:
+            query_params['seller_name'] = {"$in": filter.supplier_name}
 
-#         if query_params:
-#             pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
+        if query_params:
+            pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
 
-#         google_data_cursor =  app.collection.aggregate(pipeline)
-#         google_data = await google_data_cursor.to_list(length=None)
+        google_data_cursor =  app.collection.aggregate(pipeline)
+        google_data = await google_data_cursor.to_list(length=None)
 
-#         google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-#         # total_count = await app.collection.count_documents(query_params)
+        google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
+        # total_count = await app.collection.count_documents(query_params)
       
-#         return {
-#             "data": google_data,
-#             "total_count": 200,
-#         }
+        return {
+            "data": google_data,
+            "total_count": 200,
+        }
 
-#     except Exception as e:
-#         print(e)
-#         return 'ol'
+    except Exception as e:
+        print(e)
+        return 'ol'

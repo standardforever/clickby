@@ -54,29 +54,29 @@ load_dotenv()
 async def get_unique_field(collecion, column):
     return await collecion.distinct(column)
 
-
 import asyncio
-import motor.motor_asyncio
+from motor.motor_asyncio import AsyncIOMotorClient
 
 async def database_live_connect():
     gg_client = AsyncIOMotorClient(
-    f"mongodb+srv://fiverr_user:fiverr_user@cluster0.sngd13i.mongodb.net/?retryWrites=true&w=majority",
-    maxPoolSize=50,
-)
+        "mongodb+srv://fiverr_user:fiverr_user@cluster0.sngd13i.mongodb.net/?retryWrites=true&w=majority",
+        maxPoolSize=50,
+    )
     mvp2 = gg_client["mvp2"]
     mvp2_collection = mvp2["supplier_lookup"]
-
     return mvp2_collection
 
 async def get_collection_length(collection):
-    count = await collection.count_documents({})
+    # Define a query to filter documents where profit is greater than 1
+    query = {"profit_uk": {"$gt": 1}}
+    # Count documents matching the query
+    count = await collection.count_documents(query)
     return count
 
 async def main():
     collection = await database_live_connect()
-    unique_seller_names = await get_collection_length(collection)
-    print(unique_seller_names)
-
+    total_count = await get_collection_length(collection)
+    print("Total count of documents where profit > 1:", total_count)
 
 # Run the event loop
 if __name__ == "__main__":
