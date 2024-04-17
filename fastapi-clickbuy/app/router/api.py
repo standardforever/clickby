@@ -22,7 +22,7 @@ async def get_market():
 
 @router.get('/supplier-name')
 async def get_supplier_name():
-    # return []
+    return []
     supplier_name = await helper_function.get_unique_field(app.collection, 'seller_name')
     return supplier_name
 
