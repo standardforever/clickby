@@ -3,17 +3,17 @@ from urllib.parse import urlparse
 async def get_all_categories(collection):
     return await collection.distinct("Categories: Root")
 
-# async def get_unique_field(collection, column):
-#     distinct_values = await collection.distinct(column)
-#     return distinct_values
-
-
 async def get_unique_field(collection, column):
-    # Define the query to filter documents with profit_uk > 1
-    query = {"profit_uk": {"$exists": True, "$gt": 1}}
-    # Get distinct values of the specified column from filtered documents
-    distinct_values = await collection.distinct(column, query=query)
+    distinct_values = await collection.distinct(column)
     return distinct_values
+
+
+# async def get_unique_field(collection, column):
+#     # Define the query to filter documents with profit_uk > 1
+#     query = {"profit_uk": {"$exists": True, "$gt": 1}}
+#     # Get distinct values of the specified column from filtered documents
+#     distinct_values = await collection.distinct(column, query=query)
+#     return distinct_values
 
 
 def is_ebay_url(url):
