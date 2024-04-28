@@ -18,6 +18,18 @@ services:
     networks:
       - my-network
 
+  # mongodb:
+  #   image: mongo
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - ./mongodb/db:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: supersecret
+  #   networks:
+  #     - my-network
+
   # my-redis:
   #   image: redis:latest
   #   volumes:
