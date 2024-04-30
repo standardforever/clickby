@@ -109,6 +109,7 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
 
 
     await create_or_update_filter_collection(records_to_insert, add_to)
+    print("Done updating")
    
 
 
@@ -117,13 +118,11 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 4  # Set your desired batch size
+    limit = 1000 # Set your desired batch size
 
-    total_documents = await mvp2_collection.count_documents({'category': {'$exists': True}})
+    total_documents = await mvp2_collection.count_documents({})
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
-
     while page <= total_pages:
-        print(page)
         try:
             await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
             page+=1
