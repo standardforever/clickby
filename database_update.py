@@ -117,7 +117,8 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 50 # Set your desired batch size
+    limit = 4  # Set your desired batch size
+
     total_documents = await mvp2_collection.count_documents({'category': {'$exists': True}})
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
 
