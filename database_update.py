@@ -32,12 +32,12 @@ async def fetch_bulk_data(asins, collection):
     return documents_list
 
 
-def add_list_to_documents(documents, collection):
+async def add_list_to_documents(documents, collection):
     """ Add list of documents to database
     """
     return collection.insert_many(documents)
 
-def update_list_documents(filter_x, datas, collection):
+async def update_list_documents(filter_x, datas, collection):
     """ Updadte list of documents
     """
     for filter in filter_x:
@@ -80,10 +80,10 @@ async def create_or_update_filter_collection(items_list, collection):
                 filter_add.append(item)
             else:
                 filter_update.append(item)
-        add_list_to_documents(filter_add, collection)
+        await add_list_to_documents(filter_add, collection)
         print(f"added {len(filter_add)} to the database")
     if remaining_asins:
-        print(update_list_documents(filter_update, datas, collection))
+        print(await update_list_documents(filter_update, datas, collection))
     return "result"
 
 
