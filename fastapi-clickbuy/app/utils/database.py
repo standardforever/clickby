@@ -16,7 +16,7 @@ async def database_live_connect():
     maxPoolSize=50,
 )
     mvp2 = gg_client["mvp2"]
-    mvp2_collection = mvp2["supplier_lookup"]
+    mvp2_collection = mvp2["filter_supplier_lookup"]
 
     return mvp2_collection
 
