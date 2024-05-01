@@ -137,7 +137,7 @@ async def main():
         try:
             await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
             page+=1
-            break
+            # break
         except Exception as e:
             print(f"Error processing batch: {e}")
 
