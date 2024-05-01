@@ -5,11 +5,11 @@ class Category(BaseModel):
     categories: List[str]
 
 class FilterModel(BaseModel):
-    roi: List[str] = []
+    roi: str = None
     categories: List[str] = []
     supplier_name: List[str] = []
     market_place: List[str] = []
-    store_price: List[str] = []
+    store_price: str = None
     search_term: str = None
     
 

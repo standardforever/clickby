@@ -2,6 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 import numpy as np
 from deepdiff import DeepDiff
+import re
 
 
 username = 'fiverr_user'
@@ -13,6 +14,14 @@ gg_client = AsyncIOMotorClient(
 
 mvp2 = gg_client["mvp2"]
 
+
+    
+def get_price(price_str):
+    if isinstance(price_str, str):
+        match = re.search(r"(\d+\.\d+|\d+)", price_str)
+        if match:
+            return float(match.group())
+    return None
 
 
 async def fetch_bulk_data(asins, collection):
@@ -58,7 +67,8 @@ async def create_or_update_filter_collection(items_list, collection):
     for item in items_list:
         asin_list.append(item.get('asin'))
         record = {k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()}
-        records_to_insert.append(record)
+        record['seller_price'] = get_price(record["seller_price"])
+        records_to_insert.append(record.copy())
 
     # Fetch data base on the ASIN field
     datas = await fetch_bulk_data(asin_list, collection)
@@ -109,7 +119,7 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
 
 
     await create_or_update_filter_collection(records_to_insert, add_to)
-    print("Done updating")
+    print("Done updating or adding")
    
 
 
