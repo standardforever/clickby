@@ -66,8 +66,6 @@ async def create_or_update_filter_collection(items_list, collection):
 
     for item in items_list:
         asin_list.append(item.get('asin'))
-        record = {k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()}
-        records_to_insert.append(record.copy())
 
     # Fetch data base on the ASIN field
     datas = await fetch_bulk_data(asin_list, collection)
@@ -87,11 +85,14 @@ async def create_or_update_filter_collection(items_list, collection):
         for item in items_list:
             if item['asin'] in missing_asins:
                 filter_add.append(item)
-            else:
-                filter_update.append(item)
+
         await add_list_to_documents(filter_add, collection)
         print(f"added {len(filter_add)} to the database")
+
     if remaining_asins:
+        for item in items_list:
+            if item['asin'] in remaining_asins:
+                filter_update.append(item)
         print(await update_list_documents(filter_update, datas, collection))
     return "result"
 
@@ -129,15 +130,15 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 1000 # Set your desired batch size
+    limit = 5000 # Set your desired batch size
 
-    total_documents = await mvp2_collection.count_documents({})
+    total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
+    print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
     while page <= total_pages:
         try:
             await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
             page+=1
-            # break
         except Exception as e:
             print(f"Error processing batch: {e}")
 
