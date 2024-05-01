@@ -67,7 +67,6 @@ async def create_or_update_filter_collection(items_list, collection):
     for item in items_list:
         asin_list.append(item.get('asin'))
         record = {k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()}
-        record['seller_price'] = get_price(record["seller_price"])
         records_to_insert.append(record.copy())
 
     # Fetch data base on the ASIN field
@@ -115,8 +114,10 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
     google_data_cursor = fetch_from.aggregate(pipeline)
     google_data =  await google_data_cursor.to_list(length=None)
 
-    records_to_insert = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-
+    records_to_insert = [
+        {k: get_price(v) if k == 'seller_price' else (v if not isinstance(v, float) or not np.isnan(v) else None) for k, v in item.items()}
+        for item in google_data
+    ]
 
     await create_or_update_filter_collection(records_to_insert, add_to)
     print("Done updating or adding")
