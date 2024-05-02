@@ -23,6 +23,12 @@
     left: -275px;
   }
 
+  @media  (max-width:1200px) {
+    dropdown-content {
+      right: -275px;
+    }
+}
+
  
   .dropdown:hover .dropdown-content {
     opacity: 1; /* Show with fade-in effect */

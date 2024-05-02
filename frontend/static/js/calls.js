@@ -3,6 +3,10 @@ import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, po
 $(document).ready(function() {
     $(".loaderContainer").show();
 
+    // PAGINATION CONTROL
+    var currentPage = 1;
+    var totalPages = 1;
+
     // Add event listeners to checkboxes in dropdowns
     $('.dropdown-content').on('change', 'input[type="checkbox"]', function() {
         fetchDataAndUpdatePagination();
@@ -10,17 +14,38 @@ $(document).ready(function() {
 
     // Function to get the checked values of checkboxes in a dropdown
     function getCheckedValues(dropdownId) {
-        var checkedValues = [];
-        $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function() {
-            checkedValues.push($(this).val());
-        });
+        console.log($(this).val())
+        var checkedValues
+        if( dropdownId === "SP") {
+            $('#' + dropdownId + ' input[type="checkbox"]').on('change', function() {
+                if (this.checked) {
+                    // Uncheck all other checkboxes
+                    $('#' + dropdownId + ' input[type="checkbox"]').not(this).prop('checked', false);
+                }
+                checkedValues = this.checked ? $(this).val() : null;
+            });
+
+            // Get the value of the currently checked checkbox
+            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function() {
+                checkedValues = $(this).val(); // This will now always hold only the last checked value
+            });
+        }else{
+            const tempArray = [];
+            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function() {
+                tempArray.push($(this).val());
+            });
+            checkedValues = tempArray
+        }
+        
         return checkedValues;
     }
 
+   
     $('#clear-filter-id').click(function() {
         // Reset the values of all dropdown checkboxes to unchecked
         $('.dropdown-content input[type="checkbox"]').prop('checked', false);
-
+        $('#search-input').val("")
+        currentPage = 1
         // Trigger the search functionality with empty filter values
         fetchDataAndUpdatePagination();
     });
@@ -28,21 +53,17 @@ $(document).ready(function() {
 
     // Update the data object for the POST request with the checked values
     function updateDataObject() {
+        console.log('Updating data object')
         return {
             "roi": getCheckedValues('ROI'),
             "categories": getCheckedValues('CATEGORIES'),
             "supplier_name": getCheckedValues('SN'),
-            "market_place": [], // Placeholder for market place
+            "market_place": [], 
             "store_price": getCheckedValues('SP'),
             "search_term": $('#search-input').val()
         };
     }
 
-
-
-    var currentPage = 1;
-    var totalPages = 1;
-    
     function makeAjaxCall(url) {
         return $.ajax({
             url: url,
@@ -83,7 +104,7 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-        makePostRequest('http://52.3.255.252/api/v1/home/15/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://52.3.255.252/api/v1/home/10/' + ((pageNumber - 1) * 15) + '', updateDataObject())
         .done(function(response) {
             populateTable(response.data);
             totalPages = Math.ceil(response.total_count / 15);  
@@ -98,33 +119,33 @@ $(document).ready(function() {
         });
     }
 
-    var promises = [
-        makeAjaxCall('http://52.3.255.252/api/v1/category'),
-        makeAjaxCall('http://52.3.255.252/api/v1/supplier-name'),
-        makeAjaxCall('http://52.3.255.252/api/v1/roi'),
-        makeAjaxCall('http://52.3.255.252/api/v1/store-price'),
-        makePostRequest('http://52.3.255.252/api/v1/home/10/0', {
-            "roi": [],
-            "categories": [],
-            "supplier_name": [],
-            "market_place": [],
-            "store_price": [],
-            "search_term": $('#search-input').val()
-          })
-    ];
+    const OnLoadPageFunc = () => {
+        var promises = [
+            makeAjaxCall('http://52.3.255.252/api/v1/category'),
+            makeAjaxCall('http://52.3.255.252/api/v1/supplier-name'),
+            makeAjaxCall('http://52.3.255.252/api/v1/roi'),
+            makeAjaxCall('http://52.3.255.252/api/v1/store-price'),
+           
+        ];
+    
+        $.when.apply($, promises).then(function() {   
+            populateROIDropdown(promises[2].responseJSON)
+            populateCATEGORIESDropdown(promises[0].responseJSON)
+            populateSNDropdown(promises[1].responseJSON)
+            populateSPDropdown(promises[3].responseJSON)
+          
+            // $(".loaderContainer").hide();
+            return true;
+        }).fail(function(err) {
+            console.log('An error occurred during AJAX calls.', err);
+            // $(".loaderContainer").hide();
+            return false;
+        });
+    }
 
-    $.when.apply($, promises).then(function() {   
-        populateROIDropdown(promises[2].responseJSON)
-        populateCATEGORIESDropdown(promises[0].responseJSON)
-        populateSNDropdown(promises[1].responseJSON)
-        populateSPDropdown(promises[3].responseJSON)
-        fetchDataAndUpdatePagination()
-        $(".loaderContainer").hide();
-        return true;
-    }).fail(function(err) {
-        console.log('An error occurred during AJAX calls.', err);
-        $(".loaderContainer").hide();
-        return false;
+    fetchDataAndUpdatePagination().then(function() {
+        // When fetchDataAndUpdatePagination is done, execute the rest of the AJAX calls
+        OnLoadPageFunc();
     });
 
     var pagesToShow = 5;
@@ -188,11 +209,11 @@ $(document).ready(function() {
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
             data: JSON.stringify({
-                "roi": [],
+                "roi": "",
                 "categories": [],
                 "supplier_name": [],
                 "market_place": [],
-                "store_price": [],
+                "store_price": "",
                 "search_term": $('#search-input').val()
             }),
             success: function(response) {

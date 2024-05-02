@@ -1,12 +1,12 @@
-export const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
+export const truncateString = (str, maxLength, truncateReturn = true) => {
+    if (str.length > maxLength && truncateReturn) {
         return str.substring(0, maxLength) + '...';
     }
     return str;
 }
 
 export function populateTable(data) {
-    $(document).ajaxStop(function () {
+    // $(document).ajaxStop(function () {
         if (!$(this).data('ajax_in_progress')) {
             // When all AJAX requests are complete
             if (data.length === 0) {
@@ -18,12 +18,25 @@ export function populateTable(data) {
                 sessionStorage.setItem('cachedData', JSON.stringify(data)); // Store data in sessionStorage
             }
         }
-    });
+    // });
 }
 
 function clearTable() {
-    // Clear the table content
-    $('#myTable tbody').empty();
+    var $tbody = $('#myTable tbody');
+    $tbody.empty(); // First, clear the current content
+
+    // Determine the number of columns by checking the headers
+    var columnCount = $('#myTable thead tr th').length;
+
+    // Add 10 empty rows with the correct number of cells
+    for (var i = 0; i < 10; i++) {
+        var $row = $('<tr>');
+        for (var j = 0; j < columnCount; j++) {
+            $row.append('<td>&nbsp;</td>'); // Append an empty cell; `&nbsp;` ensures the cell has height if styled
+        }
+        $tbody.append($row);
+    }
+
     sessionStorage.removeItem('cachedData'); // Remove cached data from sessionStorage
 }
 
@@ -38,8 +51,14 @@ function populateTableWithData(data) {
             $('#myTable th').each(function(index, header) {
                 var headerTitle = $(header).text().trim();
                 var objectPath = getObjectPath(headerTitle, item);
-                // var cellData = getValueByPath(item, objectPath);
-                row += '<td>' + objectPath + '</td>';
+
+                const linkedItem = ['Amazon UK Link', 'Supplier Link']                
+                if(linkedItem.includes(headerTitle)) {
+                    row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
+                }else{
+                    (row += '<td>' + objectPath + '</td>')
+                }   
+                
             });
             row += '</tr>';
             tbody.append(row);
@@ -82,8 +101,12 @@ function populateTableWithData(data) {
 // }
 
 
+function roundToTwoDP(num) {
+    return Number(num.toFixed(2));
+  }
+
 // Function to get object path for a given header title
-function getObjectPath(headerTitle, item) {
+function getObjectPath(headerTitle, item, truncateReturn) {
     switch (headerTitle) {
         case "Product Name":
             return  item.title;
@@ -92,7 +115,7 @@ function getObjectPath(headerTitle, item) {
 
             // amazon link
         case "Amazon UK Link":
-            return  item.asin;
+            return  item.amz_uk_link;
         case "Amazon GER Link":
             return  item.amz_ger_link;
         case "Amazon FR Link":
@@ -109,24 +132,24 @@ function getObjectPath(headerTitle, item) {
             return  item.amz_ebay_link;
 
         case "Supplier Link":
-            return truncateString(item.supplier_code, 20);
+            return truncateString(item.supplier_code, 20, truncateReturn);
        
         case "UK Profit":
-            return item.profit_uk;
+            return roundToTwoDP(item.profit_uk);
         case "GER Profit":
-            return item.profit_ger;
+            return roundToTwoDP(item.profit_ger);
         case "FR Profit":
-            return item.profit_fr;
+            return roundToTwoDP(item.profit_fr);
         case "IT Profit":
-            return item.profit_ir;
+            return roundToTwoDP(item.profit_ir);
         case "SP Profit":
-            return item.profit_sp;
+            return roundToTwoDP(item.profit_sp);
         case "NT Profit":
-            return item.profit_nt;
+            return roundToTwoDP(item.profit_nt);
         case "USA Profit":
-            return item.profit_usa;
+            return roundToTwoDP(item.profit_usa);
         case "UK eBAY Profit":
-            return item.profit_ebay_uk;
+            return roundToTwoDP(item.profit_ebay_uk);
        
         case "Category":
             return item.category;
@@ -147,7 +170,7 @@ function getObjectPath(headerTitle, item) {
             return item.usa_Rank;
 
         case "UK Amazon fees":
-            return  item.seller_price;
+            return  roundToTwoDP(item.amazon_price);
         case "GER Amazon fees":
             return  item.ger_seller_price;
         case "FR Amazon fees":
@@ -168,6 +191,10 @@ function getObjectPath(headerTitle, item) {
             return  item.seller_name;
         case "Manufacturer":
             return  item.seller_name;
+        case "ROI":
+            return  roundToTwoDP(item.roi_uk);
+        case "asin":
+            return  item.asin;
         // Add cases for other header titles as needed
         default:
             return ""; // Default to empty string if no object path is found

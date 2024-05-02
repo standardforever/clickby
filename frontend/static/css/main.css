@@ -19,16 +19,36 @@ h1, h2, h3, h4 {
 
 .shape {
     position: absolute;
-    left: 0px;
-    right: 0px;
+    left: 0;
+    right: 0;
     margin: auto;
-    width: max-content;
+    width: 90%; /* adjust if needed for smaller screens */
     height: max-content;
     border-radius: 22px;
     background-color: rgba(255, 255, 255, 0.21);
     border: 2px solid rgba(255, 255, 255, 0.61);
-    margin-bottom: 5%;
-    padding: 0 1%;
+    padding: 0; /* adjusted for better content fit on small screens */
+    margin-bottom: 10%; /* more margin to avoid clutter on small devices */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* optional, for better visibility */
+}
+
+/* Styles for tablets and small desktops - medium devices (>=768px) */
+@media (min-width: 768px) {
+    .shape {
+        width: 90%; /* or a specific max-width if preferable */
+        padding: 0 2%; /* more breathing room for content */
+        margin-bottom: 5%; /* less margin as there's more space */
+    }
+}
+
+/* Styles for large screens - large devices (>=1200px) */
+@media (min-width: 1200px) {
+    .shape {
+        width: 80%; /* max width limit to avoid too wide a shape */
+        left: 10%; /* centering differently because of fixed width */
+        right: 10%;
+        padding: 20px; /* more padding for aesthetics */
+    }
 }
 
 .addCol {
@@ -91,19 +111,13 @@ h1, h2, h3, h4 {
 
 /* Updated container */
 .clickBuycontainer {
-    max-width: 90%;  /* Shrunk to 90% to see the background on all 4 sides */
-    margin: auto;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-right: 4rem !important;
-    padding-left: 4rem !important;
+    margin: 1.5rem;
+    padding: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 22px;
     background-color:white; /* Make it slightly transparent */
     position: relative; /* To position the logo at the top */
     overflow: hidden;
-    margin-top: 26px;
-    margin-bottom: 26px;
 }
 
 .myBtn{
