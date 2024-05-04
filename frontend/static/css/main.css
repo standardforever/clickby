@@ -44,9 +44,9 @@ h1, h2, h3, h4 {
 /* Styles for large screens - large devices (>=1200px) */
 @media (min-width: 1200px) {
     .shape {
-        width: 80%; /* max width limit to avoid too wide a shape */
-        left: 10%; /* centering differently because of fixed width */
-        right: 10%;
+        width: 94%; /* max width limit to avoid too wide a shape */
+        left: 3%; /* centering differently because of fixed width */
+        right: 3%;
         padding: 20px; /* more padding for aesthetics */
     }
 }

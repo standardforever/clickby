@@ -209,7 +209,7 @@ $(document).ready(function() {
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
             data: JSON.stringify({
-                "roi": "",
+                "roi": [],
                 "categories": [],
                 "supplier_name": [],
                 "market_place": [],

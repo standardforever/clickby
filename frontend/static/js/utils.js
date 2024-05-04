@@ -169,8 +169,8 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "USA Sales Rank":
             return item.usa_Rank;
 
-        case "UK Amazon fees":
-            return  roundToTwoDP(item.amazon_price);
+        case "UK AMZ £":
+            return  "undefined";
         case "GER Amazon fees":
             return  item.ger_seller_price;
         case "FR Amazon fees":
@@ -195,6 +195,12 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return  roundToTwoDP(item.roi_uk);
         case "asin":
             return  item.asin;
+        case "Amazon Selling Price":
+            return  roundToTwoDP(item.amazon_price);
+        case "Coupon Code":
+            return  "coupon code";
+        case "Supplier Notes":
+            return  "supplier note";
         // Add cases for other header titles as needed
         default:
             return ""; // Default to empty string if no object path is found
