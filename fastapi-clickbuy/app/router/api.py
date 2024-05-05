@@ -37,6 +37,82 @@ async def get_store_price():
     ]
 
 
+# @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
+# async def home(
+#     limit: int,
+#     skip: int,
+#     filter: FilterModel
+# ):
+#     store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
+
+#     try:
+#         # Pipeline to filter documents based on profit_uk and apply pagination
+#         pipeline = [
+#             {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
+#             {"$skip": skip},  # Skip documents based on the offset
+#             {"$limit": limit},  # Limit the number of documents returned
+#             {"$project":
+#                 {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+#                 'upc': 0, "ref_up": 0}}
+#         ]
+
+#         # Apply additional filters if provided
+#         query_params = {}
+
+#         if filter.search_term:
+#             regex_pattern = re.compile(filter.search_term, re.IGNORECASE)
+#             # Build the query for searching across all fields
+#             query_params["$or"] = [
+#                 {"brand": {"$regex": regex_pattern}},
+#                 {"category": {"$regex": regex_pattern}},
+#                 {'search_term': {"$regex": regex_pattern}},
+#                 {"title": {"$regex": regex_pattern}},
+#                 {"seller_name": {"$regex": regex_pattern}},
+#                 {"amz_Title": {"$regex": regex_pattern}},
+#             ]
+
+
+#         if filter.store_price in list(store_price_ranges):
+#             if filter.store_price != "100>":
+#                 min_roi, max_roi = store_price_ranges[filter.store_price]
+#                 roi_range = {"$gte": min_roi, "$lte": max_roi}
+#                 query_params['seller_price'] = roi_range
+#             else:
+#                 min_roi = store_price_ranges[filter.store_price]
+#                 roi_range = {"$gte": min_roi}
+#                 query_params['seller_price'] = roi_range
+
+#         # Sort_by ROI query Params
+#         if filter.roi:
+#             query_params['roi_category'] = {"$in": filter.roi}
+
+#         if filter.categories:
+#             query_params['category'] = {"$in": filter.categories}
+
+#         if filter.supplier_name:
+#             query_params['seller_name'] = {"$in": filter.supplier_name}
+
+#         if query_params:
+#             pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
+
+#         pipeline.append({"$sort": {"profit_uk": -1}})
+#         google_data_cursor =  app.collection.aggregate(pipeline)
+#         google_data = await google_data_cursor.to_list(length=None)
+
+#         # google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
+#         total_count = await app.collection.count_documents(query_params)
+        
+#         return {
+#             "data": google_data,
+#             "total_count": total_count,
+#         }
+
+#     except Exception as e:
+#         print(e)
+#         return 500
+
+
+
 @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 async def home(
     limit: int,
@@ -49,11 +125,14 @@ async def home(
         # Pipeline to filter documents based on profit_uk and apply pagination
         pipeline = [
             {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
-            {"$skip": skip},  # Skip documents based on the offset
-            {"$limit": limit},  # Limit the number of documents returned
-            {"$project":
-                {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
-                'upc': 0, "ref_up": 0}}
+            {"$project": {
+                "_id": 0, 
+                "ref_close": 0, 
+                "ref_down": 0, 
+                "ref_limit": 0,
+                "upc": 0, 
+                "ref_up": 0
+            }}
         ]
 
         # Apply additional filters if provided
@@ -70,7 +149,6 @@ async def home(
                 {"seller_name": {"$regex": regex_pattern}},
                 {"amz_Title": {"$regex": regex_pattern}},
             ]
-
 
         if filter.store_price in list(store_price_ranges):
             if filter.store_price != "100>":
@@ -93,12 +171,18 @@ async def home(
             query_params['seller_name'] = {"$in": filter.supplier_name}
 
         if query_params:
-            pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
+            pipeline.insert(1, {"$match": query_params})  # Additional match stage after profit_uk filter
+
+        # Add sort stage based on profit_uk (descending order for highest profit)
+        pipeline.append({"$sort": {"profit_uk": -1}})
+
+        # Add skip and limit stages for pagination
+        pipeline.append({"$skip": skip})
+        pipeline.append({"$limit": limit})
 
         google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
-        # google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
         total_count = await app.collection.count_documents(query_params)
         
         return {
