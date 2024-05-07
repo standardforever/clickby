@@ -52,7 +52,7 @@ function populateTableWithData(data) {
                 var headerTitle = $(header).text().trim();
                 var objectPath = getObjectPath(headerTitle, item);
 
-                const linkedItem = ['Amazon UK Link', 'Supplier Link', 'Coupon Code']                
+                const linkedItem = ['Amazon UK Link', 'Supplier Link']                
                 if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
                 }else{
@@ -198,7 +198,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "Amazon Selling Price":
             return  roundToTwoDP(item.amazon_price);
         case "Coupon Code":
-            return item.supplier_code;
+            return  "coupon code";
         case "Supplier Notes":
             return  "supplier note";
         // Add cases for other header titles as needed

@@ -104,7 +104,7 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://52.3.255.252/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://52.3.255.252/api/v1/home/10/' + ((pageNumber - 1) * 15) + '', updateDataObject())
         .done(function(response) {
             populateTable(response.data);
             totalPages = Math.ceil(response.total_count / 15);  
@@ -204,7 +204,7 @@ $(document).ready(function() {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://52.3.255.252/api/v1/home/50/0",
+            url: "http://52.3.255.252/api/v1/home/15/0",
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
