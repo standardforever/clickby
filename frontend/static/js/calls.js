@@ -204,7 +204,7 @@ $(document).ready(function() {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://systemiseselling.com/api/v1/home/50/0",
+            url: "http://systemiseselling.com/api/v1/home/30/0",
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
@@ -305,7 +305,7 @@ function scrollTable(direction) {
         return;
     }
 
-    const scrollStep = 50;
+    const scrollStep = 30;
 
     if (direction === 'left') {
         currentTranslateX = Math.max(currentTranslateX - scrollStep, maxScrollLeft);
