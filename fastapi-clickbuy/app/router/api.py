@@ -72,7 +72,6 @@ async def home(
             query_params["$or"] = [
                 {"brand": {"$regex": regex_pattern}},
                 {"category": {"$regex": regex_pattern}},
-                {'search_term': {"$regex": regex_pattern}},
                 {"title": {"$regex": regex_pattern}},
                 {"seller_name": {"$regex": regex_pattern}},
                 {"amz_Title": {"$regex": regex_pattern}},

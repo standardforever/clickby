@@ -63,14 +63,18 @@ async def database_live_connect():
         maxPoolSize=50,
     )
     mvp2 = gg_client["mvp2"]
-    mvp2_collection = mvp2["supplier_lookup"]
+    mvp2_collection = mvp2["filter_supplier_lookup"]
     return mvp2_collection
 
 async def get_collection_length(collection):
     # Define a query to filter documents where profit is greater than 1
-    query = {"profit_uk": {"$gt": 1}}
-    # Count documents matching the query
+    query = {"profit_uk": {"$gt": 1}, "amz_Title": {"$exists": True, "$ne": ""}}
+    # await collection.drop_index('search_term')
+    # cursor = collection.list_indexes()
+    # async for index in cursor:
+    #     print(index)
     count = await collection.count_documents(query)
+
     return count
 
 async def main():
