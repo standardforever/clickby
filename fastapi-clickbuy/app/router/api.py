@@ -106,11 +106,11 @@ async def home(
         google_data = await google_data_cursor.to_list(length=None)
 
         # google_data = [{k: v if not isinstance(v, float) or not np.isnan(v) else None for k, v in item.items()} for item in google_data]
-        total_count = await app.collection.count_documents(query_params)
+        # total_count = await app.collection.count_documents(query_params)
         
         return {
             "data": google_data,
-            "total_count": total_count,
+            "total_count": 100,
         }
 
     except Exception as e:
