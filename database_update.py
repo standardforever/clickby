@@ -133,9 +133,8 @@ async def main():
 
     page = 1
     limit = 1 # Set your desired batch size
-    print(await mvp2.list_collection_names())
-
-    if 'filter_supplier_lookup' not in await mvp2.list_collection_names():
+  
+    if 'filter_supplier_lookup1' not in await mvp2.list_collection_names():
         await mvp2_collection_lookup.create_index({'title': DESCENDING })
         await mvp2_collection_lookup.create_index({'search_term': DESCENDING })
         await mvp2_collection_lookup.create_index({'seller_name': DESCENDING })
@@ -146,7 +145,10 @@ async def main():
         await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
         await mvp2_collection_lookup.create_index({'asin': DESCENDING })
 
-    print(await mvp2_collection_lookup.list_indexes())
+    # print(await mvp2_collection_lookup.list_indexes())
+    cursor = mvp2_collection_lookup.list_indexes()
+    async for index in cursor:
+        print(index)
     exit()
     # total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
     # total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
