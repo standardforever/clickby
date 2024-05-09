@@ -3,6 +3,7 @@ import asyncio
 import numpy as np
 from deepdiff import DeepDiff
 import re
+from pymongo import DESCENDING, ASCENDING
 
 
 username = 'fiverr_user'
@@ -114,7 +115,8 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
 
     google_data_cursor = fetch_from.aggregate(pipeline)
     google_data =  await google_data_cursor.to_list(length=None)
-
+    print(google_data)
+    return 
     records_to_insert = [
         {k: get_price(v) if k == 'seller_price' else (v if not isinstance(v, float) or not np.isnan(v) else None) for k, v in item.items()}
         for item in google_data
@@ -130,12 +132,26 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 5000 # Set your desired batch size
+    limit = 1 # Set your desired batch size
+    print(await mvp2.list_collection_names())
 
-    total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
-    total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
-    print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
-    while page <= total_pages:
+    if 'filter_supplier_lookup' not in await mvp2.list_collection_names():
+        await mvp2_collection_lookup.create_index({'title': DESCENDING })
+        await mvp2_collection_lookup.create_index({'search_term': DESCENDING })
+        await mvp2_collection_lookup.create_index({'seller_name': DESCENDING })
+        await mvp2_collection_lookup.create_index({'amz_Title': DESCENDING })
+        await mvp2_collection_lookup.create_index({'category': DESCENDING })
+        await mvp2_collection_lookup.create_index({'brand': DESCENDING })
+        await mvp2_collection_lookup.create_index({'roi_category': DESCENDING })
+        await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
+        await mvp2_collection_lookup.create_index({'asin': DESCENDING })
+
+    print(await mvp2_collection_lookup.list_indexes())
+    exit()
+    # total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
+    # total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
+    # print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
+    while page <= 2:
         try:
             await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
             page+=1

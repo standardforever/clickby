@@ -37,6 +37,13 @@ async def get_store_price():
     ]
 
 
+
+# Cache for product details
+@router.get("/product/{asin}")
+async def api_product_details(asin: str):
+    items = await app.collection.find({"asin": asin}, {"_id": 0}).to_list(length=None)
+    return items
+
 # @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 # async def home(
 #     limit: int,
