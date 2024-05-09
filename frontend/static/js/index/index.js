@@ -6,6 +6,7 @@ $(document).ready(function() {
     // PAGINATION CONTROL
     var currentPage = 1;
     var totalPages = 1;
+    var holdData;
 
     // Add event listeners to checkboxes in dropdowns
     $('.dropdown-content').on('change', 'input[type="checkbox"]', function() {
@@ -104,9 +105,10 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://systemiseselling.com/api/v1/home/30/' + ((pageNumber - 1) * 15) + '', updateDataObject())
         .done(function(response) {
             populateTable(response.data);
+            holdData = response.data
             totalPages = Math.ceil(response.total_count / 15);  
             updateUniqueProductCount(response.total_count);
             currentPage = pageNumber; // Update currentPage
@@ -260,7 +262,7 @@ $(document).ready(function() {
                 $('#myTable td:nth-child('+(index+1)+')').remove();
             }
         }
-        var updatedData = fetchDataAndUpdatePagination();
+        var updatedData = holdData ?? fetchDataAndUpdatePagination();
         populateTable(updatedData);
     });
 
@@ -273,6 +275,8 @@ $(document).ready(function() {
             $('#myTable td:nth-child('+(index+1)+')').hide();
         }
     });
+
+
 });
 
 document.getElementById('scrollLeftBtn').addEventListener('click', function() {
@@ -305,7 +309,7 @@ function scrollTable(direction) {
         return;
     }
 
-    const scrollStep = 30;
+    const scrollStep = 50;
 
     if (direction === 'left') {
         currentTranslateX = Math.max(currentTranslateX - scrollStep, maxScrollLeft);

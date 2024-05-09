@@ -36,6 +36,22 @@ async def get_store_price():
          '<25%', '25-50', '50-100' 
     ]
 
+@router.get('/filter')
+async def filter_button():
+    category = await helper_function.get_unique_field(app.collection, 'category')
+    roi = await helper_function.get_unique_field(app.collection, 'roi_category')
+    store_price = [
+         '<25%', '25-50', '50-100' 
+    ]
+    supplier_name = await helper_function.get_unique_field(app.collection, 'seller_name')
+    market = await helper_function.get_unique_field(app.collection, 'marketplace_id')
+    return {
+        'category': category,
+        'roi': roi,
+        'store_price': store_price,
+        'supplier_name': supplier_name,
+        'market': market,
+    }
 
 
 # Cache for product details
