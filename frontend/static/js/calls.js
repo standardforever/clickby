@@ -104,7 +104,7 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://52.3.255.252/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
         .done(function(response) {
             populateTable(response.data);
             totalPages = Math.ceil(response.total_count / 15);  
@@ -121,10 +121,10 @@ $(document).ready(function() {
 
     const OnLoadPageFunc = () => {
         var promises = [
-            makeAjaxCall('http://52.3.255.252/api/v1/category'),
-            makeAjaxCall('http://52.3.255.252/api/v1/supplier-name'),
-            makeAjaxCall('http://52.3.255.252/api/v1/roi'),
-            makeAjaxCall('http://52.3.255.252/api/v1/store-price'),
+            makeAjaxCall('http://systemiseselling.com/api/v1/category'),
+            makeAjaxCall('http://systemiseselling.com/api/v1/supplier-name'),
+            makeAjaxCall('http://systemiseselling.com/api/v1/roi'),
+            makeAjaxCall('http://systemiseselling.com/api/v1/store-price'),
            
         ];
     
@@ -204,7 +204,7 @@ $(document).ready(function() {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://52.3.255.252/api/v1/home/50/0",
+            url: "http://systemiseselling.com/api/v1/home/50/0",
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
