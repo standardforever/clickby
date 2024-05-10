@@ -121,11 +121,11 @@ async def home(
         google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
-        # total_count = await app.collection.count_documents(query_params)
+        total_count = await app.collection.count_documents(query_params)
         
         return {
             "data": google_data,
-            "total_count": 100,
+            "total_count": total_count,
         }
 
     except Exception as e:
