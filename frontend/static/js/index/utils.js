@@ -55,7 +55,7 @@ function populateTableWithData(data) {
                 const linkedItem = ['Amazon UK Link', 'Supplier Link', 'Coupon Code']                
                 const productName = ['Product Name']                
                 if(productName.includes(headerTitle)){
-                    (row += '<td>' + objectPath + '<a target="_blank" id="dynamicLink" class="btn btn-primary ms-3 btn-sm" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a>' + '</td>')
+                    (row += '<td>' + objectPath + '<a target="_blank" id="dynamicLink" class="btn btn-primary ms-3 btn-sm" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a>' + '</td>')
                     // (row += '<td>' + objectPath + '<a target="_blank" class="btn btn-primary d-block" href="' + getObjectPath(headerTitle, item, false) + '">' + "view more" + '</a>' + '</td>')
                 }else if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
