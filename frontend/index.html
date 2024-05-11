@@ -129,16 +129,20 @@
                                     <label for="date-added">Date Added</label>
                                 </div>
                                 <div class="new-content-item">
-                                    <input type="checkbox" id="supplier-link" name="supplier-link-checkbox" class="me-4" checked>
+                                    <input type="checkbox" id="amazon_selling_price" name="category-checkbox" class="me-4" checked>
+                                    <label for="amazon_selling_price">Amazon £</label>
+                                </div>
+                                <div class="new-content-item">
+                                    <input type="checkbox" id="roi" name="category-checkbox" class="me-4" checked>
+                                    <label for="roi">ROI</label>
+                                </div>
+                                <div class="new-content-item">
+                                    <input type="checkbox" id="supplier-link" name="supplier-link-checkbox" class="me-4" >
                                     <label for="supplier-link">Supplier Link</label>
                                 </div>
                                 <div class="new-content-item">
-                                    <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" checked>
+                                    <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
                                     <label for="item_category">Category</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="amazon_selling_price" name="category-checkbox" class="me-4" checked>
-                                    <label for="amazon_selling_price">Amazon Selling Price</label>
                                 </div>
                                 <div class="new-content-item">
                                     <input type="checkbox" id="coupon_code" name="category-checkbox" class="me-4">
@@ -148,7 +152,19 @@
                                     <input type="checkbox" id="supplier_note" name="category-checkbox" class="me-4">
                                     <label for="supplier_note">Supplier Notes</label>
                                 </div>
-                               
+                                <div class="new-content-item">
+                                    <input type="checkbox" id="supplier_name" name="category-checkbox" class="me-4">
+                                    <label for="supplier_name">Store Name</label>
+                                </div>
+                                <div class="new-content-item">
+                                    <input type="checkbox" id="store_price" name="category-checkbox" class="me-4">
+                                    <label for="store_price">Store Price</label>
+                                </div>
+                                <div class="new-content-item">
+                                    <input type="checkbox" id="uk_amz_£" name="category-checkbox" class="me-4">
+                                    <label for="uk_amz_£">UK AMZ £</label>
+                                </div>
+                                                              
                                 <div class="dropdown w-100 new-content-item position-relative ">
                                     <span>
                                         <i class="bi bi-three-dots me-4"></i>    
@@ -156,7 +172,7 @@
                                     <label> Amazon Link</label>
                                     <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
                                         <div class="new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" checked>
+                                            <input type="checkbox" id="amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
                                             <label for="amazon-link-checkbox" class="mb-0">Amazon UK Link</label>
                                         </div>
                                         <div class=" new-content-item d-flex align-items-center">
@@ -274,7 +290,7 @@
                                     <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
                                         <div class="new-content-item  d-flex align-items-center">
                                             <input id="amazon-fees-checkbox" type="checkbox" name="amazon-fees-checkbox" class="me-4" checked>
-                                            <label for="amazon-fees-checkbox" class="mb-0">UK AMZ £</label>
+                                            <label for="amazon-fees-checkbox" class="mb-0">AMZ Fee</label>
                                         </div>
                                         <div class=" new-content-item d-flex align-items-center">
                                             <input id="ger-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
@@ -349,16 +365,11 @@
                         <table id="myTable" class="table sticky-header table-rounded text-wrap w-100 overflow-auto ">
                             <thead>
                                 <tr class="w-100"  style="background-color: #4282cc !important;">
-                                    <th style="width: 20%" class="title-column">Product Name</th>
+                                    <th style="width: 20%; min-width: 200px;" class="title-column">Product Name</th>
                                     <th>Date Added</th>
-                                    <th>Amazon UK Link</th>
-                                    <th>Supplier Link</th>
-        
                                     <th>UK Profit</th>
-                                    <th>Category</th>
                                     <th>UK Sales Rank</th>
-                                    <th>UK AMZ £</th>
-                                    <th>Amazon Selling Price</th>
+                                    <th>Amazon £</th>
                                     <th>ROI</th>
                                 </tr>
                             </thead>

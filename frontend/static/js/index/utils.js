@@ -1,3 +1,5 @@
+import { breakDate } from "../utils.js";
+
 export const truncateString = (str, maxLength, truncateReturn = true) => {
     if (str.length > maxLength && truncateReturn) {
         return str.substring(0, maxLength) + '...';
@@ -52,11 +54,14 @@ function populateTableWithData(data) {
                 var headerTitle = $(header).text().trim();
                 var objectPath = getObjectPath(headerTitle, item);
 
-                const linkedItem = ['Amazon UK Link', 'Supplier Link', 'Coupon Code']                
+                const linkedItem = ['Amazon UK Link', 'Supplier Link']                
                 const productName = ['Product Name']                
-                if(productName.includes(headerTitle)){
-                    (row += '<td>' + objectPath + '<a target="_blank" id="dynamicLink" class="btn btn-primary ms-3 btn-sm" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a>' + '</td>')
-                    // (row += '<td>' + objectPath + '<a target="_blank" class="btn btn-primary d-block" href="' + getObjectPath(headerTitle, item, false) + '">' + "view more" + '</a>' + '</td>')
+                const sP = ['Store Price']                
+                if(sP.includes(headerTitle)){
+                    row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
+                }else if(productName.includes(headerTitle)){
+                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
+                    // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
                 }else if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
                 }else{
@@ -82,7 +87,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "Product Name":
             return  item.title;
         case "Date Added":
-            return item.last_update_time;
+            return  '<div>'+ '<div>' + breakDate(item.last_update_time).date + '</div>' + '<div>' + breakDate(item.last_update_time).time + '</div>' +'</div>';
 
             // amazon link
         case "Amazon UK Link":
@@ -140,8 +145,8 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "USA Sales Rank":
             return item.usa_Rank;
 
-        case "UK AMZ £":
-            return  "undefined";
+        case "AMZ Fee":
+            return  "";
         case "GER Amazon fees":
             return  item.ger_seller_price;
         case "FR Amazon fees":
@@ -158,7 +163,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return  item.uk_ebay_seller_price;
 
 
-        case "Supplier Name":
+        case "Store Name":
             return  item.seller_name;
         case "Manufacturer":
             return  item.seller_name;
@@ -166,12 +171,16 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return  roundToTwoDP(item.roi_uk);
         case "asin":
             return  item.asin;
-        case "Amazon Selling Price":
+        case "Amazon £":
             return  roundToTwoDP(item.amazon_price);
         case "Coupon Code":
-            return item.supplier_code;
+            return "";
         case "Supplier Notes":
-            return  "supplier note";
+            return  "";
+        case "Store Price":
+            return  item.seller_price;
+        case "UK AMZ £":
+            return  "";
         // Add cases for other header titles as needed
         default:
             return ""; // Default to empty string if no object path is found
