@@ -83,6 +83,7 @@ function roundToTwoDP(num) {
 
 // Function to get object path for a given header title
 function getObjectPath(headerTitle, item, truncateReturn) {
+    console.log(headerTitle)
     switch (headerTitle) {
         case "Product Name":
             return  item.title;
