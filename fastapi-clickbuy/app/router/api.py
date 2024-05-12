@@ -140,7 +140,7 @@ async def home(
 
 
         # total_count_time = time.time()
-        total_count = await app.collection.count_documents(query_params)
+        # total_count = await app.collection.count_documents(query_params)
         # total_count_end_time = time.time()
         # execution_time_count = total_count_end_time - total_count_time
         # print("\n\n\n\n")
@@ -154,7 +154,7 @@ async def home(
         print(f"\n\nTotal time: {total_end_time - total_time}")
         return {
             "data": google_data,
-            "total_count": total_count,
+            "total_count": 1000,
         }
 
     except Exception as e:
