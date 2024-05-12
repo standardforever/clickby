@@ -18,6 +18,8 @@ mvp2 = gg_client["mvp2"]
 
     
 def get_price(price_str):
+    """ Convert string price to integer
+    """
     if isinstance(price_str, str):
         match = re.search(r"(\d+\.\d+|\d+)", price_str)
         if match:
@@ -28,7 +30,6 @@ def get_price(price_str):
 async def fetch_bulk_data(asins, collection):
     """ Fetch list of documents based on list of ASINs """
     # Create an index on ASIN field for faster retrieval
-    collection.create_index("asin")
     
     # Perform an asynchronous find operation to get documents based on ASINs
     cursor = collection.find(
@@ -50,6 +51,7 @@ async def add_list_to_documents(documents, collection):
 async def update_list_documents(filter_x, datas, collection):
     """ Updadte list of documents
     """
+    update = False
     for filter in filter_x:
         for data in datas:
             if data.get('asin') == filter.get('asin'):
@@ -57,7 +59,8 @@ async def update_list_documents(filter_x, datas, collection):
                 # diff = DeepDiff(data, filter)
                 if diff:
                     collection.update_one({"ASIN": filter.get('ASIN')}, {"$set": filter})
-    return ("updated")
+                    update = True
+    return update
 
 async def create_or_update_filter_collection(items_list, collection):
     asin_list = []
@@ -95,7 +98,7 @@ async def create_or_update_filter_collection(items_list, collection):
             if item['asin'] in remaining_asins:
                 filter_update.append(item)
         print(await update_list_documents(filter_update, datas, collection))
-    return "result"
+    return None
 
 
 # Function to fetch and save records
@@ -153,6 +156,33 @@ async def main():
             page+=1
         except Exception as e:
             print(f"Error processing batch: {e}")
+
+
+# mvp2_collection = mvp2["supplier_lookup"]
+
+async def get_unique_asin_with_highest_profit(collection):
+    skip = 0
+    limit = 3
+
+    pipeline = [
+        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
+        {"$group": {
+            "_id": "$asin",
+            "highest_profit": {"$max": "$profit_uk"}
+        }},
+        
+        {"$skip": skip},  # Skip documents based on the offset
+        {"$limit": limit},  # Limit the number of documents returned
+        {"$project":
+            {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+            'upc': 0, "ref_up": 0, "supplier_discount": 0, "brand_discount": 0,
+            "awaiting validation": 0, "FBA_fee": 0, "Reff_fees": 0, "Categories_Root": 0, "delivery": 0,
+            "Pack": 0}}
+    ]
+
+    unique_asin_with_highest_profit = await collection.aggregate(pipeline).to_list(None)
+    print(unique_asin_with_highest_profit)
+    return unique_asin_with_highest_profit
 
 if __name__ == "__main__":
     asyncio.run(main())
