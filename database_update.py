@@ -205,13 +205,27 @@ async def get_unique_asin_with_highest_profit(collection):
     print(unique_asin_with_highest_profit)
     return unique_asin_with_highest_profit
 
+# async def get_total_unique_asins():
+#     collection = mvp2["supplier_lookup"]
+#     unique_asins = await collection.distinct("asin")
+#     total_unique_asins = len(unique_asins)
+#     print(total_unique_asins)
+#     return total_unique_asins
+
+
+
+
 async def get_total_unique_asins():
-    collection = mvp2["filter_supplier_lookup"]
-    unique_asins = await collection.distinct("asin")
-    total_unique_asins = len(unique_asins)
+    collection = mvp2["supplier_lookup"]
+    pipeline = [
+        {"$group": {"_id": "$asin"}},  # Group by 'asin'
+        {"$count": "totalUniqueAsins"}  # Count the number of unique 'asin'
+    ]
+    result = await collection.aggregate(pipeline).to_list(None)
+    total_unique_asins = result[0]['totalUniqueAsins'] if result else 0
     print(total_unique_asins)
     return total_unique_asins
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(get_total_unique_asins())
