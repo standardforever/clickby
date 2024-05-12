@@ -137,15 +137,17 @@ async def home(
         print("Total execution time:", execution_time, "seconds")
 
 
-        start_time = time.time()
+
+
+        total_count_time = time.time()
         total_count = await app.collection.count_documents(query_params)
-        end_time = time.time()
-        execution_time = end_time - start_time
+        total_count_end_time = time.time()
+        execution_time_count = total_count_end_time - total_count_time
         print("\n\n\n\n")
         # Print start and end times
         print("Query started at:", start_time)
         print("Query ended at:", end_time)
-        print("Total execution time:", execution_time, "seconds")
+        print("Total execution time:", execution_time_count, "seconds")
         
 
         total_end_time = time.time()
