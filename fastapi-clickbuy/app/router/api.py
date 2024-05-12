@@ -75,10 +75,9 @@ async def home(
     try:
         # Pipeline to filter documents based on profit_uk and apply pagination
         pipeline = [
-            {"$skip": skip},  # Skip documents based on the offset
-            {"$limit": limit},
             {"$sort": {"profit_uk": -1}},
-              # Limit the number of documents returned
+            {"$skip": skip},  # Skip documents based on the offset
+            {"$limit": limit},  # Limit the number of documents returned
             {"$project":
                 {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
                 'upc': 0, "ref_up": 0}}
@@ -110,24 +109,14 @@ async def home(
                 query_params['seller_price'] = roi_range
 
         # Sort_by ROI query Params
-        # if filter.roi:
-        #     query_params['roi_category'] = {"$in": filter.roi}
-
-        # if filter.categories:
-        #     query_params['category'] = {"$in": filter.categories}
-
-        # if filter.supplier_name:
-        #     query_params['seller_name'] = {"$in": filter.supplier_name}
-
-        # Sort_by ROI query Params
         if filter.roi:
-            query_params['roi_category'] = filter.roi[0]
+            query_params['roi_category'] = {"$in": filter.roi}
 
         if filter.categories:
-            query_params['category'] = filter.categories[0]
+            query_params['category'] = {"$in": filter.categories}
 
         if filter.supplier_name:
-            query_params['seller_name'] = filter.supplier_name[0]
+            query_params['seller_name'] = {"$in": filter.supplier_name}
 
         if query_params:
             pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter

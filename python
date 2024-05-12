@@ -27,13 +27,13 @@ def get_price(price_str):
     return None
 
 
-async def fetch_bulk_data(supplier_code, collection):
-    """ Fetch list of documents based on list of supplier_code """
+async def fetch_bulk_data(asins, collection):
+    """ Fetch list of documents based on list of ASINs """
     # Create an index on ASIN field for faster retrieval
     
-    # Perform an asynchronous find operation to get documents based on supplier_code
+    # Perform an asynchronous find operation to get documents based on ASINs
     cursor = collection.find(
-        {"supplier_code": {"$in": supplier_code}},
+        {"asin": {"$in": asins}},
         {"_id": 0}
     )
     
@@ -54,13 +54,13 @@ async def update_list_documents(filter_x, datas, collection):
     count = 0
     for filter in filter_x:
         for data in datas:
-            if data.get('supplier_code') == filter.get('supplier_code'):
+            if data.get('asin') == filter.get('asin'):
                 diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
                 # diff = DeepDiff(data, filter)
                 if diff:
                     print(filter, '\n\n\n\n\n', data, '\n\n', diff)
-
-                    collection.update_one({"supplier_code": filter.get('supplier_code')}, {"$set": filter})
+                    exit()
+                    collection.update_one({"ASIN": filter.get('ASIN')}, {"$set": filter})
                     count += 1
     return count
 
@@ -71,13 +71,13 @@ async def create_or_update_filter_collection(items_list, collection):
     filter_update = []
 
     for item in items_list:
-        asin_list.append(item.get('supplier_code'))
+        asin_list.append(item.get('asin'))
 
     # Fetch data base on the ASIN field
     datas = await fetch_bulk_data(asin_list, collection)
 
-    # Check the supplier_code field that not present in Database and add them
-    asins_present = set(item['supplier_code'] for item in datas)
+    # Check the ASIN field that not present in Database and add them
+    asins_present = set(item['asin'] for item in datas)
     missing_asins = []
     remaining_asins = []
 
@@ -89,7 +89,7 @@ async def create_or_update_filter_collection(items_list, collection):
 
     if missing_asins:
         for item in items_list:
-            if item['supplier_code'] in missing_asins:
+            if item['asin'] in missing_asins:
                 filter_add.append(item)
 
         await add_list_to_documents(filter_add, collection)
@@ -97,7 +97,7 @@ async def create_or_update_filter_collection(items_list, collection):
 
     if remaining_asins:
         for item in items_list:
-            if item['supplier_code'] in remaining_asins:
+            if item['asin'] in remaining_asins:
                 filter_update.append(item)
         count = await update_list_documents(filter_update, datas, collection)
         print(f"Updated {count} to the database")
@@ -109,9 +109,9 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
     skip = (page - 1) * limit
 
     pipeline = [
+        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
         {"$skip": skip},  # Skip documents based on the offset
         {"$limit": limit},  # Limit the number of documents returned
-        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
         {"$project":
             {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
             'upc': 0, "ref_up": 0, "supplier_discount": 0, "brand_discount": 0,
@@ -127,28 +127,27 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
         for item in google_data
     ]
 
-    for records in records_to_insert:
-        try:
-            records['roi_uk'] = (records.get("profit_uk") / records.get('seller_price')) * 100
-        except:
-            pass
     await create_or_update_filter_collection(records_to_insert, add_to)
     print("Done updating or adding")
    
 
 
 async def main():
-    mvp2_collection_lookup = mvp2["profit_supplier_lookup"]
+    mvp2_collection_lookup = mvp2["filter_supplier_lookup"]
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
     limit = 10000 # Set your desired batch size
   
-    if 'profit_supplier_lookup' not in await mvp2.list_collection_names():
-        await mvp2_collection_lookup.create_index({'supplier_code': DESCENDING })
+    if 'filter_supplier_lookup' not in await mvp2.list_collection_names():
+        await mvp2_collection_lookup.create_index({'title': DESCENDING })
+        await mvp2_collection_lookup.create_index({'search_term': DESCENDING })
+        await mvp2_collection_lookup.create_index({'amz_Title': DESCENDING })
+        await mvp2_collection_lookup.create_index({'category': DESCENDING })
+        await mvp2_collection_lookup.create_index({'brand': DESCENDING })
+        await mvp2_collection_lookup.create_index({'roi_category': DESCENDING })
         await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
         await mvp2_collection_lookup.create_index({'asin': DESCENDING })
-        print("New index created succesfully")
 
     # print(await mvp2_collection_lookup.list_indexes()
     total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
@@ -163,5 +162,72 @@ async def main():
 
 
 
+
+
+async def create_highest_profit_collection():
+    count = 0
+    source_collection = mvp2["supplier_lookup"]
+    pipeline = [
+        # Group by 'asin' and find the document with the highest 'profit_uk' in each group
+        {"$match": {"profit_uk": {"$gt": 1}}},
+    ]
+
+    async for document in source_collection.aggregate(pipeline):
+        count += 1
+        print(count)
+        # await destination_collection_name.insert_one(document)
+
+
+
+
+
+async def get_unique_asin_with_highest_profit(collection):
+    skip = 0
+    limit = 3
+
+    pipeline = [
+        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
+        {"$group": {
+            "_id": "$asin",
+            "highest_profit": {"$max": "$profit_uk"}
+        }},
+        
+        {"$skip": skip},  # Skip documents based on the offset
+        {"$limit": limit},  # Limit the number of documents returned
+        {"$project":
+            {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
+            'upc': 0, "ref_up": 0, "supplier_discount": 0, "brand_discount": 0,
+            "awaiting validation": 0, "FBA_fee": 0, "Reff_fees": 0, "Categories_Root": 0, "delivery": 0,
+            "Pack": 0}}
+    ]
+
+    unique_asin_with_highest_profit = await collection.aggregate(pipeline).to_list(None)
+    print(unique_asin_with_highest_profit)
+    return unique_asin_with_highest_profit
+
+# async def get_total_unique_asins():
+#     collection = mvp2["supplier_lookup"]
+#     unique_asins = await collection.distinct("asin")
+#     total_unique_asins = len(unique_asins)
+#     print(total_unique_asins)
+#     return total_unique_asins
+
+
+
+
+async def get_total_unique_asins():
+    collection = mvp2["filter_supplier_lookup"]
+    pipeline = [
+        {"$group": {"_id": "$asin"}},  # Group by 'asin'
+        {"$count": "totalUniqueAsins"}  # Count the number of unique 'asin'
+    ]
+    result = await collection.aggregate(pipeline).to_list(None)
+    total_unique_asins = result[0]['totalUniqueAsins'] if result else 0
+    print(total_unique_asins)
+    return total_unique_asins
+
+
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(get_total_unique_asins())
