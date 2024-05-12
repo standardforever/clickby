@@ -180,7 +180,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return  "";
         case "Store Price":
             return  item.seller_price;
-        case "UK AMZ £":
+        case "AMZ Fees":
             return  "";
         // Add cases for other header titles as needed
         default:
