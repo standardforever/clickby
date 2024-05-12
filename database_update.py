@@ -51,7 +51,7 @@ async def add_list_to_documents(documents, collection):
 async def update_list_documents(filter_x, datas, collection):
     """ Updadte list of documents
     """
-    update = False
+    count = 0
     for filter in filter_x:
         for data in datas:
             if data.get('asin') == filter.get('asin'):
@@ -59,8 +59,8 @@ async def update_list_documents(filter_x, datas, collection):
                 # diff = DeepDiff(data, filter)
                 if diff:
                     collection.update_one({"ASIN": filter.get('ASIN')}, {"$set": filter})
-                    update = True
-    return update
+                    count += 1
+    return count
 
 async def create_or_update_filter_collection(items_list, collection):
     asin_list = []
@@ -97,7 +97,8 @@ async def create_or_update_filter_collection(items_list, collection):
         for item in items_list:
             if item['asin'] in remaining_asins:
                 filter_update.append(item)
-        print(await update_list_documents(filter_update, datas, collection))
+        count = await update_list_documents(filter_update, datas, collection)
+        print(f"Updated {count} to the database")
     return None
 
 
@@ -134,7 +135,7 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 5000 # Set your desired batch size
+    limit = 15000 # Set your desired batch size
   
     if 'filter_supplier_lookup' not in await mvp2.list_collection_names():
         await mvp2_collection_lookup.create_index({'title': DESCENDING })
@@ -158,7 +159,25 @@ async def main():
             print(f"Error processing batch: {e}")
 
 
-# mvp2_collection = mvp2["supplier_lookup"]
+
+
+
+async def create_highest_profit_collection():
+    count = 0
+    source_collection = mvp2["supplier_lookup"]
+    pipeline = [
+        # Group by 'asin' and find the document with the highest 'profit_uk' in each group
+        {"$match": {"profit_uk": {"$gt": 1}}},
+    ]
+
+    async for document in source_collection.aggregate(pipeline):
+        count += 1
+        print(count)
+        # await destination_collection_name.insert_one(document)
+
+
+
+
 
 async def get_unique_asin_with_highest_profit(collection):
     skip = 0
@@ -185,4 +204,4 @@ async def get_unique_asin_with_highest_profit(collection):
     return unique_asin_with_highest_profit
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(create_highest_profit_collection())
