@@ -204,4 +204,4 @@ async def get_unique_asin_with_highest_profit(collection):
     return unique_asin_with_highest_profit
 
 if __name__ == "__main__":
-    asyncio.run(create_highest_profit_collection())
+    asyncio.run(main())
