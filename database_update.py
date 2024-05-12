@@ -109,9 +109,9 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
     skip = (page - 1) * limit
 
     pipeline = [
+        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
         {"$skip": skip},  # Skip documents based on the offset
         {"$limit": limit},  # Limit the number of documents returned
-        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
         {"$project":
             {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
             'upc': 0, "ref_up": 0, "supplier_discount": 0, "brand_discount": 0,
