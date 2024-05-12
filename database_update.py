@@ -145,7 +145,7 @@ async def main():
         print("New index created succesfully")
 
     # print(await mvp2_collection_lookup.list_indexes()
-    total_documents = await mvp2_collection_lookup.count_documents({"profit_uk": {"$gt": 1}})
+    total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
     print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
     print(total_documents)
