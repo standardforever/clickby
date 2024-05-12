@@ -145,8 +145,8 @@ async def home(
         execution_time_count = total_count_end_time - total_count_time
         print("\n\n\n\n")
         # Print start and end times
-        print("Query started at:", start_time)
-        print("Query ended at:", end_time)
+        print("Query started at:", total_count_time)
+        print("Query ended at:", total_count_end_time)
         print("Total execution time:", execution_time_count, "seconds")
         
 
