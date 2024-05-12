@@ -73,7 +73,7 @@ async def home(
     try:
         # Pipeline to filter documents based on profit_uk and apply pagination
         pipeline = [
-            # {"$sort": {"profit_uk": -1}},
+            {"$sort": {"profit_uk": -1}},
             {"$skip": skip},  # Skip documents based on the offset
             {"$limit": limit},  # Limit the number of documents returned
             {"$project":
@@ -121,7 +121,6 @@ async def home(
 
         # pipeline.append({"$sort": {"profit_uk": -1}})
         start_time = time.time()
-        print(start_time)
         google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
