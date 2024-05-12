@@ -105,7 +105,7 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://systemiseselling.com/api/v1/home/30/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
         .done(function(response) {
             populateTable(response.data);
             holdData = response.data
@@ -206,7 +206,7 @@ $(document).ready(function() {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://systemiseselling.com/api/v1/home/30/0",
+            url: "http://systemiseselling.com/api/v1/home/50/0",
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json', // Set content type to JSON
