@@ -214,4 +214,4 @@ async def get_total_unique_asins():
 
 
 if __name__ == "__main__":
-    asyncio.run(get_total_unique_asins())
+    asyncio.run(main())
