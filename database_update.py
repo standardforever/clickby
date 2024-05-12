@@ -127,15 +127,9 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
         for item in google_data
     ]
 
-    for records in records_to_insert:
-        try:
-            records['roi_uk'] = (records.get("profit_uk") / records.get('seller_price')) * 100
-        except:
-            pass
     await create_or_update_filter_collection(records_to_insert, add_to)
     print("Done updating or adding")
    
-
 
 async def main():
     mvp2_collection_lookup = mvp2["profit_supplier_lookup"]
@@ -143,7 +137,7 @@ async def main():
 
     page = 1
     limit = 10000 # Set your desired batch size
-  
+    
     if 'profit_supplier_lookup' not in await mvp2.list_collection_names():
         await mvp2_collection_lookup.create_index({'supplier_code': DESCENDING })
         await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
@@ -151,13 +145,16 @@ async def main():
         print("New index created succesfully")
 
     # print(await mvp2_collection_lookup.list_indexes()
-    total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
+    total_documents = await mvp2_collection_lookup.count_documents({"profit_uk": {"$gt": 1}})
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
     print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
+    print(total_documents)
+
     while page <= total_pages:
         try:
             await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
             page+=1
+            print(f'PAGE: {page}')
         except Exception as e:
             print(f"Error processing batch: {e}")
 
