@@ -58,6 +58,8 @@ async def update_list_documents(filter_x, datas, collection):
                 diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
                 # diff = DeepDiff(data, filter)
                 if diff:
+                    print(filter, '\n\n\n\n\n', data, '\n\n', diff)
+                    exit()
                     collection.update_one({"ASIN": filter.get('ASIN')}, {"$set": filter})
                     count += 1
     return count
@@ -135,7 +137,7 @@ async def main():
     mvp2_collection = mvp2["supplier_lookup"]
 
     page = 1
-    limit = 15000 # Set your desired batch size
+    limit = 10000 # Set your desired batch size
   
     if 'filter_supplier_lookup' not in await mvp2.list_collection_names():
         await mvp2_collection_lookup.create_index({'title': DESCENDING })
@@ -203,5 +205,13 @@ async def get_unique_asin_with_highest_profit(collection):
     print(unique_asin_with_highest_profit)
     return unique_asin_with_highest_profit
 
+async def get_total_unique_asins():
+    collection = mvp2["filter_supplier_lookup"]
+    unique_asins = await collection.distinct("asin")
+    total_unique_asins = len(unique_asins)
+    print(total_unique_asins)
+    return total_unique_asins
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(get_total_unique_asins())
