@@ -60,6 +60,8 @@ async def api_product_details(asin: str):
     items = await app.collection.find({"asin": asin}, {"_id": 0}).to_list(length=None)
     return items
 
+
+import time
 @router.post('/home/{limit}/{skip}') #, response_model=ResponseModel)
 async def home(
     limit: int,
@@ -118,11 +120,32 @@ async def home(
             pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
 
         # pipeline.append({"$sort": {"profit_uk": -1}})
-
+        start_time = time.time()
+        print(start_time)
         google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
+        # Record end time
+        end_time = time.time()
+
+        # Calculate query execution time
+        execution_time = end_time - start_time
+
+        # Print start and end times
+        print("Query started at:", start_time)
+        print("Query ended at:", end_time)
+        print("Total execution time:", execution_time, "seconds")
+
+
+        start_time = time.time()
         total_count = await app.collection.count_documents(query_params)
+        end_time = time.time()
+
+        print("\n\n\n\n")
+        # Print start and end times
+        print("Query started at:", start_time)
+        print("Query ended at:", end_time)
+        print("Total execution time:", execution_time, "seconds")
         
         return {
             "data": google_data,
