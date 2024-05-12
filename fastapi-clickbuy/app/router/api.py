@@ -75,9 +75,10 @@ async def home(
     try:
         # Pipeline to filter documents based on profit_uk and apply pagination
         pipeline = [
-            {"$sort": {"profit_uk": -1}},
             {"$skip": skip},  # Skip documents based on the offset
-            {"$limit": limit},  # Limit the number of documents returned
+            {"$limit": limit},
+            {"$sort": {"profit_uk": -1}},
+              # Limit the number of documents returned
             {"$project":
                 {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
                 'upc': 0, "ref_up": 0}}
