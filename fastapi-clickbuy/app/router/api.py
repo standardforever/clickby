@@ -153,7 +153,7 @@ async def home(
         total_end_time = time.time()
         print(f"\n\nTotal time: {total_end_time - total_time}")
         return {
-            "data": google_data,
+            "data": 500,
             "total_count": total_count,
         }
 
