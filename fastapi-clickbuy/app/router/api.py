@@ -68,6 +68,7 @@ async def home(
     skip: int,
     filter: FilterModel
 ):
+    total_count = 0
     total_time = time.time()
     store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
 
@@ -137,10 +138,11 @@ async def home(
         print("Total execution time:", execution_time, "seconds")
 
 
-
-
         total_count_time = time.time()
-        total_count = await app.collection.estimated_document_count(query_params)
+        if not query_params:
+            total_count = await app.collection.estimated_document_count()
+        else:
+            total_count = await app.collection.count_documents(query_params)
         total_count_end_time = time.time()
         execution_time_count = total_count_end_time - total_count_time
         print("\n\n\n\n")
