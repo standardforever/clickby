@@ -122,7 +122,7 @@ async def home(
 
         # pipeline.append({"$sort": {"profit_uk": -1}})
         start_time = time.time()
-        google_data_cursor =  app.collection.aggregate(pipeline).explain()
+        google_data_cursor =  app.collection.aggregate(pipeline)
         google_data = await google_data_cursor.to_list(length=None)
 
         # Record end time
