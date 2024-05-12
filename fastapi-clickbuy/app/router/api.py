@@ -68,6 +68,7 @@ async def home(
     skip: int,
     filter: FilterModel
 ):
+    total_time = time.time()
     store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
 
     try:
@@ -139,13 +140,16 @@ async def home(
         start_time = time.time()
         total_count = await app.collection.count_documents(query_params)
         end_time = time.time()
-
+        execution_time = end_time - start_time
         print("\n\n\n\n")
         # Print start and end times
         print("Query started at:", start_time)
         print("Query ended at:", end_time)
         print("Total execution time:", execution_time, "seconds")
         
+
+        total_end_time = time.time()
+        print(f"\n\nTotal time: {total_end_time - total_time}")
         return {
             "data": google_data,
             "total_count": total_count,
