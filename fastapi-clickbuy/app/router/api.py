@@ -110,14 +110,24 @@ async def home(
                 query_params['seller_price'] = roi_range
 
         # Sort_by ROI query Params
+        # if filter.roi:
+        #     query_params['roi_category'] = {"$in": filter.roi}
+
+        # if filter.categories:
+        #     query_params['category'] = {"$in": filter.categories}
+
+        # if filter.supplier_name:
+        #     query_params['seller_name'] = {"$in": filter.supplier_name}
+
+        # Sort_by ROI query Params
         if filter.roi:
-            query_params['roi_category'] = {"$in": filter.roi}
+            query_params['roi_category'] = filter.roi[0]
 
         if filter.categories:
-            query_params['category'] = {"$in": filter.categories}
+            query_params['category'] = filter.categories[0]
 
         if filter.supplier_name:
-            query_params['seller_name'] = {"$in": filter.supplier_name}
+            query_params['seller_name'] = filter.supplier_name[0]
 
         if query_params:
             pipeline.insert(1, {"$match": query_params})  # Insert additional match stage after profit_uk filter
