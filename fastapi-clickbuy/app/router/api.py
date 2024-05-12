@@ -122,7 +122,7 @@ async def home(
 
         # pipeline.append({"$sort": {"profit_uk": -1}})
         start_time = time.time()
-        google_data_cursor =  app.collection.aggregate(pipeline)
+        google_data_cursor =  app.collection.aggregate(pipeline).explain()
         google_data = await google_data_cursor.to_list(length=None)
 
         # Record end time
@@ -140,7 +140,7 @@ async def home(
 
 
         # total_count_time = time.time()
-        # total_count = await app.collection.count_documents(query_params)
+        total_count = await app.collection.count_documents(query_params)
         # total_count_end_time = time.time()
         # execution_time_count = total_count_end_time - total_count_time
         # print("\n\n\n\n")
@@ -154,7 +154,7 @@ async def home(
         print(f"\n\nTotal time: {total_end_time - total_time}")
         return {
             "data": google_data,
-            "total_count": 500,
+            "total_count": total_count,
         }
 
     except Exception as e:
