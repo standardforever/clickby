@@ -131,32 +131,98 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
     print("Done updating or adding")
    
 
+
+"""
+* Code for unique asin
+"""
+
+async def process_batch_and_update_collection(batch, second_collection):
+    asins = [doc["asin"] for doc in batch]
+    existing_documents = await second_collection.find({"asin": {"$in": asins}}).to_list(None)
+    existing_documents_map = {doc["asin"]: doc for doc in existing_documents}
+
+    for document in batch:
+        asin = document["asin"]
+        existing_document = existing_documents_map.get(asin)
+        if existing_document:
+            diff = DeepDiff(existing_document, document)
+            if diff:
+                await second_collection.replace_one({"asin": asin}, document)
+                print("Document updated for ASIN:", asin)
+            else:
+                print("No changes detected for ASIN:", asin)
+        else:
+            await second_collection.insert_one(document)
+            print("New document inserted for ASIN:", asin)
+
+async def unique_asin(fetch_from, add_to):
+    first_collection =  fetch_from
+    second_collection = add_to
+
+
+    if 'profit_supplier_lookup' not in await mvp2.list_collection_names():
+        await fetch_from.create_index({'supplier_code': DESCENDING })
+        await fetch_from.create_index({'profit_uk': DESCENDING })
+        await add_to.create_index({'asin': DESCENDING })
+        print("New index created succesfully")
+    
+    pipeline = [
+        {"$group": {
+            "_id": "$asin",  # Replace "uniqueField" with the actual name of your unique field
+            "maxProfit": {"$max": "$profit_uk"},  # Replace "profit_uk" with the actual name of your profit field
+            "document": {"$first": "$$ROOT"}
+        }},
+        {"$replaceRoot": {"newRoot": "$document"}}
+    ]
+
+    cursor = first_collection.aggregate(pipeline)
+
+    batch_size = 10  # Adjust as needed
+    batch = []
+    async for document in cursor:
+        print(document)
+        batch.append(document)
+        if len(batch) == batch_size:
+            await process_batch_and_update_collection(batch, second_collection)
+            batch = []
+
+    # Process any remaining documents in the last batch
+    if batch:
+        await process_batch_and_update_collection(batch, second_collection)
+
+
+
 async def main():
     mvp2_collection_lookup = mvp2["profit_supplier_lookup"]
+    unique_collection_lookup = mvp2['unique_supplier_lookup']
     mvp2_collection = mvp2["supplier_lookup"]
+
 
     page = 1
     limit = 10000 # Set your desired batch size
-    
+
     if 'profit_supplier_lookup' not in await mvp2.list_collection_names():
         await mvp2_collection_lookup.create_index({'supplier_code': DESCENDING })
         await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
         await mvp2_collection_lookup.create_index({'asin': DESCENDING })
         print("New index created succesfully")
 
-    # print(await mvp2_collection_lookup.list_indexes()
-    total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
-    total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
-    print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
-    print(total_documents)
+    # # print(await mvp2_collection_lookup.list_indexes()
+    # total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
+    # total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
+    # print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
+    # print(total_documents)
 
-    while page <= total_pages:
-        try:
-            await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
-            page+=1
-            print(f'PAGE: {page}')
-        except Exception as e:
-            print(f"Error processing batch: {e}")
+    # while page <= total_pages:
+    #     try:
+    #         await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
+    #         page+=1
+    #         print(f'PAGE: {page}')
+    #     except Exception as e:
+    #         print(f"Error processing batch: {e}")
+
+
+    await unique_asin(mvp2_collection_lookup, unique_collection_lookup)
 
 
 

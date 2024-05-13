@@ -31,14 +31,6 @@ asyncio.run(fetch_records())
 
 
 
-
-
-
-
-
-
-
-
 async def get_unique_asin_with_highest_profit(collection):
     skip = 0
     limit = 3

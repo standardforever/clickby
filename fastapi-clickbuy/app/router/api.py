@@ -93,7 +93,7 @@ async def home(
                 {"brand": {"$regex": regex_pattern}},
                 {"category": {"$regex": regex_pattern}},
                 {"title": {"$regex": regex_pattern}},
-                {"seller_name": {"$regex": regex_pattern}},
+                # {"seller_name": {"$regex": regex_pattern}},
                 {"amz_Title": {"$regex": regex_pattern}},
             ]
 
