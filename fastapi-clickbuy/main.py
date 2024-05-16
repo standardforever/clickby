@@ -9,7 +9,9 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_events():
-    app.collection = await connection()
+    collection = await connection()
+    app.collection = collection[0]
+    app.collection_profit = collection[1]
 
 
 app.add_middleware(
@@ -28,22 +30,4 @@ app.include_router(api.router,
 @app.get('/')
 async def root():
     return {"Message": "Welcome to clickby Api with FastApi"}
-
-
-
-
-# @app.get('/home')
-# async def home():
-#     # unique_categories = filter.distinct("Categories: Root")
-#     # unique_supplier_name = filter.distinct("scraped_data.seller_name")
-#     # unique_market_place = filter.distinct("search_term")
-#     unique_date_added = filter.distinct("last_update_time")
-#     print(unique_date_added)
-#     return {
-#         # "unique_categories": unique_categories,
-#         # "unique_supplier_name": unique_supplier_name,
-#         # "unique_market_place": unique_market_place,
-#         "unique_date_added": unique_date_added
-#     }
-
 
