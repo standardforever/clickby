@@ -25,4 +25,5 @@ async def connection():
     collection = await database_live_connect()
     document = await collection[0].find_one({})
     print(document)
+    print(f"Print the total collection: {collection} ")
     return collection

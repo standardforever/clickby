@@ -16,6 +16,10 @@ async def get_unique_field(collection, column):
 #     return distinct_values
 
 
+
+
+
+
 def is_ebay_url(url):
     return "ebay" in urlparse(url).netloc.lower()
 

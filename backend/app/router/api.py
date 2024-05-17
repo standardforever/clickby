@@ -234,7 +234,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
             # total_count = await app.collection.count_documents(match_conditions)
             total_count = 50
         else:
-            total_count = await app.collection.estimated_document_count()
+            total_count = await app.collection_profit.estimated_document_count()
             
 
         total_end_time = time.time()

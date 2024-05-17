@@ -1,6 +1,6 @@
 import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown } from "./utils.js";
 
-$(document).ready(function() {
+$(document).ready(function () {
     $(".loaderContainer").show();
 
     // PAGINATION CONTROL
@@ -9,7 +9,7 @@ $(document).ready(function() {
     var holdData;
 
     // Add event listeners to checkboxes in dropdowns
-    $('.dropdown-content').on('change', 'input[type="checkbox"]', function() {
+    $('.dropdown-content').on('change', 'input[type="checkbox"]', function () {
         fetchDataAndUpdatePagination();
     });
 
@@ -17,8 +17,8 @@ $(document).ready(function() {
     function getCheckedValues(dropdownId) {
         console.log($(this).val())
         var checkedValues
-        if( dropdownId === "SP") {
-            $('#' + dropdownId + ' input[type="checkbox"]').on('change', function() {
+        if (dropdownId === "SP") {
+            $('#' + dropdownId + ' input[type="checkbox"]').on('change', function () {
                 if (this.checked) {
                     // Uncheck all other checkboxes
                     $('#' + dropdownId + ' input[type="checkbox"]').not(this).prop('checked', false);
@@ -27,22 +27,22 @@ $(document).ready(function() {
             });
 
             // Get the value of the currently checked checkbox
-            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function() {
+            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function () {
                 checkedValues = $(this).val(); // This will now always hold only the last checked value
             });
-        }else{
+        } else {
             const tempArray = [];
-            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function() {
+            $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function () {
                 tempArray.push($(this).val());
             });
             checkedValues = tempArray
         }
-        
+
         return checkedValues;
     }
 
-   
-    $('#clear-filter-id').click(function() {
+
+    $('#clear-filter-id').click(function () {
         // Reset the values of all dropdown checkboxes to unchecked
         $('.dropdown-content input[type="checkbox"]').prop('checked', false);
         $('#search-input').val("")
@@ -59,7 +59,7 @@ $(document).ready(function() {
             "roi": getCheckedValues('ROI'),
             "categories": getCheckedValues('CATEGORIES'),
             "supplier_name": getCheckedValues('SN'),
-            "market_place": [], 
+            "market_place": [],
             "store_price": getCheckedValues('SP'),
             "search_term": $('#search-input').val()
         };
@@ -105,20 +105,20 @@ $(document).ready(function() {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
-        .done(function(response) {
-            populateTable(response.data);
-            holdData = response.data
-            totalPages = Math.ceil(response.total_count / 15);  
-            updateUniqueProductCount(response.total_count);
-            currentPage = pageNumber; // Update currentPage
-            updatePagination();
-            $(".loaderContainer").hide();
-        })
-        .fail(function(err) {
-            console.log('An error occurred during AJAX calls.', err);
-            $(".loaderContainer").hide();
-        });
+        return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 50) + '', updateDataObject())
+            .done(function (response) {
+                populateTable(response.data);
+                holdData = response.data
+                totalPages = Math.ceil(response.total_count / 50);
+                updateUniqueProductCount(response.total_count);
+                currentPage = pageNumber; // Update currentPage
+                updatePagination();
+                $(".loaderContainer").hide();
+            })
+            .fail(function (err) {
+                console.log('An error occurred during AJAX calls.', err);
+                $(".loaderContainer").hide();
+            });
     }
 
     const OnLoadPageFunc = () => {
@@ -127,25 +127,25 @@ $(document).ready(function() {
             makeAjaxCall('http://systemiseselling.com/api/v1/supplier-name'),
             makeAjaxCall('http://systemiseselling.com/api/v1/roi'),
             makeAjaxCall('http://systemiseselling.com/api/v1/store-price'),
-           
+
         ];
-    
-        $.when.apply($, promises).then(function() {   
+
+        $.when.apply($, promises).then(function () {
             populateROIDropdown(promises[2].responseJSON)
             populateCATEGORIESDropdown(promises[0].responseJSON)
             populateSNDropdown(promises[1].responseJSON)
             populateSPDropdown(promises[3].responseJSON)
-          
+
             // $(".loaderContainer").hide();
             return true;
-        }).fail(function(err) {
+        }).fail(function (err) {
             console.log('An error occurred during AJAX calls.', err);
             // $(".loaderContainer").hide();
             return false;
         });
     }
 
-    fetchDataAndUpdatePagination().then(function() {
+    fetchDataAndUpdatePagination().then(function () {
         // When fetchDataAndUpdatePagination is done, execute the rest of the AJAX calls
         OnLoadPageFunc();
     });
@@ -177,7 +177,7 @@ $(document).ready(function() {
         paginationList.append('<li class="page-item"><a class="page-link text-black " href="#" id="last-page">Last</a></li>');
     }
 
-    $('.pagination').on('click', 'a', function(e) {
+    $('.pagination').on('click', 'a', function (e) {
         e.preventDefault();
         var pageId = $(this).attr('id');
         if (pageId === 'first-page') {
@@ -201,8 +201,8 @@ $(document).ready(function() {
     // Initialize pagination
     updatePagination();
 
-    
-    $('#search-button').click(function() {
+
+    $('#search-button').click(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
@@ -218,17 +218,17 @@ $(document).ready(function() {
                 "store_price": "",
                 "search_term": $('#search-input').val()
             }),
-            success: function(response) {
+            success: function (response) {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
                 populateTable(response.data);
-                totalPages = Math.ceil(response.total_count / 15);  
+                totalPages = Math.ceil(response.total_count / 50);
                 updateUniqueProductCount(response.total_count);
                 currentPage = 1; // Update currentPage
                 updatePagination();
                 $(".loaderContainer").hide();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
                 console.error('Error occurred during search:', error);
@@ -240,7 +240,7 @@ $(document).ready(function() {
         return $('.new-content-item input[type="checkbox"]:checked').length;
     }
 
-    $('.new-content-item input[type="checkbox"]').on('change', function() {
+    $('.new-content-item input[type="checkbox"]').on('change', function () {
         var isChecked = $(this).prop('checked');
         var itemName = $(this).closest('.new-content-item').text().trim();
         if (!isChecked && countChecked() <= 4) {
@@ -251,39 +251,39 @@ $(document).ready(function() {
         if (isChecked && countChecked() > 4) {
             if ($('#myTable th:contains(' + itemName + ')').length === 0) {
                 $('#myTable thead tr').append('<th>' + itemName + '</th>');
-                $('#myTable tbody tr').each(function() {
+                $('#myTable tbody tr').each(function () {
                     $(this).append('<td></td>');
                 });
             }
         } else if (!isChecked && countChecked() > 3) {
             var index = $('#myTable th:contains(' + itemName + ')').index();
             if (index !== -1) {
-                $('#myTable th:eq('+index+')').remove();
-                $('#myTable td:nth-child('+(index+1)+')').remove();
+                $('#myTable th:eq(' + index + ')').remove();
+                $('#myTable td:nth-child(' + (index + 1) + ')').remove();
             }
         }
         var updatedData = holdData ?? fetchDataAndUpdatePagination();
         populateTable(updatedData);
     });
 
-    $('.new-content-item input[type="checkbox"]').each(function(index, item) {
+    $('.new-content-item input[type="checkbox"]').each(function (index, item) {
         var itemName = $(item).closest('.new-content-item').text().trim();
-        var index = $('#myTable th').filter(function() {
+        var index = $('#myTable th').filter(function () {
             return $(this).text() === itemName;
         }).index();
         if (!$(item).prop('checked')) {
-            $('#myTable td:nth-child('+(index+1)+')').hide();
+            $('#myTable td:nth-child(' + (index + 1) + ')').hide();
         }
     });
 
 
 });
 
-document.getElementById('scrollLeftBtn').addEventListener('click', function() {
+document.getElementById('scrollLeftBtn').addEventListener('click', function () {
     scrollTable('left');
 });
 
-document.getElementById('scrollRightBtn').addEventListener('click', function() {
+document.getElementById('scrollRightBtn').addEventListener('click', function () {
     scrollTable('right');
 });
 
@@ -320,7 +320,7 @@ function scrollTable(direction) {
     table.style.transform = `translateX(-${currentTranslateX}px)`;
 }
 
-document.querySelector('.addBtn').addEventListener('click', function() {
+document.querySelector('.addBtn').addEventListener('click', function () {
     var dropdown = document.querySelector('.new-content');
     if (dropdown.style.display === 'none') {
         dropdown.style.display = 'flex';
@@ -329,7 +329,7 @@ document.querySelector('.addBtn').addEventListener('click', function() {
     }
 });
 
-document.querySelector('.filterBtn').addEventListener('click', function() {
+document.querySelector('.filterBtn').addEventListener('click', function () {
     var dropdown = document.querySelector('.filter-content');
     if (dropdown.style.display === 'none') {
         dropdown.style.display = 'flex';
@@ -338,7 +338,7 @@ document.querySelector('.filterBtn').addEventListener('click', function() {
     }
 });
 
-document.body.addEventListener('click', function(event) {
+document.body.addEventListener('click', function (event) {
     var target = event.target;
     var dropdown = document.querySelector('.new-content');
     var addBtn = document.querySelector('.addBtn');
@@ -347,7 +347,7 @@ document.body.addEventListener('click', function(event) {
     }
 });
 
-document.body.addEventListener('click', function(event) {
+document.body.addEventListener('click', function (event) {
     var target = event.target;
     var dropdown = document.querySelector('.filter-content');
     var filterBtn = document.querySelector('.filterBtn');
