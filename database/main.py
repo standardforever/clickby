@@ -35,13 +35,13 @@ async def main():
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
     print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
 
-    # while page <= total_pages:
-    #     try:
-    #         await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
-    #         page+=1
-    #         print(f'PAGE: {page}')
-    #     except Exception as e:
-    #         print(f"Error processing batch: {e}")
+    while page <= total_pages:
+        try:
+            await fetch_and_save_records(page, limit, mvp2_collection, mvp2_collection_lookup)
+            page+=1
+            print(f'PAGE: {page}')
+        except Exception as e:
+            print(f"Error processing batch: {e}")
 
 
     await unique_asin(mvp2_collection_lookup, unique_collection_lookup)

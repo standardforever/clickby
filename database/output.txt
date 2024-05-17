@@ -1,0 +1,72 @@
+Total documents: 112070
+ Total_pages: 12
+Index Created_1
+Index Created_2
+Index Created_3
+Index Created_4
+Index Created_5
+Index Created_6
+Index Created_7
+Index Created_8
+Index created successfully
+Total documents: 112070
+ Total_pages: 12
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 2
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 3
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 4
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 5
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 6
+Remaining asin: 1107
+Updated 1107 to the database
+PAGE: 7
+PAGE: 8
+PAGE: 9
+PAGE: 10
+PAGE: 11
+PAGE: 12
+Total documents: 112070
+ Total_pages: 12
+Index Created_1
+Index Created_2
+Index Created_3
+Index Created_4
+Index Created_5
+Index Created_6
+Index Created_7
+Index Created_8
+Index created successfully
+Total documents: 112070
+ Total_pages: 12
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 2
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 3
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 4
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 5
+Remaining asin: 10000
+Updated 10000 to the database
+PAGE: 6
+Remaining asin: 1107
+Updated 1107 to the database
+PAGE: 7
+PAGE: 8
+PAGE: 9
+PAGE: 10
+PAGE: 11
+PAGE: 12
