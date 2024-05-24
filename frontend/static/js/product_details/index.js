@@ -20,7 +20,7 @@ $(document).ready(function() {
             // document.getElementById('productImage').alt = product[0].category;
 
             const sellersTableBody = document.getElementById('sellersTableBody');
-            sellersTableBody.innerHTML = ''; // Clear existing rows if any
+            sellersTableBody.innerHTML = '';
 
             product.forEach(seller => {
                 const row = `
@@ -30,6 +30,8 @@ $(document).ready(function() {
                         <td>${formatNumber(seller.seller_price)}</td>
                         <td>${formatNumber(roundToTwoDP(seller.profit_uk))}</td>
                         <td>${formatPercentage(roundToTwoDP(seller.roi_uk))}</td>
+                        <td>${formatNumber(roundToTwoDP(seller.amazon_price))}</td>
+                        <td><a target="_blank" href="https://amazon.co.uk/dp/${seller.asin}">${seller.asin}</a></td>  
                     </tr>
                 `;
                 sellersTableBody.innerHTML += row;

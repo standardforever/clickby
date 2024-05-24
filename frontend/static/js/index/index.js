@@ -105,18 +105,18 @@ $(document).ready(function () {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
+       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 50) + '', updateDataObject())
         .done(async function(response) {
             populateTable(response.data);
             holdData = response.data
             currentPage = pageNumber; // Update currentPage
 
             const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
-            totalPages = Math.ceil(res.total_count / 15);  
+            totalPages = Math.ceil(res.total_count / 50);  
             updateUniqueProductCount(res.total_count);
             updatePagination();
 
-            // totalPages = Math.ceil(response.total_count / 15);  
+            // totalPages = Math.ceil(response.total_count / 50);  
             // updateUniqueProductCount(response.total_count);
             // updatePagination();
 
@@ -232,7 +232,7 @@ $(document).ready(function () {
                 populateTable(response.data);
                
                const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
-                totalPages = Math.ceil(res.total_count / 15);  
+                totalPages = Math.ceil(res.total_count / 50);  
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
                
