@@ -1,4 +1,4 @@
-import { breakDate } from "../utils.js";
+import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage } from "../utils.js";
 
 export const truncateString = (str, maxLength, truncateReturn = true) => {
     if (str.length > maxLength && truncateReturn) {
@@ -60,8 +60,8 @@ function populateTableWithData(data) {
                 if(sP.includes(headerTitle)){
                     row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
                 }else if(productName.includes(headerTitle)){
-                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
-                    // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
+                    // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm " style="width: max-content" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "More Sellers" + '</a></div>' + '</td>')
+                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
                 }else if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
                 }else{
@@ -83,7 +83,6 @@ function roundToTwoDP(num) {
 
 // Function to get object path for a given header title
 function getObjectPath(headerTitle, item, truncateReturn) {
-    console.log(headerTitle)
     switch (headerTitle) {
         case "Product Name":
             return  item.title;
@@ -112,7 +111,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return truncateString(item.supplier_code, 20, truncateReturn);
        
         case "UK Profit":
-            return roundToTwoDP(item.profit_uk);
+            return formatNumber(roundToTwoDP(item.profit_uk));
         case "GER Profit":
             return roundToTwoDP(item.profit_ger);
         case "FR Profit":
@@ -132,7 +131,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return item.category;
 
         case "UK Sales Rank":
-            return item.Rank;
+            return formatNumberWithoutDecimals(item.Rank);
         case "GER Sales Rank":
             return item.ger_Rank;
         case "FR Sales Rank":
@@ -169,17 +168,17 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "Manufacturer":
             return  item.seller_name;
         case "ROI":
-            return  roundToTwoDP(item.roi_uk);
+            return  formatPercentage(roundToTwoDP(item.roi_uk));
         case "asin":
             return  item.asin;
         case "Amazon £":
-            return  roundToTwoDP(item.amazon_price);
+            return  formatNumber(roundToTwoDP(item.amazon_price));
         case "Coupon Code":
             return "";
         case "Supplier Notes":
             return  "";
         case "Store Price":
-            return  item.seller_price;
+            return  formatNumber(item.seller_price);
         case "AMZ Fees":
             return  "";
         // Add cases for other header titles as needed

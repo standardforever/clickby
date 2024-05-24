@@ -16,6 +16,7 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="/static/js/index/index.js"></script>
+
 </head>
 
 <body>
@@ -153,11 +154,11 @@
                                     <label for="supplier_note">Supplier Notes</label>
                                 </div>
                                 <div class="new-content-item">
-                                    <input type="checkbox" id="supplier_name" name="category-checkbox" class="me-4">
+                                    <input type="checkbox" id="supplier_name" name="category-checkbox" class="me-4" checked>
                                     <label for="supplier_name">Store Name</label>
                                 </div>
                                 <div class="new-content-item">
-                                    <input type="checkbox" id="store_price" name="category-checkbox" class="me-4">
+                                    <input type="checkbox" id="store_price" name="category-checkbox" class="me-4" checked>
                                     <label for="store_price">Store Price</label>
                                 </div>
                                 <div class="new-content-item">
@@ -297,7 +298,7 @@
                                             <label for="ger-amazon-fees-checkbox" class="mb-0">GER Amazon Fees</label>
                                         </div>
                                         <div class=" new-content-item d-flex align-items-center">
-                                            <input id="fr-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" hecked>
+                                            <input id="fr-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
                                             <label for="fr-amazon-fees-checkbox" class="mb-0">FR Amazon Fees</label>
                                         </div>
                                         <div class=" new-content-item d-flex align-items-center">
@@ -362,13 +363,15 @@
                 <div class="col-md-12 mt-5">
                    
                     <div class="table-responsive myTable">
-                        <table id="myTable" class="table sticky-header table-rounded text-wrap w-100 overflow-auto ">
-                            <thead>
+                        <table id="myTable" class="table sticky-header table-rounded text-wrap w-100 overflow-auto position-relative">
+                            <thead style="position: sticky; top: 0">
                                 <tr class="w-100"  style="background-color: #4282cc !important;">
-                                    <th style="width: 20%; min-width: 200px;" class="title-column">Product Name</th>
+                                    <th style="width: 20%; min-width: 200px; position: sticky; top: 0" class="title-column">Product Name</th>
                                     <th>Date Added</th>
                                     <th>UK Profit</th>
                                     <th>UK Sales Rank</th>
+                                    <th>Store Price</th>
+                                    <th>Store Name</th>
                                     <th>Amazon &pound;</th>
                                     <th>ROI</th>
                                 </tr>

@@ -1,4 +1,4 @@
-import { roundToTwoDP } from "../utils.js";
+import { formatNumber, formatPercentage, roundToTwoDP } from "../utils.js";
 import { getUrlComponents } from "./utils.js"
 
 $(document).ready(function() {
@@ -17,7 +17,7 @@ $(document).ready(function() {
         success: function(product) {
             console.log(product);
             // Assuming the API returns a product object structured as mentioned in your question
-            document.getElementById('productImage').alt = product[0].category;
+            // document.getElementById('productImage').alt = product[0].category;
 
             const sellersTableBody = document.getElementById('sellersTableBody');
             sellersTableBody.innerHTML = ''; // Clear existing rows if any
@@ -27,9 +27,9 @@ $(document).ready(function() {
                     <tr>
                         <td>${seller.seller_name}</td>
                         <td><a href="${seller.supplier_code}" target="_blank">${getUrlComponents().productId}</a></td>
-                        <td>${seller.seller_price}</td>
-                        <td>${roundToTwoDP(seller.profit_uk)}</td>
-                        <td>${roundToTwoDP(seller.roi_uk)}</td>
+                        <td>${formatNumber(seller.seller_price)}</td>
+                        <td>${formatNumber(roundToTwoDP(seller.profit_uk))}</td>
+                        <td>${formatPercentage(roundToTwoDP(seller.roi_uk))}</td>
                     </tr>
                 `;
                 sellersTableBody.innerHTML += row;

@@ -106,13 +106,20 @@ $(document).ready(function() {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage; // Use currentPage if pageNumber is not provided
        return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 15) + '', updateDataObject())
-        .done(function(response) {
+        .done(async function(response) {
             populateTable(response.data);
             holdData = response.data
-            totalPages = Math.ceil(response.total_count / 15);  
-            updateUniqueProductCount(response.total_count);
             currentPage = pageNumber; // Update currentPage
+
+            const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
+            totalPages = Math.ceil(res.total_count / 15);  
+            updateUniqueProductCount(res.total_count);
             updatePagination();
+
+            // totalPages = Math.ceil(response.total_count / 15);  
+            // updateUniqueProductCount(response.total_count);
+            // updatePagination();
+
             $(".loaderContainer").hide();
         })
         .fail(function(err) {
@@ -218,14 +225,18 @@ $(document).ready(function() {
                 "store_price": "",
                 "search_term": $('#search-input').val()
             }),
-            success: function(response) {
+            success: async function(response) {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
-                populateTable(response.data);
-                totalPages = Math.ceil(response.total_count / 15);  
-                updateUniqueProductCount(response.total_count);
                 currentPage = 1; // Update currentPage
+                populateTable(response.data);
+               
+               const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
+                totalPages = Math.ceil(res.total_count / 15);  
+                updateUniqueProductCount(res.total_count);
                 updatePagination();
+               
+               
                 $(".loaderContainer").hide();
             },
             error: function(xhr, status, error) {

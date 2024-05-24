@@ -128,6 +128,19 @@ h1, h2, h3, h4 {
     width: 50%;
 }
 
+.table-responsive {
+    max-height: 500px; /* Adjust this to your needs */
+    overflow-y: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #4282cc; /* Match your table header background color */
+    color: white; /* Match your table header text color */
+}
+
 @media  (max-width:768px) {
     .topSectionWrapper{
         flex-direction: column !important;
@@ -136,6 +149,16 @@ h1, h2, h3, h4 {
     .topSectionWidth{
         width: 100%;
     }
+}
+
+.table-responsive {
+    position: relative;
+}
+
+.table thead {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 
 .table-responsive .table {
