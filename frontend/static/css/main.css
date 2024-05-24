@@ -108,6 +108,10 @@ h1, h2, h3, h4 {
     z-index: 1;
 }
 
+p, label, th, td {
+    font-size: 12px;
+}
+
 
 /* Updated container */
 .clickBuycontainer {
@@ -129,7 +133,7 @@ h1, h2, h3, h4 {
 }
 
 .table-responsive {
-    max-height: 500px; /* Adjust this to your needs */
+    max-height: 80vh; /* Adjust this to your needs */
     overflow-y: auto;
 }
 

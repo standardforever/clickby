@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="./static/css/main.css" />
     <link rel="stylesheet" href="./static/css/test.css" />
+    <link rel="stylesheet" href="./static/css/product_details/main.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     
 
@@ -21,8 +22,8 @@
 <h1>Product Details</h1>
 
 <div id="product-details" class="product-details-container">
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row w-100">
+        <div class="col-md-12">
             <p><strong>Category:</strong> <span id="productCategory"></span></p>
             <p><strong>ASIN:</strong> <span id="productASIN"></span></p>
 
@@ -30,13 +31,14 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Supplier Name</th>
-                        <th>Product Link</th>
-                        <th>Buy Price</th>
-                        <th>UK Profit</th>
-                        <th>UK AMZ ROI%</th>
-                        <th>AMZ FEES</th>
-                        <th>AMZ supplier link</th>
+                        <th >Supplier Name</th>
+                        <th class="productHeader" >AMZ Title</th>
+                        <th >Product Link</th>
+                        <th >Buy Price</th>
+                        <th >UK Profit</th>
+                        <th >UK AMZ ROI%</th>
+                        <th >AMZ FEES</th>
+                        <th >AMZ supplier link</th>
                     </tr>
                 </thead>
                 <tbody id="sellersTableBody">

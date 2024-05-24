@@ -60,7 +60,7 @@ function populateTableWithData(data) {
                 if(sP.includes(headerTitle)){
                     row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
                 }else if(productName.includes(headerTitle)){
-                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm " style="width: max-content" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "More Sellers" + '</a></div>' + '</td>')
+                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm py-1" style="width: max-content; font-size:10px" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "More Sellers" + '</a></div>' + '</td>')
                     // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
                 }else if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath("asin", item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
@@ -146,7 +146,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return item.usa_Rank;
 
         case "AMZ Fee":
-            return  "";
+            return  formatNumber(item.total_fees_UK);
         case "GER Amazon fees":
             return  item.ger_seller_price;
         case "FR Amazon fees":

@@ -26,11 +26,12 @@ $(document).ready(function() {
                 const row = `
                     <tr>
                         <td>${seller.seller_name}</td>
+                        <td class="productHeader">${seller.amz_Title}</td>
                         <td><a href="${seller.supplier_code}" target="_blank">${getUrlComponents().productId}</a></td>
                         <td>${formatNumber(seller.seller_price)}</td>
                         <td>${formatNumber(roundToTwoDP(seller.profit_uk))}</td>
                         <td>${formatPercentage(roundToTwoDP(seller.roi_uk))}</td>
-                        <td>${formatNumber(roundToTwoDP(seller.amazon_price))}</td>
+                        <td>${formatNumber(seller.total_fees_UK)}</td>
                         <td><a target="_blank" href="https://amazon.co.uk/dp/${seller.asin}">${seller.asin}</a></td>  
                     </tr>
                 `;
