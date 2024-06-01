@@ -57,7 +57,7 @@ async def update_list_documents_supplier(filter_x, datas, collection):
                 diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
                 # diff = DeepDiff(data, filter)
                 if diff:
-                    print(filter, '\n\n\n\n\n', data, '\n\n', diff)
+                    # print(filter, '\n\n\n\n\n', data, '\n\n', diff)
 
                     collection.update_one({"supplier_code": filter.get('supplier_code')}, {"$set": filter})
                     count += 1

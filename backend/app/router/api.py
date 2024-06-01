@@ -58,7 +58,7 @@ async def filter_button():
 # Cache for product details
 @router.get("/product/{asin}")
 async def api_product_details(asin: str):
-    items = await app.collection_profit.find({"asin": asin}, {"_id": 0}).to_list(length=None)
+    items = await app.collection_profit.find({"asin": asin}, {"_id": 0}).sort("profit_uk", -1).to_list(length=None)
     return items
 
 
@@ -161,10 +161,9 @@ async def home(filter: FilterModel):
         # Calculate total count
         if match_conditions:
             total_count = await app.collection.count_documents(match_conditions)
-            # total_count = 50
+
         else:
-            total_count = await app.collection.estimated_document_count()
-            
+            total_count = await app.collection_profit.estimated_document_count()
 
         total_end_time = time.time()
         print("Total time:", total_end_time - total_time)
@@ -187,7 +186,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
             {"$sort": {"profit_uk": -1}},
             {"$skip": skip},  # Skip documents based on the offset
             {"$limit": limit},  # Limit the number of documents returned
-            {"$project": {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0, 'upc': 0, "ref_up": 0}}
+            {"$project": {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0, 'upc': 0, "ref_up": 0, 'csv_data': 0}}
         ]
 
         # Build the match conditions
@@ -231,15 +230,15 @@ async def home(limit: int, skip: int, filter: FilterModel):
 
         # Calculate total count
         if match_conditions:
-            # total_count = await app.collection.count_documents(match_conditions)
-            total_count = 50
+            total_count = await app.collection.count_documents(match_conditions)
+            # total_count = 50
         else:
             total_count = await app.collection_profit.estimated_document_count()
             
 
         total_end_time = time.time()
         print("Total time:", total_end_time - total_time)
-
+       
         return {"data": data, "total_count": total_count, "total_time": total_end_time - total_time}
 
     except Exception as e:

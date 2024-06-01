@@ -4,7 +4,7 @@ from app.utils.database import connection
 
 
 
-app = FastAPI()
+app = FastAPI(docs_url="/api/v1/docs", openapi_url="/api/v1/openapi.json")
 
 
 @app.on_event("startup")

@@ -24,3 +24,5 @@ async def get_unique_field(collection, column):
     return distinct_values
 
 asyncio.run(get_unique_field(unique_collection_lookup, 'asin'))
+
+ 
