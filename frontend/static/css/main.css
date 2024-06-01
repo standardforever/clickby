@@ -56,7 +56,7 @@ h1, h2, h3, h4 {
 }
 
 #myTable thead th {
-    min-width: 130px;
+    min-width: 110px;
 }
 
 
@@ -110,6 +110,21 @@ h1, h2, h3, h4 {
 
 p, label, th, td {
     font-size: 12px;
+}
+
+td:hover::after {
+    content: attr(title);
+    position: absolute;
+    white-space: normal;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: 400px; /* Adjust as needed */
 }
 
 

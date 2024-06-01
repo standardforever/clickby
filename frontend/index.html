@@ -28,345 +28,345 @@
     <div class="svg-container container-fluid">
         <div class="shape">
             <div class=" clickBuycontainer">
-                <div class="hearder-container mb-5">        
-                    <div class="left-div">
+                <div class="hearder-container">        
+                    <div class="d-flex align-items-center">
                         <a href="" style="color: inherit; text-decoration: none">
-                            <img src="./static/image/clickbuy.jpg" alt="Clickbuy" id="logo-1" />
+                            <img src="./static/image/clickbuy.jpg" alt="Clickbuy" id="logo-1" class="me-2" style="width: 150px;" />
                         </a>
-                    </div>
-                   
-                </div>
-                <div class="d-flex topSectionWrapper gap-3">
-                    <div id="search-div" class="conter-div topSectionWidth  position-relative d-flex align-items-center">
-                        <input placeholder="Search" type="text" class="w-100" name="search" id="search-input" />
-                        <button id="search-button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                    <div class="topSectionWidth gap-3 d-flex justify-content-between ms-lg-5">
-                        <div class="" id="clear-filter">
-                            <button class="btn text-white d-flex myBtn align-items-center " id="clear-filter-id" style="background-color: #4282cc;">
-                                <i class="bi bi-arrow-clockwise"></i>
-                                <p class="mb-0 ms-3 ">Reset</p>
+                        <div id="search-div" class="conter-div  position-relative d-flex align-items-center" style="width: 50%">
+                            <input placeholder="Search" type="text" class="w-100" name="search" id="search-input" />
+                            <button id="search-button">
+                                <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <div class="filterWrapper position-relative">
-                            <button type="button" class="filterBtn text-black bg-white border-0 d-flex myBtn align-items-center">
-                                <i class="bi bi-filter-circle mr-4"></i>
-                                <p class="m-0 ms-3">Filter</p>
-                            </button>
-                            <div class="filter-content shadow-lg p-3 mb-5 bg-white position-absolute rounded mt-3 flex-column" style="display: none;">
-                                <div class="filter flex flex-column "> 
-                                    <div class="dropdown w-100 ">
-                                        <button class="dropbtn" >ROI</button>
-                                        <div class="dropdown-content" id="ROI">
-                                        
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown w-100 ">
-                                        <button class="dropbtn">Categories</button>
-                                        <div class="dropdown-content" id="CATEGORIES">
-                                        
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown w-100 ">
-                                        <button class="dropbtn">Supplier Name</button>
-                                        <div class="dropdown-content" id="SN">
-                                        
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown w-100 ">
-                                        <button class="dropbtn">Market Place</button>
-                                        <div class="dropdown-content">
-                                            <label><input type="checkbox" name="uk" value="uk" />
-                                                UK</label>
-                                            
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown w-100 ">
-                                        <button class="dropbtn">Store Price</button>
-                                        <div class="dropdown-content" id="SP">
-                                        </div>
-                                    </div>
-                
-                                    <!-- <div class="dropdown w-100 ">
-                                        <button class="dropbtn">Date Added</button>
-                                        <div class="dropdown-content">
-                                            <label><input type="checkbox" name="option1" value="Option 1" />
-                                                Option 1</label>
-                                            <label><input type="checkbox" name="option1" value="Option 1" />
-                                                Option 1
-                                            <label><input type="checkbox" name="option2" value="Option 2" />
-                                                Option 2</label>
-                                            <label><input type="checkbox" name="option3" value="Option 3" />
-                                                Option 3</label>
-                                        </div>
-                                    </div> -->
-                
-                                    
-                                </div>
-                            </div>
-                          
-                        </div>
-                        
-                        <div class="addWrapper">
-                            <div class=" d-flex  justify-content-end ">
-                                <button type="button" class="btn  d-flex addBtn btn d-flex myBtn align-items-center text-white "  style="background-color: #4282cc;">
-                                    <i class="bi bi-plus"></i>                            
-                                    <p class="m-0 ms-3">Add Column</p>
+                        <div class=" d-flex justify-content-between ms-lg-2"  style="width: 50%">
+                            <div class="" id="clear-filter">
+                                <button class="btn text-white d-flex myBtn align-items-center " id="clear-filter-id" style="background-color: #4282cc;">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                    <p class="mb-0 ms-3 ">Reset</p>
                                 </button>
                             </div>
-                            <div class="new-content shadow-lg p-3 mb-5 bg-white rounded mt-3 addCol" style="display: none;">
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="product-name" name="product-name-checkbox" class="me-4" checked>
-                                    <label for="product-name">Product Name</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="date-added" name="date-added-checkbox" class="me-4" checked>
-                                    <label for="date-added">Date Added</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="amazon_selling_price" name="category-checkbox" class="me-4" checked>
-                                    <label for="amazon_selling_price">Amazon £</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="roi" name="category-checkbox" class="me-4" checked>
-                                    <label for="roi">ROI</label>
-                                </div>
-                                <!-- <div class="new-content-item">
-                                    <input type="checkbox" id="supplier-link" name="supplier-link-checkbox" class="me-4" >
-                                    <label for="supplier-link">Supplier Link</label>
-                                </div> -->
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
-                                    <label for="item_category">Category</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="coupon_code" name="category-checkbox" class="me-4">
-                                    <label for="coupon_code">Coupon Code</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="supplier_note" name="category-checkbox" class="me-4">
-                                    <label for="supplier_note">Supplier Notes</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="supplier_name" name="category-checkbox" class="me-4" checked>
-                                    <label for="supplier_name">Store Name</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="store_price" name="category-checkbox" class="me-4" checked>
-                                    <label for="store_price">Store Price</label>
-                                </div>
-                                <div class="new-content-item">
-                                    <input type="checkbox" id="uk_amz_£" name="category-checkbox" class="me-4">
-                                    <label for="uk_amz_£">AMZ Fee</label>
-                                </div>
-                                                              
-                                <div class="dropdown w-100 new-content-item position-relative ">
-                                    <span>
-                                        <i class="bi bi-three-dots me-4"></i>    
-                                    </span>
-                                    <label> Amazon Link</label>
-                                    <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
-                                        <div class="new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
-                                            <label for="amazon-link-checkbox" class="mb-0">Amazon UK Link</label>
+                            <div class="filterWrapper position-relative">
+                                <button type="button" class="filterBtn text-black bg-white border-0 d-flex myBtn align-items-center">
+                                    <i class="bi bi-filter-circle mr-4"></i>
+                                    <p class="m-0 ms-3">Filter</p>
+                                </button>
+                                <div class="filter-content shadow-lg p-3 mb-5 bg-white position-absolute rounded mt-3 flex-column" style="display: none;">
+                                    <div class="filter flex flex-column "> 
+                                        <div class="dropdown w-100 ">
+                                            <button class="dropbtn" >ROI</button>
+                                            <div class="dropdown-content" id="ROI">
+                                            
+                                            </div>
                                         </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="ger_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ger_amazon-link-checkbox" class="mb-0">Amazon GER Link</label>
+                    
+                                        <div class="dropdown w-100 ">
+                                            <button class="dropbtn">Categories</button>
+                                            <div class="dropdown-content" id="CATEGORIES">
+                                            
+                                            </div>
                                         </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="fr_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="fr_amazon-link-checkbox" class="mb-0">Amazon FR Link</label>
+                    
+                                        <div class="dropdown w-100 ">
+                                            <button class="dropbtn">Supplier Name</button>
+                                            <div class="dropdown-content" id="SN">
+                                            
+                                            </div>
                                         </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="it_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="it_amazon-link-checkbox" class="mb-0">Amazon IT Link</label>
+                    
+                                        <div class="dropdown w-100 ">
+                                            <button class="dropbtn">Market Place</button>
+                                            <div class="dropdown-content">
+                                                <label><input type="checkbox" name="uk" value="uk" />
+                                                    UK</label>
+                                                
+                                            </div>
                                         </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="sp_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="sp_amazon-link-checkbox" class="mb-0">Amazon SP Link</label>
+                    
+                                        <div class="dropdown w-100 ">
+                                            <button class="dropbtn">Store Price</button>
+                                            <div class="dropdown-content" id="SP">
+                                            </div>
                                         </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="nt_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="nt_amazon-link-checkbox" class="mb-0">Amazon NT Link</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="usa_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="usa_amazon-link-checkbox" class="mb-0">Amazon USA Link</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="ebay_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ebay_amazon-link-checkbox" class="mb-0">Amazon eBAY Link</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown w-100 new-content-item position-relative ">
-                                    <span>
-                                        <i class="bi bi-three-dots me-4"></i>    
-                                    </span>
-                                    <label> Profit</label>
-                                    <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                    
+                                        <!-- <div class="dropdown w-100 ">
+                                            <button class="dropbtn">Date Added</button>
+                                            <div class="dropdown-content">
+                                                <label><input type="checkbox" name="option1" value="Option 1" />
+                                                    Option 1</label>
+                                                <label><input type="checkbox" name="option1" value="Option 1" />
+                                                    Option 1
+                                                <label><input type="checkbox" name="option2" value="Option 2" />
+                                                    Option 2</label>
+                                                <label><input type="checkbox" name="option3" value="Option 3" />
+                                                    Option 3</label>
+                                            </div>
+                                        </div> -->
+                    
                                         
-                                        <div class="new-content-item d-flex align-items-center">
-                                            <input type="checkbox" id="uk-profit-checkbox" name="uk-profit-checkbox" class="me-4" checked>
-                                            <label for="uk-profit-checkbox" class="mb-0">UK Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ger_profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ger_profit-checkbox" class="mb-0">GER Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="fr_profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4">
-                                            <label for="fr_profit-checkbox" class="mb-0">FR Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="it-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="it-profit-checkbox" class="mb-0">IT Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="sp-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="sp-profit-checkbox" class="mb-0"> SP Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="nt-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="nt-profit-checkbox" class="mb-0">NT Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="usa-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="usa-profit-checkbox" class="mb-0"> USA Profit</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ebay-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ebay-profit-checkbox" class="mb-0">UK eBAY Profit</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown w-100 new-content-item position-relative ">
-                                    <span>
-                                        <i class="bi bi-three-dots me-4"></i>    
-                                    </span>
-                                    <label> Sales Rank</label>
-                                    <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
-                                        <div class="new-content-item  d-flex align-items-center">
-                                            <input id="sales-rank-checkbox" type="checkbox" name="sales-rank-checkbox" class="me-4" checked>
-                                            <label for="sales-rank-checkbox" class="mb-0">UK sales rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ger-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ger-sales-rank-checkbox" class="mb-0">GER Sales Rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="fr-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4">
-                                            <label for="fr-sales-rank-checkbox" class="mb-0">FR Sales Rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="it-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="it-sales-rank-checkbox" class="mb-0">IT Sales Rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="sp-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="sp-sales-rank-checkbox" class="mb-0"> SP Sales Rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="nt-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="nt-sales-rank-checkbox" class="mb-0">NT Sales Rank</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="usa-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="usa-sales-rank-checkbox" class="mb-0"> USA Sales Rank</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown w-100 new-content-item position-relative ">
-                                    <span>
-                                        <i class="bi bi-three-dots me-4"></i>    
-                                    </span>
-                                    <label> Amazon Fees</label>
-                                    <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
-                                        <div class="new-content-item  d-flex align-items-center">
-                                            <input id="amazon-fees-checkbox" type="checkbox" name="amazon-fees-checkbox" class="me-4" checked>
-                                            <label for="amazon-fees-checkbox" class="mb-0">AMZ Fee</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ger-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ger-amazon-fees-checkbox" class="mb-0">GER Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="fr-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="fr-amazon-fees-checkbox" class="mb-0">FR Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="it-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="it-amazon-fees-checkbox" class="mb-0">IT Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="sp-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="sp-amazon-fees-checkbox" class="mb-0"> SP Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="nt-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="nt-amazon-fees-checkbox" class="mb-0">NT Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="usa-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="usa-amazon-fees-checkbox" class="mb-0"> USA Amazon Fees</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ebay-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ebay-amazon-fees-checkbox" class="mb-0"> UK ebay Amazon Fees</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown w-100 new-content-item position-relative">
-                                    <span>
-                                        <i class="bi bi-three-dots me-4"></i>    
-                                    </span>
-                                    <label> Ex Rate </label>
-                                    <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ex-rate-GBP-EUR" type="checkbox" name="amazon-link-checkbox" class="me-4">
-                                            <label for="ex-rate-GBP-EUR" class="mb-0">Ex Rate GBP-EUR</label>
-                                        </div>
-                                        <div class=" new-content-item d-flex align-items-center">
-                                            <input id="ex-rate-GBP-USD" type="checkbox" name="amazon-link-checkbox" class="me-4" >
-                                            <label for="ex-rate-GBP-USD" class="mb-0">Ex Rate GBP-USD</label>
-                                        </div>
                                     </div>
                                 </div>
                               
                             </div>
-                        </div>
-    
-                    </div>
-                </div>
-                
+                            
+                            <div class="addWrapper">
+                                <div class=" d-flex  justify-content-end ">
+                                    <button type="button" class="btn  d-flex addBtn btn d-flex myBtn align-items-center text-white "  style="background-color: #4282cc;">
+                                        <i class="bi bi-plus"></i>                            
+                                        <p class="m-0 ms-3">Add Column</p>
+                                    </button>
+                                </div>
+                                <div class="new-content shadow-lg p-3 mb-5 bg-white rounded mt-3 addCol" style="display: none;">
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="product-name" name="product-name-checkbox" class="me-4" checked>
+                                        <label for="product-name">Product Name</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="date-added" name="date-added-checkbox" class="me-4" checked>
+                                        <label for="date-added">Date Added</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="amazon_selling_price" name="category-checkbox" class="me-4" checked>
+                                        <label for="amazon_selling_price">Amazon £</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="roi" name="category-checkbox" class="me-4" checked>
+                                        <label for="roi">ROI</label>
+                                    </div>
+                                    <!-- <div class="new-content-item">
+                                        <input type="checkbox" id="supplier-link" name="supplier-link-checkbox" class="me-4" >
+                                        <label for="supplier-link">Supplier Link</label>
+                                    </div> -->
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
+                                        <label for="item_category">Category</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="coupon_code" name="category-checkbox" class="me-4">
+                                        <label for="coupon_code">Coupon Code</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="supplier_note" name="category-checkbox" class="me-4">
+                                        <label for="supplier_note">Supplier Notes</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="supplier_name" name="category-checkbox" class="me-4" checked>
+                                        <label for="supplier_name">Store Name</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="store_price" name="category-checkbox" class="me-4" checked>
+                                        <label for="store_price">Store Price</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="uk_amz_£" name="category-checkbox" class="me-4">
+                                        <label for="uk_amz_£">AMZ Fee</label>
+                                    </div>
+                                                                  
+                                    <div class="dropdown w-100 new-content-item position-relative ">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4"></i>    
+                                        </span>
+                                        <label> Amazon Link</label>
+                                        <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                                            <div class="new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                                <label for="amazon-link-checkbox" class="mb-0">Amazon UK Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="ger_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ger_amazon-link-checkbox" class="mb-0">Amazon GER Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="fr_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="fr_amazon-link-checkbox" class="mb-0">Amazon FR Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="it_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="it_amazon-link-checkbox" class="mb-0">Amazon IT Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="sp_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="sp_amazon-link-checkbox" class="mb-0">Amazon SP Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="nt_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="nt_amazon-link-checkbox" class="mb-0">Amazon NT Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="usa_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="usa_amazon-link-checkbox" class="mb-0">Amazon USA Link</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="ebay_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ebay_amazon-link-checkbox" class="mb-0">Amazon eBAY Link</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative ">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4"></i>    
+                                        </span>
+                                        <label> Profit</label>
+                                        <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                                            
+                                            <div class="new-content-item d-flex align-items-center">
+                                                <input type="checkbox" id="uk-profit-checkbox" name="uk-profit-checkbox" class="me-4" checked>
+                                                <label for="uk-profit-checkbox" class="mb-0">UK Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ger_profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ger_profit-checkbox" class="mb-0">GER Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="fr_profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4">
+                                                <label for="fr_profit-checkbox" class="mb-0">FR Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="it-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="it-profit-checkbox" class="mb-0">IT Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="sp-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="sp-profit-checkbox" class="mb-0"> SP Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="nt-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="nt-profit-checkbox" class="mb-0">NT Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="usa-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="usa-profit-checkbox" class="mb-0"> USA Profit</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ebay-profit-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ebay-profit-checkbox" class="mb-0">UK eBAY Profit</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative ">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4"></i>    
+                                        </span>
+                                        <label> Sales Rank</label>
+                                        <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                                            <div class="new-content-item  d-flex align-items-center">
+                                                <input id="sales-rank-checkbox" type="checkbox" name="sales-rank-checkbox" class="me-4" checked>
+                                                <label for="sales-rank-checkbox" class="mb-0">UK sales rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ger-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ger-sales-rank-checkbox" class="mb-0">GER Sales Rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="fr-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4">
+                                                <label for="fr-sales-rank-checkbox" class="mb-0">FR Sales Rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="it-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="it-sales-rank-checkbox" class="mb-0">IT Sales Rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="sp-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="sp-sales-rank-checkbox" class="mb-0"> SP Sales Rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="nt-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="nt-sales-rank-checkbox" class="mb-0">NT Sales Rank</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="usa-sales-rank-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="usa-sales-rank-checkbox" class="mb-0"> USA Sales Rank</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative ">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4"></i>    
+                                        </span>
+                                        <label> Amazon Fees</label>
+                                        <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                                            <div class="new-content-item  d-flex align-items-center">
+                                                <input id="amazon-fees-checkbox" type="checkbox" name="amazon-fees-checkbox" class="me-4" checked>
+                                                <label for="amazon-fees-checkbox" class="mb-0">AMZ Fee</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ger-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ger-amazon-fees-checkbox" class="mb-0">GER Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="fr-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="fr-amazon-fees-checkbox" class="mb-0">FR Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="it-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="it-amazon-fees-checkbox" class="mb-0">IT Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="sp-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="sp-amazon-fees-checkbox" class="mb-0"> SP Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="nt-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="nt-amazon-fees-checkbox" class="mb-0">NT Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="usa-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="usa-amazon-fees-checkbox" class="mb-0"> USA Amazon Fees</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ebay-amazon-fees-checkbox" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ebay-amazon-fees-checkbox" class="mb-0"> UK ebay Amazon Fees</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4"></i>    
+                                        </span>
+                                        <label> Ex Rate </label>
+                                        <div class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  dropdown-content" >
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ex-rate-GBP-EUR" type="checkbox" name="amazon-link-checkbox" class="me-4">
+                                                <label for="ex-rate-GBP-EUR" class="mb-0">Ex Rate GBP-EUR</label>
+                                            </div>
+                                            <div class=" new-content-item d-flex align-items-center">
+                                                <input id="ex-rate-GBP-USD" type="checkbox" name="amazon-link-checkbox" class="me-4" >
+                                                <label for="ex-rate-GBP-USD" class="mb-0">Ex Rate GBP-USD</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
         
-                <div class="d-flex justify-content-lg-end mt-3">
+                        </div>
+                    </div>
+                   
+                </div>
+        
+                <div class="d-flex justify-content-lg-end">
                     <div class="d-flex align-items-center ">
-                        <button id="scrollLeftBtn" class=" btn btn-white text-black border-1 border-black py-2  rounded-circle me-3 " onclick="scrollTable('left')" style="z-index: 1001;">
+                        <button id="scrollLeftBtn" class=" btn btn-white text-black border-1 border-black rounded-circle me-3 p-0" onclick="scrollTable('left')" style="width: 30px; height: 30px;">
                             <i class="bi bi-chevron-left"></i>
                         </button>
-                        <button id="scrollRightBtn" class=" btn btn-white text-black border-1 border-black py-2  rounded-circle me-5" onclick="scrollTable('right')" style="z-index: 1001; right: 1%"><i class="bi bi-chevron-right"></i></button>
-                        <div class="d-flex ms-5">
+                        <button id="scrollRightBtn" class=" btn btn-white text-black border-1 border-black flex align-items-center justify-content-center rounded-circle me-5 p-0" onclick="scrollTable('right')" style=" width: 30px; height: 30px;"><i class="bi bi-chevron-right"></i></button>
+                        <div class="d-flex ms-5" style="font-size: 12px;">
                             No Items:
                             <span id="unique-product-count" class=" fw-bold ms-2">0</span>
                         </div>
 
                     </div>
                 </div>
-                <div class="col-md-12 mt-5">
+                <div class="col-md-12 mt-4">
                    
                     <div class="table-responsive myTable">
                         <table id="myTable" class="table sticky-header table-rounded text-wrap w-100 overflow-auto position-relative">
                             <thead style="position: sticky; top: 0">
                                 <tr class="w-100"  style="background-color: #4282cc !important;">
-                                    <th style="width: 20%; min-width: 200px; position: sticky; top: 0" class="title-column">Product Name</th>
+                                    <th style="min-width: 10px; display: flex; justify-content: center; align-items: center;">
+                                        +
+                                    </th>
+                                    <th style="width: 20%; min-width: 350px; position: sticky; top: 0" class="title-column">Product Name</th>
                                     <th>Date Added</th>
                                     <th>UK Profit</th>
                                     <th>UK Sales Rank</th>

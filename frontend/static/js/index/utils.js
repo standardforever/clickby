@@ -1,4 +1,4 @@
-import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage } from "../utils.js";
+import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage, trimString } from "../utils.js";
 
 export const truncateString = (str, maxLength, truncateReturn = true) => {
     if (str.length > maxLength && truncateReturn) {
@@ -56,12 +56,17 @@ function populateTableWithData(data) {
 
                 const linkedItem = ['Amazon UK Link', 'Supplier Link']                
                 const productName = ['Product Name']                
-                const sP = ['Store Price']                
-                if(sP.includes(headerTitle)){
+                const sP = ['Store Price']  
+                const Icon = ['+']  
+                
+                console.log(headerTitle)
+
+                if(Icon.includes(headerTitle)){
+                    row += '<td><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm py-1" style="width: max-content; font-size:10px" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'    
+                }else if(sP.includes(headerTitle)){
                     row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
                 }else if(productName.includes(headerTitle)){
-                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm py-1" style="width: max-content; font-size:10px" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "More Sellers" + '</a></div>' + '</td>')
-                    // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
+                    (row += '<td >' + '<p title="'+ objectPath +'"><a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + trimString(objectPath, 50) + '</p></a>' + '</td>')
                 }else if(linkedItem.includes(headerTitle)) {
                     row += '<td><a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath("asin", item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
                 }else{
@@ -87,8 +92,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "Product Name":
             return  item.title;
         case "Date Added":
-            return  '<div>'+ '<div>' + breakDate(item.last_update_time).date + '</div>' + '<div>' + breakDate(item.last_update_time).time + '</div>' +'</div>';
-
+            return  '<div>'+ '<div>' + breakDate(item.last_update_time).date + '</div>' + '</div>';
             // amazon link
         case "Amazon UK Link":
             return  item.amz_uk_link;
