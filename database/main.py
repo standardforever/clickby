@@ -18,7 +18,7 @@ mvp2 = gg_client["mvp2"]
 async def main():
     mvp2_collection_lookup = mvp2["profit_supplier_lookup"]
     unique_collection_lookup = mvp2['unique_supplier_lookup']
-    mvp2_collection = mvp2["cn_supplier_lookup"]
+    mvp2_collection = mvp2["sp_lookup2"]
 
 
     page = 1
@@ -26,12 +26,15 @@ async def main():
     # await unique_collection_lookup.drop()
 
     if 'profit_supplier_lookup' not in await mvp2.list_collection_names():
+        # await unique_collection_lookup.drop()
         await mvp2_collection_lookup.create_index({'supplier_code': DESCENDING })
         await mvp2_collection_lookup.create_index({'profit_uk': DESCENDING })
         await mvp2_collection_lookup.create_index({'asin': DESCENDING })
         print("New index created succesfully")
 
+    
     total_documents = await mvp2_collection.count_documents({"profit_uk": {"$gt": 1}})
+
     total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
     print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
 
