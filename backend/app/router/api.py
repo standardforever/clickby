@@ -58,7 +58,7 @@ async def filter_button():
 # Cache for product details
 @router.get("/product/{asin}")
 async def api_product_details(asin: str):
-    items = await app.collection_profit.find({"asin": asin}, {"_id": 0}).sort("profit_uk", -1).to_list(length=None)
+    items = await app.collection_profit.find({"asin": asin}, {"_id": 0, "csv_data": 0}).sort("profit_uk", -1).to_list(length=None)
     return items
 
 
