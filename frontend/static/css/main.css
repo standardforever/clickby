@@ -9,6 +9,10 @@ body {
 h1, h2, h3, h4 {
     color: #333;
 }
+
+a {
+    color: black !important;
+}
 .svg-container {
     width: 100%;
     height: 80vh;
@@ -65,15 +69,15 @@ h1, h2, h3, h4 {
 }
 
 .active>.page-link, .page-link.active{
-    background-color: #4282cc !important;
-    border-color: #4282cc !important;
+    background-color: black !important;
+    border-color: black !important;
     color: white !important;
 
 }
 /* Retain existing styles for title */
 #title {
     background: #333;
-    background-image: linear-gradient(to bottom, #444, #333);  /* Black Glossy Background */
+    /* background-image: linear-gradient(to bottom, #444, #333); */
     color: white;
     z-index: 10;
     border-bottom: 2px solid #ccc;
@@ -86,8 +90,8 @@ h1, h2, h3, h4 {
     top: 0;  /* Adjust this if you have other elements at the top */
     z-index: 1000;  /* Higher z-index to ensure it stays on top */
     
-    background:#4282cc;  /* Black background */
-    background-image: linear-gradient(to bottom, #326196, #4890e1);  /* Black Glossy Background */
+    background:black;  /* Black background */
+    /* background-image: linear-gradient(to bottom, #326196, #4890e1);  */
     color: white;  /* Text color */
     border-bottom: 2px solid #ccc;  /* Border at the bottom */
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);  /* Adding a subtle shadow */
@@ -156,7 +160,7 @@ td:hover::after {
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: #4282cc; /* Match your table header background color */
+    background-color: black; /* Match your table header background color */
     color: white; /* Match your table header text color */
 }
 
@@ -447,7 +451,7 @@ body {
 
   .loader{
     border: 16px solid #f3f3f3;
-    border-top: 16px solid #4282cc;
+    border-top: 16px solid black;
     border-radius: 50%;
     width: 120px;
     height: 120px;
