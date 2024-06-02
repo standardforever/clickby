@@ -78,6 +78,9 @@ async def create_indexes_if_not_exist(collection):
     print("Index Created_6")
     await collection.create_index({'seller_price': DESCENDING })
     print("Index Created_7")
+    await collection.create_index({'last_update_time': DESCENDING })
+    print("Index Created_8")
+    
 
     await collection.create_index(
         [("brand", "text"), 
@@ -86,7 +89,7 @@ async def create_indexes_if_not_exist(collection):
          ("amz_Title", "text")],
         name="text_index_for_search"
     )
-    print("Index Created_8")
+    print("Index Created_9")
    
 
 async def unique_asin(fetch_from, add_to):
@@ -112,11 +115,13 @@ async def unique_asin(fetch_from, add_to):
             {"$replaceRoot": {"newRoot": "$document"}},
             {"$sort": {"asin": 1}},  # Sort by `asin` to ensure consistent pagination
             {"$skip": skip},
-            {"$limit": limit}
+            {"$limit": limit},
+            {"$project": {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0, 'upc': 0, "ref_up": 0, 'csv_data': 0}}
         ]
 
         cursor = fetch_from.aggregate(pipeline)
         batch = await cursor.to_list(length=None)
+ 
         if batch:
             await process_batch_and_update_collection(batch, add_to)
 

@@ -7,6 +7,7 @@ import numpy as np
 from main import app
 import traceback
 import time
+from datetime import datetime, timedelta
 router = APIRouter()
 
 
@@ -211,9 +212,45 @@ async def home(limit: int, skip: int, filter: FilterModel):
         if filter.supplier_name:
             match_conditions["seller_name"] = {"$in": filter.supplier_name}
 
+        
+        if filter.start_date and filter.end_date:
+            try:
+                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d")
+                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
+                match_conditions['last_update_time'] = {
+                    "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+                }
+                print("\n\n\n\n\nddfdefdfsfdsfdsfsdfdsfdsfds\n\n\n\n\n\n")
+            except Exception as e:
+                print(e)
+                pass
+        
+        elif filter.start_date:
+            try:
+                match_conditions["last_update_time"] = {
+                    "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S")
+                }
+            except Exception as e:
+                print(e)
+                pass
+
+        elif filter.end_date:
+            try:
+                match_conditions["last_update_time"] = {
+                    "last_update_time": {
+                        "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                }
+            except Exception as e:
+                print(e)
+                pass
+        
+        
         # Add the match stage to the pipeline if there are any match conditions
         if match_conditions:
             pipeline.insert(0, {"$match": match_conditions})
+
 
         # Print pipeline
         print("Pipeline:", pipeline)

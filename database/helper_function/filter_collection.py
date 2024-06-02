@@ -47,7 +47,7 @@ async def update_list_documents_supplier(filter_x, datas, collection):
                 diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
                 # diff = DeepDiff(data, filter)
                 if diff:
-                    print(filter, '\n\n\n\n\n', data, '\n\n', diff)
+                    # print(filter, '\n\n\n\n\n', data, '\n\n', diff)
 
                     collection.update_one({"supplier_code": filter.get('supplier_code')}, {"$set": filter})
                     count += 1
@@ -109,7 +109,7 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
             {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0,
             'upc': 0, "ref_up": 0, "supplier_discount": 0, "brand_discount": 0,
             "awaiting validation": 0, "FBA_fee": 0, "Reff_fees": 0, "Categories_Root": 0, "delivery": 0,
-            "Pack": 0}}
+            "Pack": 0, "csv_data": 0}}
     ]
 
     google_data_cursor = fetch_from.aggregate(pipeline)
