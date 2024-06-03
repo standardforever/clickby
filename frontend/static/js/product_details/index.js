@@ -8,7 +8,7 @@ $(document).ready(function () {
     const productId = getUrlComponents().productId;
 
     // Construct the API endpoint URL
-    const apiUrl = `http://systemiseselling.com/api/v1/product/${productId}`;
+    const apiUrl = `http://app.clickbuy.ai/api/v1/product/${productId}`;
 
     // Make an AJAX request to the API
     $.ajax({
@@ -23,7 +23,6 @@ $(document).ready(function () {
 
             product.forEach(seller => {
                 document.getElementById('amzTitle').textContent = seller.title
-                console.log(seller.title)
                 const row = `
                     <tr>
                         <td>${seller.seller_name}</td>

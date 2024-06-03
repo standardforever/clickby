@@ -8,6 +8,11 @@ $(document).ready(function () {
     var totalPages = 1;
     var holdData;
 
+    // Add event listeners to date inputs
+    $('#startDate, #endDate').on('change', function () {
+        fetchDataAndUpdatePagination();
+    });
+
     // Add event listeners to checkboxes in dropdowns
     $('.dropdown-content').on('change', 'input[type="checkbox"]', function () {
         fetchDataAndUpdatePagination();
@@ -15,53 +20,45 @@ $(document).ready(function () {
 
     // Function to get the checked values of checkboxes in a dropdown
     function getCheckedValues(dropdownId) {
-        console.log($(this).val())
-        var checkedValues
+        var checkedValues;
         if (dropdownId === "SP") {
             $('#' + dropdownId + ' input[type="checkbox"]').on('change', function () {
                 if (this.checked) {
-                    // Uncheck all other checkboxes
                     $('#' + dropdownId + ' input[type="checkbox"]').not(this).prop('checked', false);
                 }
                 checkedValues = this.checked ? $(this).val() : null;
             });
-
-            // Get the value of the currently checked checkbox
             $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function () {
-                checkedValues = $(this).val(); // This will now always hold only the last checked value
+                checkedValues = $(this).val();
             });
         } else {
             const tempArray = [];
             $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function () {
                 tempArray.push($(this).val());
             });
-            checkedValues = tempArray
+            checkedValues = tempArray;
         }
-
         return checkedValues;
     }
 
-
     $('#clear-filter-id').click(function () {
-        // Reset the values of all dropdown checkboxes to unchecked
         $('.dropdown-content input[type="checkbox"]').prop('checked', false);
-        $('#search-input').val("")
-        currentPage = 1
-        // Trigger the search functionality with empty filter values
+        $('#search-input').val("");
+        currentPage = 1;
         fetchDataAndUpdatePagination();
     });
 
-
     // Update the data object for the POST request with the checked values
     function updateDataObject() {
-        console.log('Updating data object')
         return {
             "roi": getCheckedValues('ROI'),
             "categories": getCheckedValues('CATEGORIES'),
             "supplier_name": getCheckedValues('SN'),
             "market_place": [],
             "store_price": getCheckedValues('SP'),
-            "search_term": $('#search-input').val()
+            "search_term": $('#search-input').val(),
+            "start_date": $('#startDate').val(),
+            "end_date": $('#endDate').val()
         };
     }
 
@@ -78,8 +75,8 @@ $(document).ready(function () {
             url: url,
             method: 'POST',
             dataType: 'json',
-            contentType: 'application/json', // Set content type to JSON
-            data: JSON.stringify(data) // Convert data object to JSON string
+            contentType: 'application/json',
+            data: JSON.stringify(data)
         });
     }
 
@@ -104,22 +101,17 @@ $(document).ready(function () {
     }
 
     function fetchDataAndUpdatePagination(pageNumber) {
-        pageNumber = currentPage; // Use currentPage if pageNumber is not provided
-       return makePostRequest('http://systemiseselling.com/api/v1/home/50/' + ((pageNumber - 1) * 50) + '', updateDataObject())
+        pageNumber = currentPage;
+        return makePostRequest('http://app.clickbuy.ai/api/v1/home/50/' + ((pageNumber - 1) * 50), updateDataObject())
         .done(async function(response) {
             populateTable(response.data);
-            holdData = response.data
-            currentPage = pageNumber; // Update currentPage
+            holdData = response.data;
+            currentPage = pageNumber;
 
-            const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
-            totalPages = Math.ceil(res.total_count / 50);  
+            const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
+            totalPages = Math.ceil(res.total_count / 50);
             updateUniqueProductCount(res.total_count);
             updatePagination();
-
-            // totalPages = Math.ceil(response.total_count / 50);  
-            // updateUniqueProductCount(response.total_count);
-            // updatePagination();
-
             $(".loaderContainer").hide();
         })
         .fail(function(err) {
@@ -130,30 +122,25 @@ $(document).ready(function () {
 
     const OnLoadPageFunc = () => {
         var promises = [
-            makeAjaxCall('http://systemiseselling.com/api/v1/category'),
-            makeAjaxCall('http://systemiseselling.com/api/v1/supplier-name'),
-            makeAjaxCall('http://systemiseselling.com/api/v1/roi'),
-            makeAjaxCall('http://systemiseselling.com/api/v1/store-price'),
-
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/category'),
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/supplier-name'),
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/roi'),
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/store-price')
         ];
 
         $.when.apply($, promises).then(function () {
-            populateROIDropdown(promises[2].responseJSON)
-            populateCATEGORIESDropdown(promises[0].responseJSON)
-            populateSNDropdown(promises[1].responseJSON)
-            populateSPDropdown(promises[3].responseJSON)
-
-            // $(".loaderContainer").hide();
+            populateROIDropdown(promises[2].responseJSON);
+            populateCATEGORIESDropdown(promises[0].responseJSON);
+            populateSNDropdown(promises[1].responseJSON);
+            populateSPDropdown(promises[3].responseJSON);
             return true;
         }).fail(function (err) {
             console.log('An error occurred during AJAX calls.', err);
-            // $(".loaderContainer").hide();
             return false;
         });
     }
 
     fetchDataAndUpdatePagination().then(function () {
-        // When fetchDataAndUpdatePagination is done, execute the rest of the AJAX calls
         OnLoadPageFunc();
     });
 
@@ -163,13 +150,9 @@ $(document).ready(function () {
         var paginationList = $(".pagination");
         paginationList.empty();
 
-        // First Page Button
         paginationList.append('<li class="page-item"><a class="page-link text-black " href="#" id="first-page">First</a></li>');
-
-        // Previous Page Button
         paginationList.append('<li class="page-item"><a class="page-link text-black " href="#" id="prev-page">Previous</a></li>');
 
-        // Display pagination with current page in the middle
         var startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
         var endPage = Math.min(totalPages, startPage + pagesToShow - 1);
         for (var i = startPage; i <= endPage; i++) {
@@ -177,10 +160,7 @@ $(document).ready(function () {
             paginationList.append('<li class="page-item ' + pageClass + '"><a class="page-link text-black " href="#" data-page="' + i + '">' + i + '</a></li>');
         }
 
-        // Next Page Button
         paginationList.append('<li class="page-item"><a class="page-link text-black " href="#" id="next-page">Next</a></li>');
-
-        // Last Page Button
         paginationList.append('<li class="page-item"><a class="page-link text-black " href="#" id="last-page">Last</a></li>');
     }
 
@@ -205,38 +185,35 @@ $(document).ready(function () {
         fetchDataAndUpdatePagination();
     });
 
-    // Initialize pagination
     updatePagination();
-
 
     $('#search-button').click(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://systemiseselling.com/api/v1/home/50/0",
+            url: "http://app.clickbuy.ai/api/v1/home/50/0",
             method: 'POST',
             dataType: 'json',
-            contentType: 'application/json', // Set content type to JSON
+            contentType: 'application/json',
             data: JSON.stringify({
                 "roi": [],
                 "categories": [],
                 "supplier_name": [],
                 "market_place": [],
                 "store_price": "",
-                "search_term": $('#search-input').val()
+                "search_term": $('#search-input').val(),
+                "start_date": $('#startDate').val(),
+                "end_date": $('#endDate').val()
             }),
             success: async function(response) {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
-                currentPage = 1; // Update currentPage
+                currentPage = 1;
                 populateTable(response.data);
-               
-               const res = await makePostRequest('http://systemiseselling.com/api/v1/count', updateDataObject())
-                totalPages = Math.ceil(res.total_count / 50);  
+                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
+                totalPages = Math.ceil(res.total_count / 50);
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
-               
-               
                 $(".loaderContainer").hide();
             },
             error: function (xhr, status, error) {
@@ -286,8 +263,6 @@ $(document).ready(function () {
             $('#myTable td:nth-child(' + (index + 1) + ')').hide();
         }
     });
-
-
 });
 
 document.getElementById('scrollLeftBtn').addEventListener('click', function () {
@@ -366,4 +341,3 @@ document.body.addEventListener('click', function (event) {
         dropdown.style.display = 'none';
     }
 });
-
