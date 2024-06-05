@@ -1,4 +1,4 @@
-import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage, trimString } from "../utils.js";
+import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage, roundToTwoDP, trimString } from "../utils.js";
 
 export const truncateString = (str, maxLength, truncateReturn = true) => {
     if (str.length > maxLength && truncateReturn) {
@@ -80,12 +80,6 @@ function populateTableWithData(data) {
     });
 }
 
-
-
-
-function roundToTwoDP(num) {
-    return Number(num.toFixed(2));
-}
 
 // Function to get object path for a given header title
 function getObjectPath(headerTitle, item, truncateReturn) {

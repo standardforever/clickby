@@ -1,5 +1,7 @@
-export function roundToTwoDP(num) {
-    return Number(num.toFixed(2));
+export function roundToTwoDP(num = 0) {
+  
+    return Number(num);
+    // return Number(num.toFixed(2));
   }
 
   export function breakDate(dateString) {

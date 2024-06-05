@@ -13,6 +13,47 @@ $(document).ready(function () {
         fetchDataAndUpdatePagination();
     });
 
+    // Add event listener to duration dropdown
+    $('#duration').on('change', function () {
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const duration = this.value;
+
+        if (startDateInput.value) {
+            let startDate = new Date(startDateInput.value);
+            let endDate = new Date(startDate);
+
+            switch (duration) {
+                case '5mins':
+                    endDate.setMinutes(startDate.getMinutes() + 5);
+                    break;
+                case '30mins':
+                    endDate.setMinutes(startDate.getMinutes() + 30);
+                    break;
+                case '1hour':
+                    endDate.setHours(startDate.getHours() + 1);
+                    break;
+                case '2days':
+                    endDate.setDate(startDate.getDate() + 2);
+                    break;
+                case '1week':
+                    endDate.setDate(startDate.getDate() + 7);
+                    break;
+            }
+
+            endDateInput.value = endDate.toISOString().slice(0, 16);
+        }
+
+        fetchDataAndUpdatePagination();
+    });
+
+    // Prevent typing in datetime-local inputs
+    document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+        input.addEventListener('keydown', function (event) {
+            event.preventDefault();
+        });
+    });
+
     // Add event listeners to checkboxes in dropdowns
     $('.dropdown-content').on('change', 'input[type="checkbox"]', function () {
         fetchDataAndUpdatePagination();
@@ -103,21 +144,21 @@ $(document).ready(function () {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
         return makePostRequest('http://app.clickbuy.ai/api/v1/home/50/' + ((pageNumber - 1) * 50), updateDataObject())
-        .done(async function(response) {
-            populateTable(response.data);
-            holdData = response.data;
-            currentPage = pageNumber;
-
-            const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
-            totalPages = Math.ceil(res.total_count / 50);
-            updateUniqueProductCount(res.total_count);
-            updatePagination();
-            $(".loaderContainer").hide();
-        })
-        .fail(function(err) {
-            console.log('An error occurred during AJAX calls.', err);
-            $(".loaderContainer").hide();
-        });
+            .done(async function (response) {
+                
+                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
+                populateTable(response.data);
+                holdData = response.data;
+                currentPage = pageNumber;
+                totalPages = Math.ceil(res.total_count / 50);
+                updateUniqueProductCount(res.total_count);
+                updatePagination();
+                $(".loaderContainer").hide();
+            })
+            .fail(function (err) {
+                console.log('An error occurred during AJAX calls.', err);
+                $(".loaderContainer").hide();
+            });
     }
 
     const OnLoadPageFunc = () => {
@@ -205,7 +246,7 @@ $(document).ready(function () {
                 "start_date": $('#startDate').val(),
                 "end_date": $('#endDate').val()
             }),
-            success: async function(response) {
+            success: async function (response) {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
                 currentPage = 1;

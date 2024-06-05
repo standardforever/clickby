@@ -91,12 +91,23 @@
                     
                                         <div class="dropdown w-100 ">
                                             <button class="dropbtn">Date Added</button>
-                                                <div class="dropdown-content" id="DA">
-                                                    <label for="startDate">Start Date:</label>
-                                                    <input type="date" id="startDate" name="startDate" style="font-size: 12px;">
-                                                    <label for="endDate">End Date:</label>
-                                                    <input type="date" id="endDate" name="endDate" style="font-size: 12px;">
-                                                </div>
+                                            <div class="dropdown-content date-content" id="DA">
+                                                <label for="startDate">Start Date and Time:</label>
+                                                <input type="datetime-local" id="startDate" name="startDate" style="font-size: 12px;" >
+                                                
+                                                <label for="endDate">End Date and Time:</label>
+                                                <input type="datetime-local" id="endDate" name="endDate" style="font-size: 12px;" >
+                                                
+                                                <label for="duration">Quick Select Duration:</label>
+                                                <select id="duration" name="duration" style="font-size: 12px;">
+                                                    <option value="5mins">5 Minutes</option>
+                                                    <option value="30mins">30 Minutes</option>
+                                                    <option value="1hour">1 Hour</option>
+                                                    <option value="2days">2 Days</option>
+                                                    <option value="1week">1 Week</option>
+                                                </select>
+                                            </div>
+                                            
                                         </div>
                     
                                         <!-- <div class="dropdown w-100 ">
