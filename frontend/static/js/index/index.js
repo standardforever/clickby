@@ -1,3 +1,4 @@
+import { formatDate } from "../utils.js";
 import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown } from "./utils.js";
 
 $(document).ready(function () {
@@ -8,42 +9,8 @@ $(document).ready(function () {
     var totalPages = 1;
     var holdData;
 
-    // Add event listeners to date inputs
-    $('#startDate, #endDate').on('change', function () {
-        fetchDataAndUpdatePagination();
-    });
-
-    // Add event listener to duration dropdown
-    $('#duration').on('change', function () {
-        const startDateInput = document.getElementById('startDate');
-        const endDateInput = document.getElementById('endDate');
-        const duration = this.value;
-
-        if (startDateInput.value) {
-            let startDate = new Date(startDateInput.value);
-            let endDate = new Date(startDate);
-
-            switch (duration) {
-                case '5mins':
-                    endDate.setMinutes(startDate.getMinutes() + 5);
-                    break;
-                case '30mins':
-                    endDate.setMinutes(startDate.getMinutes() + 30);
-                    break;
-                case '1hour':
-                    endDate.setHours(startDate.getHours() + 1);
-                    break;
-                case '2days':
-                    endDate.setDate(startDate.getDate() + 2);
-                    break;
-                case '1week':
-                    endDate.setDate(startDate.getDate() + 7);
-                    break;
-            }
-
-            endDateInput.value = endDate.toISOString().slice(0, 16);
-        }
-
+    // Add event listener to the "Apply" button
+    $('#DA .btn-primary').on('click', function () {
         fetchDataAndUpdatePagination();
     });
 
@@ -67,7 +34,7 @@ $(document).ready(function () {
                 if (this.checked) {
                     $('#' + dropdownId + ' input[type="checkbox"]').not(this).prop('checked', false);
                 }
-                checkedValues = this.checked ? $(this).val() : null;
+                checkedValues = this.checked ? $(this).val() : "";
             });
             $('#' + dropdownId + ' input[type="checkbox"]:checked').each(function () {
                 checkedValues = $(this).val();
@@ -85,9 +52,13 @@ $(document).ready(function () {
     $('#clear-filter-id').click(function () {
         $('.dropdown-content input[type="checkbox"]').prop('checked', false);
         $('#search-input').val("");
+        $('#startDate').val("");
+        $('#endDate').val("")
         currentPage = 1;
         fetchDataAndUpdatePagination();
     });
+
+    // Function to format date to "yyyy-mm-dd hh:mm:ss"
 
     // Update the data object for the POST request with the checked values
     function updateDataObject() {
@@ -98,8 +69,8 @@ $(document).ready(function () {
             "market_place": [],
             "store_price": getCheckedValues('SP'),
             "search_term": $('#search-input').val(),
-            "start_date": $('#startDate').val(),
-            "end_date": $('#endDate').val()
+            "start_date": $('#startDate').val() ? formatDate($('#startDate').val()) : "",
+            "end_date": $('#endDate').val() ? formatDate($('#endDate').val()) : ""
         };
     }
 
@@ -228,7 +199,17 @@ $(document).ready(function () {
 
     updatePagination();
 
-    $('#search-button').click(function () {
+    // Debounce function
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // Event listener for search input with debounce
+    $('#search-input').on('input', debounce(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
@@ -243,8 +224,8 @@ $(document).ready(function () {
                 "market_place": [],
                 "store_price": "",
                 "search_term": $('#search-input').val(),
-                "start_date": $('#startDate').val(),
-                "end_date": $('#endDate').val()
+                "start_date": $('#startDate').val() ? formatDate($('#startDate').val()) : "",
+                "end_date": $('#endDate').val() ? formatDate($('#endDate').val()) : ""
             }),
             success: async function (response) {
                 $(".tableLoadContainer").hide();
@@ -263,7 +244,7 @@ $(document).ready(function () {
                 console.error('Error occurred during search:', error);
             }
         });
-    });
+    }, 300)); // 300ms delay
 
     function countChecked() {
         return $('.new-content-item input[type="checkbox"]:checked').length;

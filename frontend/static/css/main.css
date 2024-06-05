@@ -464,6 +464,16 @@ body {
   }
 
 
+  .dropdown-content input, .dropdown-content select {
+    display: flex !important;
+    width: max-content !important;
+  }
+
+  .dropdown-content label {
+    display: flex !important;
+  }
+
+
   /* date picker */
   .dropdown-content {
     padding: 10px;
