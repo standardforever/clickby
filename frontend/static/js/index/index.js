@@ -114,10 +114,11 @@ $(document).ready(function () {
 
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
-        return makePostRequest('http://app.clickbuy.ai/api/v1/home/50/' + ((pageNumber - 1) * 50), updateDataObject())
+        const itemsPerPage = 50;
+        return makePostRequest(`http://app.clickbuy.ai/api/v1/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false`, updateDataObject())
             .done(async function (response) {
                 
-                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
+                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/home?count_doc=true', updateDataObject());
                 populateTable(response.data);
                 holdData = response.data;
                 currentPage = pageNumber;
@@ -213,7 +214,7 @@ $(document).ready(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://app.clickbuy.ai/api/v1/home/50/0",
+            url: "http://app.clickbuy.ai/api/v1/home?limit=50&skip=0",
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
@@ -232,7 +233,7 @@ $(document).ready(function () {
                 $('#myTable tbody').show();
                 currentPage = 1;
                 populateTable(response.data);
-                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/count', updateDataObject());
+                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/home?count_doc=true', updateDataObject());
                 totalPages = Math.ceil(res.total_count / 50);
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
