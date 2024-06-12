@@ -1,5 +1,5 @@
 import { formatDate } from "../utils.js";
-import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown } from "./utils.js";
+import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown , populateSalesRankDropdown} from "./utils.js";
 
 $(document).ready(function () {
     $(".loaderContainer").show();
@@ -29,7 +29,7 @@ $(document).ready(function () {
     // Function to get the checked values of checkboxes in a dropdown
     function getCheckedValues(dropdownId) {
         var checkedValues;
-        if (dropdownId === "SP") {
+        if (dropdownId === "SP" || dropdownId === "SR") {
             $('#' + dropdownId + ' input[type="checkbox"]').on('change', function () {
                 if (this.checked) {
                     $('#' + dropdownId + ' input[type="checkbox"]').not(this).prop('checked', false);
@@ -68,6 +68,7 @@ $(document).ready(function () {
             "supplier_name": getCheckedValues('SN'),
             "market_place": [],
             "store_price": getCheckedValues('SP'),
+            "sales_rank": getCheckedValues('SR'),
             "search_term": $('#search-input').val(),
             "start_date": $('#startDate').val() ? formatDate($('#startDate').val()) : "",
             "end_date": $('#endDate').val() ? formatDate($('#endDate').val()) : ""
@@ -138,7 +139,8 @@ $(document).ready(function () {
             makeAjaxCall('http://app.clickbuy.ai/api/v1/category'),
             makeAjaxCall('http://app.clickbuy.ai/api/v1/supplier-name'),
             makeAjaxCall('http://app.clickbuy.ai/api/v1/roi'),
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/store-price')
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/store-price'),
+            makeAjaxCall('http://app.clickbuy.ai/api/v1/sales-rank')
         ];
 
         $.when.apply($, promises).then(function () {
@@ -146,6 +148,7 @@ $(document).ready(function () {
             populateCATEGORIESDropdown(promises[0].responseJSON);
             populateSNDropdown(promises[1].responseJSON);
             populateSPDropdown(promises[3].responseJSON);
+            populateSalesRankDropdown(promises[4].responseJSON);
             return true;
         }).fail(function (err) {
             console.log('An error occurred during AJAX calls.', err);
@@ -224,6 +227,7 @@ $(document).ready(function () {
                 "supplier_name": [],
                 "market_place": [],
                 "store_price": "",
+                "sales_rank": "",
                 "search_term": $('#search-input').val(),
                 "start_date": $('#startDate').val() ? formatDate($('#startDate').val()) : "",
                 "end_date": $('#endDate').val() ? formatDate($('#endDate').val()) : ""

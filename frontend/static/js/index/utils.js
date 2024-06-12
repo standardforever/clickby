@@ -242,3 +242,17 @@ export function populateSPDropdown(SpData) {
         }
     });
 }
+export function populateSalesRankDropdown(SrData) {
+    var dropdownContent = $('#SR');
+
+    dropdownContent.empty();
+
+    SrData.forEach(function (option) {
+        if (option !== null) {
+            var label = $('<label>');
+            var checkbox = $('<input type="checkbox">').attr('name', 'store-price').attr('value', option).attr('class', 'me-3');
+            label.append(checkbox).append(option);
+            dropdownContent.append(label);
+        }
+    });
+}
