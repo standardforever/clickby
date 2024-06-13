@@ -50,6 +50,7 @@ $(document).ready(function () {
     $('.dropdown-content').on('change', 'input[type="checkbox"]', function () {
         fetchDataAndUpdatePagination();
     });
+    
 
     // Function to get the checked values of checkboxes in a dropdown
     function getCheckedValues(dropdownId) {
@@ -117,6 +118,34 @@ $(document).ready(function () {
             data: JSON.stringify(data)
         });
     }
+
+    // add column filter
+    $('.new-content-item').on('click', function() {
+        var targetId = $(this).data('target');
+
+        
+        // Hide all filter content divs
+        $('.filter-dropdown-content').removeClass('d-block').addClass('d-none');
+        
+        // Show the selected filter content
+        $('#' + targetId).removeClass('d-none').addClass('d-block');
+
+
+            // Handle clicks outside the filter content and new content items
+            $(document).on('click', function(event) {
+                if (!$(event.target).closest('.new-content-item, .filter-dropdown-content').length) {
+                    // Hide all filter content divs
+                    $('.filter-dropdown-content').removeClass('d-block').addClass('d-none');
+                }
+            });
+
+            // Prevent the filter content div from closing when clicking inside
+            $('.filter-dropdown-content, .new-content-item').on('click', function(event) {
+                event.stopPropagation(); // Prevent the click event from propagating to the document
+            });
+    });
+
+
 
     function updatePagination() {
         var paginationList = $(".pagination");
@@ -362,7 +391,7 @@ function scrollTable(direction) {
 document.querySelector('.addBtn').addEventListener('click', function () {
     var dropdown = document.querySelector('.new-content');
     if (dropdown.style.display === 'none') {
-        dropdown.style.display = 'flex';
+        dropdown.style.display = 'block';
     } else {
         dropdown.style.display = 'none';
     }

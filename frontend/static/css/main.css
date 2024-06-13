@@ -416,6 +416,9 @@ body {
     flex-direction: column;
     right: 2%;
     width: 253px;
+    max-height: 290px;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .filter-content{
@@ -508,4 +511,18 @@ body {
 }
 .sort-icon.active {
     color: white;
+}
+
+/* filter dropcontent */
+.filter-dropdown-content{
+    position: absolute;
+    z-index: 10000;
+    background-color: white;
+    padding: 10px;
+    flex-direction: column;
+    left: -385px;
+    width: 253px;
+    max-height: 290px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
