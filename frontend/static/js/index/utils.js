@@ -253,6 +253,30 @@ export function populateSalesRankDropdown(SrData) {
             var checkbox = $('<input type="checkbox">').attr('name', 'store-price').attr('value', option).attr('class', 'me-3');
             label.append(checkbox).append(option);
             dropdownContent.append(label);
-        }
+            }
     });
+    }
+    
+    export function getSortValue(value) {
+        switch (value) {
+            case "ProductName":
+                return 'title';
+            case "DateAdded":
+                return 'last_update_time';
+            case "UKProfit":
+                return 'profit_uk';
+            case "SalesRank":
+                return 'sales_rank';
+            case "StorePrice":
+                return 'seller_price';
+            case "StoreName":
+                return 'seller_name';
+            case "Amazon":
+                return 'amazon_price';
+            case "ROI":
+                return 'roi_uk';
+                                    
+        default:
+            return 'profit_uk'; 
+    }
 }

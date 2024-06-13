@@ -1,5 +1,5 @@
 import { formatDate } from "../utils.js";
-import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown , populateSalesRankDropdown} from "./utils.js";
+import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown , populateSalesRankDropdown, getSortValue} from "./utils.js";
 
 $(document).ready(function () {
     $(".loaderContainer").show();
@@ -8,6 +8,31 @@ $(document).ready(function () {
     var currentPage = 1;
     var totalPages = 1;
     var holdData;
+    var sortByColumn = 'profit_uk';
+    var ascendDecend = -1
+
+    // sort
+    $('.sort-icon').on('click', function () {
+        // Remove the active class from all sort icons
+        $('.sort-icon').removeClass('active');
+
+        // Add the active class to the clicked icon
+        $(this).addClass('active');
+
+        // Get the id of the clicked icon
+        var iconId = $(this).attr('id');
+
+        // Split the id to get the order and column
+        var [order, column] = iconId.split('-');
+
+        // Update the sortByColumn variable
+        sortByColumn = getSortValue(column);
+
+        // Update the ascendDecend variable
+        ascendDecend = (order === 'asc') ? 1 : -1;
+
+        fetchDataAndUpdatePagination()
+    });
 
     // Add event listener to the "Apply" button
     $('#DA .btn-primary').on('click', function () {
@@ -116,7 +141,7 @@ $(document).ready(function () {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
         const itemsPerPage = 50;
-        return makePostRequest(`http://app.clickbuy.ai/api/v1/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false`, updateDataObject())
+        return makePostRequest(`http://app.clickbuy.ai/api/v1/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
             .done(async function (response) {
                 
                 const res = await makePostRequest('http://app.clickbuy.ai/api/v1/home?count_doc=true', updateDataObject());
@@ -290,6 +315,7 @@ $(document).ready(function () {
             $('#myTable td:nth-child(' + (index + 1) + ')').hide();
         }
     });
+    
 });
 
 document.getElementById('scrollLeftBtn').addEventListener('click', function () {
