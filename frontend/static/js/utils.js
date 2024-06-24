@@ -15,8 +15,8 @@ export function roundToTwoDP(num = 0) {
 }
 
 export function formatNumber(number) {
-  if (isNaN(number)) {
-      return "Invalid number";
+  if (number === null || isNaN(number)) {
+    return "0";
   }
 
   let formattedNumber = number.toFixed(2);
@@ -25,6 +25,7 @@ export function formatNumber(number) {
 
   return formattedNumber;
 }
+
 
 export function formatPercentage(number) {
   if (isNaN(number)) {
