@@ -171,7 +171,7 @@ function getObjectPath(headerTitle, item, truncateReturn) {
         case "asin":
             return item.asin;
         case "Amazon £":
-            return formatNumber(roundToTwoDP(item.amazon_price));
+            return formatNumber(roundToTwoDP(item['UK_Buybox_Price_£']));
         case "Coupon Code":
             return "";
         case "Supplier Notes":
