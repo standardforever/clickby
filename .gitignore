@@ -5,4 +5,4 @@ myredis
 __pycache__/
 path
 path/
-database/output.txt
+# database/output.txt
