@@ -9,6 +9,10 @@ body {
 h1, h2, h3, h4 {
     color: #333;
 }
+
+a {
+    color: black !important;
+}
 .svg-container {
     width: 100%;
     height: 80vh;
@@ -56,7 +60,7 @@ h1, h2, h3, h4 {
 }
 
 #myTable thead th {
-    min-width: 130px;
+    min-width: 118px;
 }
 
 
@@ -65,15 +69,15 @@ h1, h2, h3, h4 {
 }
 
 .active>.page-link, .page-link.active{
-    background-color: #4282cc !important;
-    border-color: #4282cc !important;
+    background-color: black !important;
+    border-color: black !important;
     color: white !important;
 
 }
 /* Retain existing styles for title */
 #title {
     background: #333;
-    background-image: linear-gradient(to bottom, #444, #333);  /* Black Glossy Background */
+    /* background-image: linear-gradient(to bottom, #444, #333); */
     color: white;
     z-index: 10;
     border-bottom: 2px solid #ccc;
@@ -86,8 +90,8 @@ h1, h2, h3, h4 {
     top: 0;  /* Adjust this if you have other elements at the top */
     z-index: 1000;  /* Higher z-index to ensure it stays on top */
     
-    background:#4282cc;  /* Black background */
-    background-image: linear-gradient(to bottom, #326196, #4890e1);  /* Black Glossy Background */
+    background:black;  /* Black background */
+    /* background-image: linear-gradient(to bottom, #326196, #4890e1);  */
     color: white;  /* Text color */
     border-bottom: 2px solid #ccc;  /* Border at the bottom */
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);  /* Adding a subtle shadow */
@@ -106,6 +110,25 @@ h1, h2, h3, h4 {
     top: 0;
     background-color: white;
     z-index: 1;
+}
+
+p, label, th, td {
+    font-size: 12px;
+}
+
+td:hover::after {
+    content: attr(title);
+    position: absolute;
+    white-space: normal;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: 400px; /* Adjust as needed */
 }
 
 
@@ -128,6 +151,19 @@ h1, h2, h3, h4 {
     width: 50%;
 }
 
+.table-responsive {
+    max-height: 80vh; /* Adjust this to your needs */
+    overflow-y: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: black; /* Match your table header background color */
+    color: white; /* Match your table header text color */
+}
+
 @media  (max-width:768px) {
     .topSectionWrapper{
         flex-direction: column !important;
@@ -136,6 +172,16 @@ h1, h2, h3, h4 {
     .topSectionWidth{
         width: 100%;
     }
+}
+
+.table-responsive {
+    position: relative;
+}
+
+.table thead {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 
 .table-responsive .table {
@@ -370,6 +416,9 @@ body {
     flex-direction: column;
     right: 2%;
     width: 253px;
+    max-height: 290px;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .filter-content{
@@ -405,7 +454,7 @@ body {
 
   .loader{
     border: 16px solid #f3f3f3;
-    border-top: 16px solid #4282cc;
+    border-top: 16px solid black;
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -417,3 +466,63 @@ body {
     margin-left: -60px;
   }
 
+
+  .dropdown-content input, .dropdown-content select {
+    display: flex !important;
+    width: max-content !important;
+  }
+
+  .dropdown-content label {
+    display: flex !important;
+  }
+
+
+  /* date picker */
+  .dropdown-content {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.dropdown-content label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dropdown-content input,
+.dropdown-content select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+/* sort  */
+.sort-icon {
+    color: gray;
+    cursor: pointer;
+}
+.sort-icon.active {
+    color: white;
+}
+
+/* filter dropcontent */
+.filter-dropdown-content{
+    position: absolute;
+    z-index: 10000;
+    background-color: white;
+    padding: 10px;
+    flex-direction: column;
+    left: -385px;
+    width: 253px;
+    max-height: 290px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

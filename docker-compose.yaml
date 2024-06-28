@@ -3,11 +3,11 @@ services:
   clickbuy:
     build:
       dockerfile: Dockerfile
-      context: ./fastapi-clickbuy
+      context: ./backend
     ports:
       - "8080:8080"
     volumes:
-      - ./fastapi-clickbuy:/usr/src/app
+      - ./backend:/usr/src/app
     environment:
       - MONGO_USER=fiverr_user
       - MONGO_PASS=fiverr_user

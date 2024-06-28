@@ -1,41 +1,43 @@
-import { roundToTwoDP } from "../utils.js";
+import { formatNumber, formatPercentage, roundToTwoDP } from "../utils.js";
 import { getUrlComponents } from "./utils.js"
 
-$(document).ready(function() {
+$(document).ready(function () {
     document.getElementById('productASIN').textContent = getUrlComponents().productId
     document.getElementById('productCategory').textContent = getUrlComponents().categoryPath;
 
     const productId = getUrlComponents().productId;
 
     // Construct the API endpoint URL
-    const apiUrl = `http://systemiseselling.com/api/v1/product/${productId}`;
+    const apiUrl = `http://app.clickbuy.ai/api/v1/product/${productId}`;
 
     // Make an AJAX request to the API
     $.ajax({
         url: apiUrl,
         type: 'GET',
-        success: function(product) {
-            console.log(product);
+        success: function (product) {
             // Assuming the API returns a product object structured as mentioned in your question
-            document.getElementById('productImage').alt = product[0].category;
+            // document.getElementById('productImage').alt = product[0].category;
 
             const sellersTableBody = document.getElementById('sellersTableBody');
-            sellersTableBody.innerHTML = ''; // Clear existing rows if any
+            sellersTableBody.innerHTML = '';
 
             product.forEach(seller => {
+                document.getElementById('amzTitle').textContent = seller.title
                 const row = `
                     <tr>
                         <td>${seller.seller_name}</td>
                         <td><a href="${seller.supplier_code}" target="_blank">${getUrlComponents().productId}</a></td>
-                        <td>${seller.seller_price}</td>
-                        <td>${roundToTwoDP(seller.profit_uk)}</td>
-                        <td>${roundToTwoDP(seller.roi_uk)}</td>
+                        <td>${formatNumber(seller.seller_price)}</td>
+                        <td>${formatNumber(roundToTwoDP(seller.profit_uk))}</td>
+                        <td>${formatPercentage(roundToTwoDP(seller.roi_uk))}</td>
+                        <td>${formatNumber(seller.total_fees_UK)}</td>
+                        <td><a target="_blank" href="https://amazon.co.uk/dp/${seller.asin}">${seller.asin}</a></td>  
                     </tr>
                 `;
                 sellersTableBody.innerHTML += row;
             });
         },
-        error: function() {
+        error: function () {
             console.error('Failed to retrieve product data');
         }
     });

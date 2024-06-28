@@ -11,6 +11,8 @@ class FilterModel(BaseModel):
     market_place: List[str] = []
     store_price: str = None
     search_term: str = None
+    start_date: str = None
+    end_date: str = None
     
 
 

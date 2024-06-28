@@ -1,4 +1,4 @@
-import { breakDate } from "../utils.js";
+import { breakDate, formatNumber, formatNumberWithoutDecimals, formatPercentage, roundToTwoDP, trimString } from "../utils.js";
 
 export const truncateString = (str, maxLength, truncateReturn = true) => {
     if (str.length > maxLength && truncateReturn) {
@@ -9,17 +9,17 @@ export const truncateString = (str, maxLength, truncateReturn = true) => {
 
 export function populateTable(data) {
     // $(document).ajaxStop(function () {
-        if (!$(this).data('ajax_in_progress')) {
-            // When all AJAX requests are complete
-            if (data.length === 0) {
-                // If data is empty, update the table as empty
-                clearTable();
-            } else {
-                // If data is not empty, populate the table with the new data
-                populateTableWithData(data);
-                sessionStorage.setItem('cachedData', JSON.stringify(data)); // Store data in sessionStorage
-            }
+    if (!$(this).data('ajax_in_progress')) {
+        // When all AJAX requests are complete
+        if (data.length === 0) {
+            // If data is empty, update the table as empty
+            clearTable();
+        } else {
+            // If data is not empty, populate the table with the new data
+            populateTableWithData(data);
+            sessionStorage.setItem('cachedData', JSON.stringify(data)); // Store data in sessionStorage
         }
+    }
     // });
 }
 
@@ -44,75 +44,73 @@ function clearTable() {
 
 function populateTableWithData(data) {
     var tbody = $('#myTable tbody');
-        // Clear existing table rows
-        tbody.empty();
-    
-        data.forEach(function(item) {
-            var row = '<tr>';
-            // Loop through each table header and retrieve data based on the object path
-            $('#myTable th').each(function(index, header) {
-                var headerTitle = $(header).text().trim();
-                var objectPath = getObjectPath(headerTitle, item);
+    // Clear existing table rows
+    tbody.empty();
 
-                const linkedItem = ['Amazon UK Link', 'Supplier Link']                
-                const productName = ['Product Name']                
-                const sP = ['Store Price']                
-                if(sP.includes(headerTitle)){
-                    row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
-                }else if(productName.includes(headerTitle)){
-                    (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
-                    // (row += '<td>' + '<a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) +'">' + objectPath + '</a>' + '<div><a target="_blank" id="dynamicLink" class="btn btn-primary btn-sm w-50" href="/product_details.html#'+ getObjectPath('asin', item, false)+ '?' + getObjectPath('Category', item, false)+'">' + "more seller" + '</a></div>' + '</td>')
-                }else if(linkedItem.includes(headerTitle)) {
-                    row += '<td><a target="_blank" href="' + getObjectPath(headerTitle, item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
-                }else{
-                    (row += '<td>' + objectPath + '</td>')
-                }   
-                
-            });
-            row += '</tr>';
-            tbody.append(row);
+    data.forEach(function (item) {
+        var row = '<tr>';
+        // Loop through each table header and retrieve data based on the object path
+        $('#myTable th').each(function (index, header) {
+            var headerTitle = $(header).text().trim();
+            var objectPath = getObjectPath(headerTitle, item);
+
+            const linkedItem = ['Amazon UK Link', 'Supplier Link']
+            const productName = ['Product Name']
+            const sP = ['Store Price']
+            const Icon = ['+']
+
+            console.log(headerTitle)
+
+            if (Icon.includes(headerTitle)) {
+                row += '<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black text-white" style="width: max-content; font-size:10px" href="/product#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'
+                // row += '<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black  text-white" style="width: max-content; font-size:10px" href="/product_details.html#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'
+            } else if (sP.includes(headerTitle)) {
+                row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
+            } else if (productName.includes(headerTitle)) {
+                (row += '<td >' + '<p title="' + objectPath + '"><a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath('asin', item, false) + '">' + trimString(objectPath, 50) + '</p></a>' + '</td>')
+            } else if (linkedItem.includes(headerTitle)) {
+                row += '<td><a target="_blank" href="https://amazon.co.uk/dp/' + getObjectPath("asin", item, false) + '">' + getObjectPath('asin', item, false) + '</a></td>';
+            } else {
+                (row += '<td>' + objectPath + '</td>')
+            }
+
         });
+        row += '</tr>';
+        tbody.append(row);
+    });
 }
 
 
-
-
-function roundToTwoDP(num) {
-    return Number(num.toFixed(2));
-  }
-
 // Function to get object path for a given header title
 function getObjectPath(headerTitle, item, truncateReturn) {
-    console.log(headerTitle)
     switch (headerTitle) {
         case "Product Name":
-            return  item.title;
+            return item.title;
         case "Date Added":
-            return  '<div>'+ '<div>' + breakDate(item.last_update_time).date + '</div>' + '<div>' + breakDate(item.last_update_time).time + '</div>' +'</div>';
-
-            // amazon link
+            return '<div>' + '<div>' + breakDate(item.last_update_time).date + '</div>' + '</div>';
+        // amazon link
         case "Amazon UK Link":
-            return  item.amz_uk_link;
+            return item.amz_uk_link;
         case "Amazon GER Link":
-            return  item.amz_ger_link;
+            return item.amz_ger_link;
         case "Amazon FR Link":
-            return  item.amz_fr_link;
+            return item.amz_fr_link;
         case "Amazon IT Link":
-            return  item.amz_it_link;
+            return item.amz_it_link;
         case "Amazon SP Link":
-            return  item.amz_sp_link;
+            return item.amz_sp_link;
         case "Amazon NT Link":
-            return  item.amz_nt_link;
+            return item.amz_nt_link;
         case "Amazon USA Link":
-            return  item.amz_usa_link;
+            return item.amz_usa_link;
         case "Amazon eBAY Link":
-            return  item.amz_ebay_link;
+            return item.amz_ebay_link;
 
         case "Supplier Link":
             return truncateString(item.supplier_code, 20, truncateReturn);
-       
+
         case "UK Profit":
-            return roundToTwoDP(item.profit_uk);
+            return formatNumber(roundToTwoDP(item.profit_uk));
         case "GER Profit":
             return roundToTwoDP(item.profit_ger);
         case "FR Profit":
@@ -127,12 +125,12 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return roundToTwoDP(item.profit_usa);
         case "UK eBAY Profit":
             return roundToTwoDP(item.profit_ebay_uk);
-       
+
         case "Category":
             return item.category;
 
         case "UK Sales Rank":
-            return item.Rank;
+            return formatNumberWithoutDecimals(item.sales_rank);
         case "GER Sales Rank":
             return item.ger_Rank;
         case "FR Sales Rank":
@@ -147,41 +145,41 @@ function getObjectPath(headerTitle, item, truncateReturn) {
             return item.usa_Rank;
 
         case "AMZ Fee":
-            return  "";
+            return formatNumber(item.total_fees_UK);
         case "GER Amazon fees":
-            return  item.ger_seller_price;
+            return item.ger_seller_price;
         case "FR Amazon fees":
-            return  item.fr_seller_price;
+            return item.fr_seller_price;
         case "IT Amazon fees":
-            return  item.it_seller_price;
+            return item.it_seller_price;
         case "SP Amazon fees":
-            return  item.sp_seller_price;
+            return item.sp_seller_price;
         case "NT Amazon fees":
-            return  item.nt_seller_price;
+            return item.nt_seller_price;
         case "USA Amazon fees":
-            return  item.usa_seller_price;
+            return item.usa_seller_price;
         case "UK eBAY Amazon fees":
-            return  item.uk_ebay_seller_price;
+            return item.uk_ebay_seller_price;
 
 
         case "Store Name":
-            return  item.seller_name;
+            return item.seller_name;
         case "Manufacturer":
-            return  item.seller_name;
+            return item.seller_name;
         case "ROI":
-            return  roundToTwoDP(item.roi_uk);
+            return formatPercentage(roundToTwoDP(item.roi_uk));
         case "asin":
-            return  item.asin;
+            return item.asin;
         case "Amazon £":
-            return  roundToTwoDP(item.amazon_price);
+            return formatNumber(roundToTwoDP(item['UK_Buybox_Price_£']));
         case "Coupon Code":
             return "";
         case "Supplier Notes":
-            return  "";
+            return "";
         case "Store Price":
-            return  item.seller_price;
+            return formatNumber(item.seller_price);
         case "AMZ Fees":
-            return  "";
+            return "";
         // Add cases for other header titles as needed
         default:
             return ""; // Default to empty string if no object path is found
@@ -194,7 +192,7 @@ export function populateROIDropdown(roiData) {
 
     dropdownContent.empty();
 
-    roiData.forEach(function(option) {
+    roiData.forEach(function (option) {
         var label = $('<label>');
         var checkbox = $('<input type="checkbox">').attr('name', 'roi_option').attr('value', option).attr('class', 'me-3');
         label.append(checkbox).append(option);
@@ -207,7 +205,7 @@ export function populateCATEGORIESDropdown(categoriesData) {
 
     dropdownContent.empty();
 
-    categoriesData.forEach(function(option) {
+    categoriesData.forEach(function (option) {
         var label = $('<label>');
         var checkbox = $('<input type="checkbox">').attr('name', 'category').attr('value', option).attr('class', 'me-3');
         label.append(checkbox).append(option);
@@ -220,8 +218,8 @@ export function populateSNDropdown(SNData) {
 
     dropdownContent.empty();
 
-    SNData.forEach(function(option) {
-        if(option !== null) {
+    SNData.forEach(function (option) {
+        if (option !== null) {
             var label = $('<label>');
             var checkbox = $('<input type="checkbox">').attr('name', 'supplier-name').attr('value', option).attr('class', 'me-3');
             label.append(checkbox).append(option);
@@ -235,12 +233,50 @@ export function populateSPDropdown(SpData) {
 
     dropdownContent.empty();
 
-    SpData.forEach(function(option) {
-        if(option !== null) {
+    SpData.forEach(function (option) {
+        if (option !== null) {
             var label = $('<label>');
             var checkbox = $('<input type="checkbox">').attr('name', 'store-price').attr('value', option).attr('class', 'me-3');
             label.append(checkbox).append(option);
             dropdownContent.append(label);
         }
     });
+}
+export function populateSalesRankDropdown(SrData) {
+    var dropdownContent = $('#SR');
+
+    dropdownContent.empty();
+
+    SrData.forEach(function (option) {
+        if (option !== null) {
+            var label = $('<label>');
+            var checkbox = $('<input type="checkbox">').attr('name', 'store-price').attr('value', option).attr('class', 'me-3');
+            label.append(checkbox).append(option);
+            dropdownContent.append(label);
+            }
+    });
+    }
+    
+    export function getSortValue(value) {
+        switch (value) {
+            case "ProductName":
+                return 'title';
+            case "DateAdded":
+                return 'last_update_time';
+            case "UKProfit":
+                return 'profit_uk';
+            case "SalesRank":
+                return 'sales_rank';
+            case "StorePrice":
+                return 'seller_price';
+            case "StoreName":
+                return 'seller_name';
+            case "Amazon":
+                return 'amazon_price';
+            case "ROI":
+                return 'roi_uk';
+                                    
+        default:
+            return 'profit_uk'; 
+    }
 }

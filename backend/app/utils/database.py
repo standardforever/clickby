@@ -16,23 +16,14 @@ async def database_live_connect():
     maxPoolSize=50,
 )
     mvp2 = gg_client["mvp2"]
-    mvp2_collection = mvp2["filter_supplier_lookup"]
-
-    return mvp2_collection
+    mvp2_collection = mvp2["unique_supplier_lookup"]
+    mvp2_collection_profit = mvp2["profit_supplier_lookup"]
+    return mvp2_collection, mvp2_collection_profit
 
 
 async def connection():
     collection = await database_live_connect()
-    document = await collection.find_one({})
+    document = await collection[0].find_one({})
     print(document)
+    print(f"Print the total collection: {collection} ")
     return collection
-
-def database_local_connect():
-    local_client = AsyncIOMotorClient('mongodb://admin:supersecret@mongodb:27017')
-    local_collection = local_client['local_db']
-    local_collection = local_collection['supplier_lookup']
-    return local_collection
-    
-
-
-
