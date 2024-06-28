@@ -44,7 +44,7 @@ async def update_list_documents_supplier(filter_x, datas, collection):
     for filter in filter_x:
         for data in datas:
             if data.get('supplier_code') == filter.get('supplier_code'):
-                diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
+                diff = DeepDiff(data, filter)
                 # diff = DeepDiff(data, filter)
                 if diff:
                     # print(filter, '\n\n\n\n\n', data, '\n\n', diff)
@@ -102,7 +102,11 @@ async def fetch_and_save_records(page: int, limit: int, fetch_from, add_to):
     skip = (page - 1) * limit
 
     pipeline = [
-        {"$match": {"profit_uk": {"$gt": 1}}},  # Filter documents where profit_uk > 1
+        {"$match": {
+            "profit_uk": {"$gt": 1},  # Filter documents where profit_uk > 1
+            "sales_rank": {"$lt": 150000}  # Add filter for sales_rank < 150000
+        }},
+        {"$sort": {"profit_uk": 1}},
         {"$skip": skip},  # Skip documents based on the offset
         {"$limit": limit},  # Limit the number of documents returned
         {"$project":

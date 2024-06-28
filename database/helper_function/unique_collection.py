@@ -12,7 +12,7 @@ async def update_list_documents_asin(filter_x, datas, collection):
     for filter in filter_x:
         for data in datas:
             if data.get('asin') == filter.get('asin'):
-                diff = DeepDiff(data, filter,  exclude_paths=['time_since_added'])
+                diff = DeepDiff(data, filter)
                 # diff = DeepDiff(data, filter)
                 if diff:
                     # print(filter, '\n\n\n\n\n', data, '\n\n', diff)
@@ -65,21 +65,23 @@ async def create_indexes_if_not_exist(collection):
     """
     # Define index definitions
     await collection.create_index({'asin': DESCENDING })
-    print("Index Created_1")
+    print("Index for asin")
     await collection.create_index({'seller_name': DESCENDING })
-    print("Index Created_2")
+    print("Index for seller_name")
     await collection.create_index({'category': DESCENDING })
-    print("Index Created_3")
+    print("Index for category")
     await collection.create_index({'roi_category': DESCENDING })
-    print("Index Created_4")
+    print("Index for roi_category")
     await collection.create_index({'profit_uk': DESCENDING })
-    print("Index Created_5")
+    print("Index for profit_uk")
     await collection.create_index({'supplier_code': DESCENDING })
     print("Index Created_6")
     await collection.create_index({'seller_price': DESCENDING })
-    print("Index Created_7")
+    print("Index for supplier_code")
     await collection.create_index({'last_update_time': DESCENDING })
-    print("Index Created_8")
+    print("Index for last_update_time")
+    await collection.create_index({'sales_rank': DESCENDING})
+    print("Index for sales_rank")
     
 
     await collection.create_index(
@@ -89,36 +91,44 @@ async def create_indexes_if_not_exist(collection):
          ("amz_Title", "text")],
         name="text_index_for_search"
     )
-    print("Index Created_9")
+    print("Search Index created for brand, category, title, amz_Title")
+   
    
 
 async def unique_asin(fetch_from, add_to):
+    # Create indexes if they do not exist
     await create_indexes_if_not_exist(add_to)
     print("Index created successfully")
     
-    limit = 10000 # Adjust as needed
+    limit = 10000  # Adjust as needed
     page = 1
-    total_documents = await fetch_from.estimated_document_count()
+    # Calculate total unique ASINs
+    unique_asins = await fetch_from.distinct("asin")
+    total_unique_asins = len(unique_asins)
+    total_pages = -(-total_unique_asins // limit)  # Ceiling division to calculate total pages
+    print(f"Total unique ASINs: {total_unique_asins}\nTotal pages: {total_pages}")
 
-
-    total_pages = -(-total_documents // limit)  # Ceiling division to calculate total pages
-    print(f"Total documents: {total_documents}\n Total_pages: {total_pages}")
- 
-    while page < total_pages:
+    while page <= total_pages:
         skip = (page - 1) * limit
         pipeline = [
+            # Group by `asin` and find the document with the highest `profit_uk`
             {"$group": {
                 "_id": "$asin",
                 "maxProfit": {"$max": "$profit_uk"},
                 "document": {"$first": "$$ROOT"}
             }},
+            # Replace root with the document having the highest profit
             {"$replaceRoot": {"newRoot": "$document"}},
-            {"$sort": {"asin": 1}},  # Sort by `asin` to ensure consistent pagination
+            # Sort by `asin` to ensure consistent pagination
+            {"$sort": {"asin": 1}},
+            # Skip and limit for pagination
             {"$skip": skip},
             {"$limit": limit},
+            # Project to exclude unwanted fields
             {"$project": {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0, 'upc': 0, "ref_up": 0, 'csv_data': 0}}
         ]
 
+        # Execute the aggregation pipeline
         cursor = fetch_from.aggregate(pipeline)
         batch = await cursor.to_list(length=None)
  
