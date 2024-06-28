@@ -13,6 +13,7 @@ class FilterModel(BaseModel):
     search_term: str = None
     start_date: str = None
     end_date: str = None
+    sales_rank: str = None
     
 
 

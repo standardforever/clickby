@@ -23,9 +23,13 @@ app.add_middleware(
 )
 
 from app.router import api
+from app.router import sort
 app.include_router(api.router,
-                    tags=['ClickByApi'],
+                    # tags=['ClickByApi'],
                     prefix='/api/v1')
+
+app.include_router(sort.router,
+                prefix='/api/v1/sort')
 
 @app.get('/')
 async def root():

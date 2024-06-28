@@ -8,7 +8,7 @@ from main import app
 import traceback
 import time
 from datetime import datetime, timedelta
-router = APIRouter()
+router = APIRouter(tags=["Home"])
 
 
 @router.get("/category")
@@ -37,6 +37,14 @@ async def get_store_price():
     return [
          '<25%', '25-50', '50-100' 
     ]
+
+@router.get('/sales-rank')
+async def get_sales_rank():
+    return [
+        "1 - 25k", "25 - 75k",
+        "75k - 150k", "150k+"
+    ]
+
 
 @router.get('/filter')
 async def filter_button():
@@ -159,6 +167,41 @@ async def home(filter: FilterModel):
         if filter.supplier_name:
             match_conditions["seller_name"] = {"$in": filter.supplier_name}
 
+        if (filter.start_date and filter.end_date) and (filter.start_date != filter.end_date):
+            try:
+                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d %H:%M:%S")
+                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d %H:%M:%S")
+                match_conditions['last_update_time'] = {
+                    "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+                }
+                print("\n\n\n\n\nddfdefdfsfdsfdsfsdfdsfdsfds\n\n\n\n\n\n")
+            except Exception as e:
+                print(e)
+                pass
+        
+        elif filter.start_date:
+            try:
+                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d %H:%M:%S")
+                match_conditions["last_update_time"] = {
+                    "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S")
+                }
+            except Exception as e:
+                print(e)
+                pass
+
+        elif filter.end_date:
+            try:
+                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d %H:%M:%S")
+                match_conditions["last_update_time"] = {
+                    "last_update_time": {
+                        "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                }
+            except Exception as e:
+                print(e)
+                pass
+
         # Calculate total count
         if match_conditions:
             total_count = await app.collection.count_documents(match_conditions)
@@ -176,15 +219,16 @@ async def home(filter: FilterModel):
         return 500
 
 
-@router.post('/home/{limit}/{skip}')
-async def home(limit: int, skip: int, filter: FilterModel):
+@router.post('/home')
+async def home(filter: FilterModel, limit: int=50, skip: int=0, sort_by_column: str = "profit_uk", ascend_decend: int = -1,  count_doc: bool=False):
     try:
         total_time = time.time()
         store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
+        sales_rank_ranges = {"1 - 25k": (1, 25000), "25k - 75k": (25000, 75000), "75k - 150k": (75000, 150000), "150k+": (150000, 0) } 
 
         # Pipeline to filter documents based on profit_uk and apply pagination
         pipeline = [
-            {"$sort": {"profit_uk": -1}},
+            {"$sort": {sort_by_column: ascend_decend}},
             {"$skip": skip},  # Skip documents based on the offset
             {"$limit": limit},  # Limit the number of documents returned
             {"$project": {"_id": 0, "ref_close": 0, "ref_down": 0, "ref_limit": 0, 'upc': 0, "ref_up": 0, 'csv_data': 0}}
@@ -203,6 +247,12 @@ async def home(limit: int, skip: int, filter: FilterModel):
             else:
                 match_conditions["seller_price"] = {"$gte": min_price}
 
+        if filter.sales_rank in sales_rank_ranges:
+            min_price, max_price = sales_rank_ranges[filter.sales_rank]
+            if filter.sales_rank != "150k+":
+                match_conditions["sales_rank"] = {"$gte": min_price, "$lte": max_price}
+            else:
+                match_conditions["sales_rank"] = {"$gte": min_price}
         if filter.roi:
             match_conditions["roi_category"] = {"$in": filter.roi}
 
@@ -213,10 +263,10 @@ async def home(limit: int, skip: int, filter: FilterModel):
             match_conditions["seller_name"] = {"$in": filter.supplier_name}
 
         
-        if filter.start_date and filter.end_date:
+        if (filter.start_date and filter.end_date):
             try:
-                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d")
-                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d")
+                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d %H:%M:%S")
+                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d %H:%M:%S")
                 match_conditions['last_update_time'] = {
                     "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S"),
                     "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
@@ -228,6 +278,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
         
         elif filter.start_date:
             try:
+                start_date = datetime.strptime(filter.start_date, "%Y-%m-%d %H:%M:%S")
                 match_conditions["last_update_time"] = {
                     "$gte": start_date.strftime("%Y-%m-%d %H:%M:%S")
                 }
@@ -237,6 +288,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
 
         elif filter.end_date:
             try:
+                end_date = datetime.strptime(filter.end_date, "%Y-%m-%d %H:%M:%S")
                 match_conditions["last_update_time"] = {
                     "last_update_time": {
                         "$lt": (end_date + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
@@ -245,7 +297,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
             except Exception as e:
                 print(e)
                 pass
-        
+
         
         # Add the match stage to the pipeline if there are any match conditions
         if match_conditions:
@@ -255,8 +307,21 @@ async def home(limit: int, skip: int, filter: FilterModel):
         # Print pipeline
         print("Pipeline:", pipeline)
 
+
         # Execute the pipeline to retrieve data
         start_time = time.time()
+
+        # Calculate total 
+        total_count = 0
+        if count_doc == True: 
+            if match_conditions:
+                total_count = await app.collection.count_documents(match_conditions)
+            else:
+                total_count = await app.collection_profit.estimated_document_count()
+
+            return {"total_count": total_count}
+
+
         cursor = app.collection.aggregate(pipeline)
         data = await cursor.to_list(length=None)
         end_time = time.time()
@@ -265,13 +330,7 @@ async def home(limit: int, skip: int, filter: FilterModel):
         execution_time = end_time - start_time
         print("Total execution time:", execution_time, "seconds")
 
-        # Calculate total count
-        if match_conditions:
-            total_count = await app.collection.count_documents(match_conditions)
-            # total_count = 50
-        else:
-            total_count = await app.collection_profit.estimated_document_count()
-            
+                
 
         total_end_time = time.time()
         print("Total time:", total_end_time - total_time)
