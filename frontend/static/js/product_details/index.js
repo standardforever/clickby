@@ -1,3 +1,4 @@
+import { get_environment_url } from "../config.js";
 import { formatNumber, formatPercentage, roundToTwoDP } from "../utils.js";
 import { getUrlComponents } from "./utils.js"
 
@@ -5,10 +6,12 @@ $(document).ready(function () {
     document.getElementById('productASIN').textContent = getUrlComponents().productId
     document.getElementById('productCategory').textContent = getUrlComponents().categoryPath;
 
+    const dynamic_url = get_environment_url()
+
     const productId = getUrlComponents().productId;
 
     // Construct the API endpoint URL
-    const apiUrl = `http://app.clickbuy.ai/api/v1/product/${productId}`;
+    const apiUrl = `${dynamic_url}/product/${productId}`;
 
     // Make an AJAX request to the API
     $.ajax({

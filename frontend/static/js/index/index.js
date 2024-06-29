@@ -1,9 +1,14 @@
+import { get_environment_url } from "../config.js";
 import { formatDate } from "../utils.js";
 import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, populateTable, populateSPDropdown , populateSalesRankDropdown, getSortValue} from "./utils.js";
 
+
+
+
 $(document).ready(function () {
     $(".loaderContainer").show();
-
+    const dynamic_url = get_environment_url()
+   
     // PAGINATION CONTROL
     var currentPage = 1;
     var totalPages = 1;
@@ -170,10 +175,10 @@ $(document).ready(function () {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
         const itemsPerPage = 50;
-        return makePostRequest(`http://app.clickbuy.ai/api/v1/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
+        return makePostRequest(`${dynamic_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
             .done(async function (response) {
                 
-                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/home?count_doc=true', updateDataObject());
+                const res = await makePostRequest(`${dynamic_url}/home?count_doc=true`, updateDataObject());
                 populateTable(response.data);
                 holdData = response.data;
                 currentPage = pageNumber;
@@ -190,11 +195,11 @@ $(document).ready(function () {
 
     const OnLoadPageFunc = () => {
         var promises = [
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/category'),
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/supplier-name'),
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/roi'),
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/store-price'),
-            makeAjaxCall('http://app.clickbuy.ai/api/v1/sales-rank')
+            makeAjaxCall(`${dynamic_url}/category`),
+            makeAjaxCall(`${dynamic_url}/supplier-name`),
+            makeAjaxCall(`${dynamic_url}/roi`),
+            makeAjaxCall(`${dynamic_url}/store-price`),
+            makeAjaxCall(`${dynamic_url}/sales-rank`)
         ];
 
         $.when.apply($, promises).then(function () {
@@ -271,7 +276,7 @@ $(document).ready(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: "http://app.clickbuy.ai/api/v1/home?limit=50&skip=0",
+            url: `${dynamic_url}/home?limit=50&skip=0`,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
@@ -291,7 +296,7 @@ $(document).ready(function () {
                 $('#myTable tbody').show();
                 currentPage = 1;
                 populateTable(response.data);
-                const res = await makePostRequest('http://app.clickbuy.ai/api/v1/home?count_doc=true', updateDataObject());
+                const res = await makePostRequest(`${dynamic_url}/home?count_doc=true`, updateDataObject());
                 totalPages = Math.ceil(res.total_count / 50);
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
