@@ -1,0 +1,1 @@
+docker-compose -f docker-compose_test.yaml up --build

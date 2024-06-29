@@ -1,0 +1,5 @@
+1. check the log for docker service
+    - ``` sudo docker ps```  = to check the PID
+    - ``` sudo docker log -f {PID}``` = add the process ID to the {PID}
+
+2. 
