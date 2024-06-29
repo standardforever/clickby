@@ -4,8 +4,8 @@ import asyncio
 from helper_function.filter_collection import filter_collection
 from helper_function.unique_collection import unique_asin
 
-username = 'website_live'
-password = '1mR6FOKNXrCcVtoP'
+username = 'fiverr_user'
+password = 'fiverr_user'
 gg_client = AsyncIOMotorClient(
     f"mongodb+srv://{username}:{password}@cluster0.sngd13i.mongodb.net/?retryWrites=true&w=majority",
     maxPoolSize=50,
