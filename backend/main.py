@@ -2,10 +2,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils.database import connection
 
+from urllib.parse import quote_plus
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
-app = FastAPI(docs_url="/api/v1/docs", openapi_url="/api/v1/openapi.json")
+# Retrieve environment variables
+environment = quote_plus(os.getenv("environment"))
 
+app = FastAPI(
+    root_path=f"/{environment}",
+    docs_url=f"/api/v1/docs",
+    openapi_url=f"/openapi.json"
+)
 
 @app.on_event("startup")
 async def startup_events():
