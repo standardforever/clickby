@@ -25,12 +25,12 @@ export const get_environment_url = () => {
         return prod_config.api_url
     }
     else if (url_variable === test_config.url) {
-        console.log(url_variable, prod_config.name)
+        console.log(url_variable, test_config.name)
     
         return test_config.api_url
     }
     else {
-        console.log(url_variable, prod_config.name)
+        console.log(url_variable, local_config.name)
         return local_config.api_url
     }
 }
