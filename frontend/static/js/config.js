@@ -20,12 +20,13 @@ const local_config = {
 export const get_environment_url = () => {
     const url_variable = window.location.origin;
     if (url_variable === prod_config.url) {
-        console.log(url_variable, prod_config.name)
+        console.log(url_variable, prod_config.name, prod_config.api_url)
 
         return prod_config.api_url
     }
     else if (url_variable === test_config.url) {
         console.log(url_variable, prod_config.name)
+    
         return test_config.api_url
     }
     else {
