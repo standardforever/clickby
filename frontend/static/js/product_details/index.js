@@ -6,7 +6,10 @@ $(document).ready(function () {
     document.getElementById('productASIN').textContent = getUrlComponents().productId
     document.getElementById('productCategory').textContent = getUrlComponents().categoryPath;
 
+    const token = sessionStorage.getItem('clickbuy')
+
     const dynamic_url = get_environment_url()
+
 
     const productId = getUrlComponents().productId;
 
@@ -17,6 +20,9 @@ $(document).ready(function () {
     $.ajax({
         url: apiUrl,
         type: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         success: function (product) {
             // Assuming the API returns a product object structured as mentioned in your question
             // document.getElementById('productImage').alt = product[0].category;

@@ -8,6 +8,13 @@ import { populateCATEGORIESDropdown, populateROIDropdown, populateSNDropdown, po
 $(document).ready(function () {
     $(".loaderContainer").show();
     const dynamic_url = get_environment_url()
+
+    const token = sessionStorage.getItem('clickbuy_access')
+    const token_access = sessionStorage.getItem('refresh_token')
+
+    if(!token){
+        window.location.href = 'http://127.0.0.1:5500/frontend/views/login/index.html'
+    }
    
     // PAGINATION CONTROL
     var currentPage = 1;
@@ -110,7 +117,10 @@ $(document).ready(function () {
         return $.ajax({
             url: url,
             method: 'GET',
-            dataType: 'json'
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
     }
 
@@ -120,7 +130,10 @@ $(document).ready(function () {
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
     }
 
