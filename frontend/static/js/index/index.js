@@ -10,7 +10,7 @@ $(document).ready(function () {
     const dynamic_url = get_environment_url()
 
     const token = sessionStorage.getItem('clickbuy_access')
-    const token_access = sessionStorage.getItem('refresh_token')
+    const refresh_token = sessionStorage.getItem('clickbuy_refresh')
 
     if(!token){
         window.location.href = 'http://127.0.0.1:5500/frontend/views/login/index.html'
@@ -200,20 +200,27 @@ $(document).ready(function () {
                 updatePagination();
                 $(".loaderContainer").hide();
             })
-            .fail(function (err) {
+            .fail(async function (err) {
                 console.log('An error occurred during AJAX calls.', err);
-                // const retry = $.ajax({
-                //     url: `${dynamic_url}/auth/token/refresh/`,
-                //     method: 'POST',
-                //     dataType: 'json',
-                //     contentType: 'application/json',
-                //     headers: {
-                //         'Authorization': `Bearer ${token}`
-                //     }
-                // });
-                // if(retry) {
+                const retry = await $.ajax({
+                    url: `${dynamic_url}/auth/token/refresh/`,
+                    method: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    headers: {
+                        'Authorization': `Bearer ${refresh_token}`
+                    }
+                });
+                
+                if (retry) {
+                    sessionStorage.setItem("clickbuy_access", retry.access_token)
+                    sessionStorage.setItem("clickbuy_refresh", retry.refresh_token)
 
-                // }
+                    await fetchDataAndUpdatePagination()
+                   
+                }
+
+        
                 
                 $(".loaderContainer").hide();
             });
