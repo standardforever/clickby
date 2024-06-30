@@ -9,7 +9,7 @@ services:
     volumes:
       - ./backend/source:/usr/src/app
     environment:
-      - environment=prod-api
+      - environment=test-api
       - db_connection_url=mongodb+srv://website_live:1mR6FOKNXrCcVtoP@cluster0.sngd13i.mongodb.net/?retryWrites=true&w=majority
       - cors_allowed=["*"]
       - database_name=mvp2
