@@ -202,6 +202,19 @@ $(document).ready(function () {
             })
             .fail(function (err) {
                 console.log('An error occurred during AJAX calls.', err);
+                // const retry = $.ajax({
+                //     url: `${dynamic_url}/auth/token/refresh/`,
+                //     method: 'POST',
+                //     dataType: 'json',
+                //     contentType: 'application/json',
+                //     headers: {
+                //         'Authorization': `Bearer ${token}`
+                //     }
+                // });
+                // if(retry) {
+
+                // }
+                
                 $(".loaderContainer").hide();
             });
     }
@@ -319,6 +332,7 @@ $(document).ready(function () {
                 $(".tableLoadContainer").hide();
                 $('#myTable tbody').show();
                 console.error('Error occurred during search:', error);
+
             }
         });
     }, 300)); // 300ms delay

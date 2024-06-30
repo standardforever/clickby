@@ -24,11 +24,9 @@ $(document).ready(function () {
                 const res = JSON.parse(JSON.stringify(response))
                 sessionStorage.setItem("clickbuy_access", response.access_token)
                 sessionStorage.setItem("clickbuy_refresh", response.refresh_token)
-                // console.log(response)
-                // window.location.href = '/';
+                window.location.href = '/';
             },
             error: function (error) {
-                // Handle error response
                 console.log('Login failed', error);
             }
         });
