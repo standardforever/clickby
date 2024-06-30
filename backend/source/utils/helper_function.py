@@ -18,12 +18,8 @@ async def get_unique_field(collection, column):
 
 
 
-
-
 def is_ebay_url(url):
     return "ebay" in urlparse(url).netloc.lower()
-
-
 
 def is_filtered_seller(seller_name):
     return "ebay" in seller_name.lower() or "onbuy" in seller_name.lower()

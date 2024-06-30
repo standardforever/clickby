@@ -1,10 +1,15 @@
-from fastapi import APIRouter, HTTPException, status
-from typing import List
-from app.utils import helper_function
-from app.schemas.api_schema import FilterModel
-import re
-import numpy as np 
-from main import app
+from fastapi import APIRouter, HTTPException, status, Security
+
+
+from typing import List, Annotated
+from utils import helper_function
+
+
+from common.schemas.api_schema import FilterModel
+from common.models.user_models import User
+from utils.auth_utils import get_current_user
+
+from app.app import app
 import traceback
 import time
 from datetime import datetime, timedelta
@@ -12,34 +17,34 @@ router = APIRouter(tags=["Home"])
 
 
 @router.get("/category")
-async def get_categroy():
+async def get_categroy(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     category = await helper_function.get_unique_field(app.collection, 'category')
     return category
 
 @router.get("/market")
-async def get_market():
+async def get_market(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     market = await helper_function.get_unique_field(app.collection, 'marketplace_id')
     return market
 
 
 @router.get('/supplier-name')
-async def get_supplier_name():
+async def get_supplier_name(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     supplier_name = await helper_function.get_unique_field(app.collection, 'seller_name')
     return supplier_name
 
 @router.get('/roi')
-async def get_roi():
+async def get_roi(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     roi = await helper_function.get_unique_field(app.collection, 'roi_category')
     return roi
 
 @router.get('/store-price')
-async def get_store_price():
+async def get_store_price(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     return [
          '<25%', '25-50', '50-100' 
     ]
 
 @router.get('/sales-rank')
-async def get_sales_rank():
+async def get_sales_rank(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     return [
         "1 - 25k", "25 - 75k",
         "75k - 150k", "150k+"
@@ -47,7 +52,7 @@ async def get_sales_rank():
 
 
 @router.get('/filter')
-async def filter_button():
+async def filter_button(current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     category = await helper_function.get_unique_field(app.collection, 'category')
     roi = await helper_function.get_unique_field(app.collection, 'roi_category')
     store_price = [
@@ -66,7 +71,7 @@ async def filter_button():
 
 # Cache for product details
 @router.get("/product/{asin}")
-async def api_product_details(asin: str):
+async def api_product_details(asin: str, current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     items = await app.collection_profit.find({"asin": asin}, {"_id": 0, "csv_data": 0}).sort("profit_uk", -1).to_list(length=None)
     return items
 
@@ -140,7 +145,7 @@ async def api_product_details(asin: str):
 
 
 @router.post('/count')
-async def home(filter: FilterModel):
+async def home(filter: FilterModel, current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])]):
     try:
         total_time = time.time()
         store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
@@ -220,7 +225,10 @@ async def home(filter: FilterModel):
 
 
 @router.post('/home')
-async def home(filter: FilterModel, limit: int=50, skip: int=0, sort_by_column: str = "profit_uk", ascend_decend: int = -1,  count_doc: bool=False):
+async def home(filter: FilterModel, current_user: Annotated[User, Security(get_current_user, scopes=["me:read"])],
+            limit: int=50, skip: int=0, sort_by_column: str = "profit_uk",
+            ascend_decend: int = -1,  count_doc: bool=False,
+):
     try:
         total_time = time.time()
         store_price_ranges = {"<25": (0, 25), "25-50": (25, 50), "50-100": (50, 100), "100>": 100}
