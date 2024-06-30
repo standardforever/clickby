@@ -122,20 +122,20 @@
                                 </div>
                                 <div class="new-content px-3 bg-white mt-3 addCol" style="display: none;">
                                     <div class="new-content-item">
-                                        <input type="checkbox" id="product-name" name="product-name-checkbox" class="me-4" checked>
-                                        <label for="product-name">Product Name</label>
-                                    </div>
-                                    <div class="new-content-item">
-                                        <input type="checkbox" id="date-added" name="date-added-checkbox" class="me-4" checked>
-                                        <label for="date-added">Date Added</label>
-                                    </div>
-                                    <div class="new-content-item">
                                         <input type="checkbox" id="amazon_selling_price" name="category-checkbox" class="me-4" checked>
                                         <label for="amazon_selling_price">Amazon £</label>
                                     </div>
                                     <div class="new-content-item">
-                                        <input type="checkbox" id="roi" name="category-checkbox" class="me-4" checked>
-                                        <label for="roi">ROI</label>
+                                        <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
+                                        <label for="item_category">ASIN</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="uk_amz_£" name="category-checkbox" class="me-4">
+                                        <label for="uk_amz_£">AMZ Fee</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
+                                        <label for="item_category">AMZ Page Rank</label>
                                     </div>
                                     <div class="new-content-item">
                                         <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
@@ -145,6 +145,23 @@
                                         <input type="checkbox" id="coupon_code" name="category-checkbox" class="me-4">
                                         <label for="coupon_code">Coupon Code</label>
                                     </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="date-added" name="date-added-checkbox" class="me-4" checked>
+                                        <label for="date-added">Date Added</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="item_category" name="category-checkbox" class="me-4" >
+                                        <label for="item_category">Model</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="product-name" name="product-name-checkbox" class="me-4" checked>
+                                        <label for="product-name">Product Name</label>
+                                    </div>
+                                    <div class="new-content-item">
+                                        <input type="checkbox" id="roi" name="category-checkbox" class="me-4" checked>
+                                        <label for="roi">ROI</label>
+                                    </div>
+                                    
                                     <div class="new-content-item">
                                         <input type="checkbox" id="supplier_note" name="category-checkbox" class="me-4">
                                         <label for="supplier_note">Supplier Notes</label>
@@ -157,16 +174,30 @@
                                         <input type="checkbox" id="store_price" name="category-checkbox" class="me-4" checked>
                                         <label for="store_price">Store Price</label>
                                     </div>
-                                    <div class="new-content-item">
-                                        <input type="checkbox" id="uk_amz_£" name="category-checkbox" class="me-4">
-                                        <label for="uk_amz_£">AMZ Fee</label>
+                                                
+                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-AMZFees">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4" ></i>    
+                                        </span>
+                                        <label> Amazon Fees</label>
                                     </div>
-                                                                  
                                     <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-AMZLink">
                                         <span>
                                             <i class="bi bi-three-dots me-4" ></i>    
                                         </span>
                                         <label> Amazon Link</label>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-Category">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4" ></i>    
+                                        </span>
+                                        <label>Category</label>
+                                    </div>
+                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-ExRate">
+                                        <span>
+                                            <i class="bi bi-three-dots me-4" ></i>    
+                                        </span>
+                                        <label> Ex Rate </label>
                                     </div>
                                     <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-Profit">
                                         <span>
@@ -180,18 +211,19 @@
                                         </span>
                                         <label> Sales Rank</label>
                                     </div>
-                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-AMZFees">
+                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-More-UK">
                                         <span>
                                             <i class="bi bi-three-dots me-4" ></i>    
                                         </span>
-                                        <label> Amazon Fees</label>
+                                        <label>More UK</label>
                                     </div>
-                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-ExRate">
+                                    <div class="dropdown w-100 new-content-item position-relative" data-target="filter-content-More-US">
                                         <span>
                                             <i class="bi bi-three-dots me-4" ></i>    
                                         </span>
-                                        <label> Ex Rate </label>
+                                        <label>More US</label>
                                     </div>
+                                
                                   
                                 </div>
                                 <div id="filter-dropdown-content-wrapper">
@@ -230,7 +262,6 @@
                                             </div>
                                     </div> 
                                     <div id="filter-content-Profit" class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute  d-none filter-dropdown-content" >
-                                            
                                             <div class="new-content-item d-flex align-items-center">
                                                 <input type="checkbox" id="uk-profit-checkbox" name="uk-profit-checkbox" class="me-4" checked>
                                                 <label for="uk-profit-checkbox" class="mb-0">UK Profit</label>
@@ -338,6 +369,193 @@
                                             <label for="ex-rate-GBP-USD" class="mb-0">Ex Rate GBP-USD</label>
                                         </div>
                                     </div>
+
+
+                                
+
+
+
+
+
+
+
+
+                                    <div id="filter-content-More-UK" class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute d-none filter-dropdown-content">
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="it_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="it_amazon-link-checkbox" class="mb-0">UK Average BSR 30d</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="sp_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="sp_amazon-link-checkbox" class="mb-0">UK Average BSR 90d</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox7" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox7" class="mb-0">UK BSR</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="nt_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="nt_amazon-link-checkbox" class="mb-0">UK BSR%</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox10" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox10" class="mb-0">UK Buybox Price £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox3" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox3" class="mb-0">UK Competitive Sellers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox6" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox6" class="mb-0">UK FBA Fees £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox6" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox6" class="mb-0">UK FBA Offers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox4" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox4" class="mb-0">UK Lowest Price FBA £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox5" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox5" class="mb-0">UK Lowest Price FBM £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="fr_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="fr_amazon-link-checkbox" class="mb-0">UK Number Variations</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox8" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox8" class="mb-0">UK No Reviews</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">UK Profit</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">UK Referral Fee £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">UK Review Rating</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="ger_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="ger_amazon-link-checkbox" class="mb-0">UK Total Offers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox" class="mb-0">UK Units per Month</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">UK Variable Closing Fee £</label>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div id="filter-content-More-US" class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute d-none filter-dropdown-content">
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="it_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="it_amazon-link-checkbox" class="mb-0">US Average BSR 30d</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="sp_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="sp_amazon-link-checkbox" class="mb-0">US Average BSR 90d</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox7" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox7" class="mb-0">US BSR</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="nt_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="nt_amazon-link-checkbox" class="mb-0">US BSR%</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox10" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox10" class="mb-0">US Buybox Price £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox3" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox3" class="mb-0">US Competitive Sellers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox6" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox6" class="mb-0">US FBA Fees £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox6" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox6" class="mb-0">US FBA Offers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox4" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox4" class="mb-0">US Lowest Price FBA £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox5" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox5" class="mb-0">US Lowest Price FBM £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="fr_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="fr_amazon-link-checkbox" class="mb-0">US Number Variations</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox8" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox8" class="mb-0">US No Reviews</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">US Profit</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">US Referral Fee £</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">US Review Rating</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="ger_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="ger_amazon-link-checkbox" class="mb-0">US Total Offers</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox" class="mb-0">US Units per Month</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox9" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox9" class="mb-0">US Variable Closing Fee £</label>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div id="filter-content-Category" class="shadow-lg p-3 mb-5 rounded mt-3 position-absolute d-none filter-dropdown-content">
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="it_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="it_amazon-link-checkbox" class="mb-0">Category</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="sp_amazon-link-checkbox" name="amazon-link-checkbox" class="me-4">
+                                            <label for="sp_amazon-link-checkbox" class="mb-0">Sub category</label>
+                                        </div>
+                                        <div class="new-content-item d-flex align-items-center">
+                                            <input type="checkbox" id="usa_amazon-link-checkbox7" name="amazon-link-checkbox" class="me-4">
+                                            <label for="usa_amazon-link-checkbox7" class="mb-0">Sub sub category</label>
+                                        </div>
+                                    </div>
+                                
+
+
+
+
+
+
+
+
+
                                     
                                 </div>
                             </div>
