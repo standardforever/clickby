@@ -3,11 +3,11 @@ services:
   backend__test:
     build:
       dockerfile: Dockerfile
-      context: ./backend
+      context: ./backend/source
     ports:
       - "8002:8002"
     volumes:
-      - ./backend:/usr/src/app
+      - ./backend/source:/usr/src/app
     environment:
       - environment=prod-api
       - db_connection_url=mongodb+srv://website_live:1mR6FOKNXrCcVtoP@cluster0.sngd13i.mongodb.net/?retryWrites=true&w=majority
