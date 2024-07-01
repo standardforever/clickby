@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="./static/css/main.css" />
-    <link rel="stylesheet" href="./static/css/test.css" />
-    <link rel="stylesheet" href="./static/css/product_details/main.css" />
+    <link rel="stylesheet" id="main-css-url" />
+    <link rel="stylesheet" id="test-css-url" />
+    <link rel="stylesheet" id="product-details-css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
 
@@ -57,35 +57,48 @@
     </div>
 
     <script>
-        // Example data
-        // const product = {
-        //     Category: "Electronics",
-        //     ASIN: "B0123456",
-        //     Image: "path/to/product/image.jpg",
-        //     Sellers: [
-        //         {seller_name: "Supplier1", product_link: "http://example.com", seller_price: "£200", profit: "£50", roi: "25%"},
-        //         {seller_name: "Supplier2", product_link: "http://example.com", seller_price: "£210", profit: "£45", roi: "21%"}
-        //     ]
-        // };
+        $(document).ready(function () {
+            // Get the current URL path
+            let scriptEle = document.createElement("script");
 
-        // document.getElementById('productCategory').textContent = product.Category;
-        // // document.getElementById('productASIN').textContent = product.ASIN;
-        // document.getElementById('productImage').src = product.Image;
-        // document.getElementById('productImage').alt = product.Category;
+            const path = window.location.pathname;
+            console.log(path)
+            // Determine environment based on URL path
+            let environment;
+            if (path.startsWith('/test')) {
+                environment = 'test';
+            } else {
+                environment = 'production';
+            }
+    
+            // Set base URL and script/module URLs based on environment
+            // const baseElement = document.getElementById('base-url');
+             
+            const mainLink = document.getElementById('main-css-url');
+            const testLink = document.getElementById('test-css-url');
+            const productLink = document.getElementById('product-details-css');
+            const scriptModule = document.querySelector('script[type="module"]');
+    
+            scriptEle.setAttribute("type", "module");
 
-        // const sellersTableBody = document.getElementById('sellersTableBody');
-        // product.Sellers.forEach(seller => {
-        //     const row = `
-        //         <tr>
-        //             <td>${seller.seller_name}</td>
-        //             <td><a href="${seller.product_link}" target="_blank">Show me the Product</a></td>
-        //             <td>${seller.seller_price}</td>
-        //             <td>${seller.profit}</td>
-        //             <td>${seller.roi}</td>
-        //         </tr>
-        //     `;
-        //     sellersTableBody.innerHTML += row;
-        // });
+            if (environment === 'production') {
+                // baseElement.href = "/";
+                mainLink.href = "/static/css/main.css";
+                testLink.href = "/static/css/test.css";
+                productLink.href = "/static/css/product_details/main.css";
+                scriptEle.setAttribute("src", "/static/js/product_details/index.js");
+                document.body.appendChild(scriptEle);
+                // scriptModule.src = "/static/js/login/index.js";
+            } else if (environment === 'test') {
+                // baseElement.href = "/test/";
+                mainLink.href = "/test/static/css/main.css";
+                testLink.href = "/test/static/css/test.css";
+                productLink.href = "/test/static/css/product_details/main.css";
+                scriptEle.setAttribute("src", "/test/static/js/product_details/index.js");
+                document.body.appendChild(scriptEle);
+                // scriptModule.src = "/test/static/js/login/index.js";
+            }
+        })
     </script>
 
 </body>

@@ -670,7 +670,7 @@
         
                                 <!-- Last Page Button -->
                                 <li class="page-item">
-                                    <a class="page-link text-black"
+                                    <a class="page-link text-black"></a>
                                 </li>
                             </ul>
                         </nav>
@@ -695,6 +695,7 @@
             } else {
                 environment = 'production';
             }
+            console.log('environment', environment)
     
             // Set base URL and script/module URLs based on environment
             // const baseElement = document.getElementById('base-url');
@@ -714,7 +715,10 @@
                 // scriptModule.src = "/static/js/login/index.js";
             } else if (environment === 'test') {
                 // baseElement.href = "/test/";
-                cssLink.href = "/test/static/css/login/styles.css";
+                mainCssLink.href = "/test/static/css/main.css";
+                testCssLink.href = "/test/static/css/styles.css";
+                stylesCssLink.href = "/test/static/css/test.css";
+
                 scriptEle.setAttribute("src", "/test/static/js/index/index.js");
                 document.body.appendChild(scriptEle);
                 // scriptModule.src = "/test/static/js/login/index.js";

@@ -15,7 +15,6 @@ $(document).ready(function () {
     }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
-    console.log(token, refresh_token)
    
     // PAGINATION CONTROL
     var currentPage = 1;
@@ -189,9 +188,10 @@ $(document).ready(function () {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
         const itemsPerPage = 50;
-        return makePostRequest(`${dynamic_url.api_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
+        const apiUrl = `${dynamic_url.api_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`;
+        
+        return makePostRequest(apiUrl, updateDataObject())
             .done(async function (response) {
-                
                 const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject());
                 populateTable(response.data);
                 holdData = response.data;
@@ -209,21 +209,22 @@ $(document).ready(function () {
                     dataType: 'json',
                     contentType: 'application/json',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${localStorage.getItem("clickbuy_refresh")}`
                     }
                 });
-                
+    
                 if (retry) {
-                    localStorage.setItem("clickbuy_access", retry.access_token)
-                    localStorage.setItem("clickbuy_refresh", retry.refresh_token)
-
-                    
-                    await fetchDataAndUpdatePagination()
+                    localStorage.setItem("clickbuy_access", retry.access_token);
+                    localStorage.setItem("clickbuy_refresh", retry.refresh_token);
+                    fetchDataAndUpdatePagination(pageNumber);
+                } else {
+                    window.location.href = "/login";
                 }
-
+    
                 $(".loaderContainer").hide();
             });
     }
+    
 
     const OnLoadPageFunc = () => {
         var promises = [
