@@ -68,6 +68,8 @@
             if (environment === 'production') {
                 // baseElement.href = "/";
                 cssLink.href = "/static/css/login/styles.css";
+                scriptEle.setAttribute("src", "/static/js/login/index.js");
+                document.body.appendChild(scriptEle);
                 // scriptModule.src = "/static/js/login/index.js";
             } else if (environment === 'test') {
                 // baseElement.href = "/test/";
