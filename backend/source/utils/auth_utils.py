@@ -70,7 +70,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 	else:
 		expire = datetime.utcnow() + timedelta(minutes=15)
 	access_data.update({"exp": expire, "type": 'access'})
-	refresh_data.update({"exp": datetime.utcnow() + timedelta(hours=5), 'type': "refresh"})
+	refresh_data.update({"exp": datetime.utcnow() + timedelta(hours=24), 'type': "refresh"})
 
 	access_token = jwt.encode(access_data, app_config.jwt_secret_key, algorithm=app_config.jwt_algorithm)
 	refresh_token = jwt.encode(refresh_data, app_config.jwt_secret_key, algorithm=app_config.jwt_algorithm)

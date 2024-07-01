@@ -15,7 +15,7 @@ $(document).ready(function () {
     }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
-
+    console.log(token, refresh_token)
    
     // PAGINATION CONTROL
     var currentPage = 1;
@@ -209,7 +209,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     contentType: 'application/json',
                     headers: {
-                        'Authorization': `Bearer ${refresh_token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 
