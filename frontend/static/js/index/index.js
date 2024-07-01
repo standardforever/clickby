@@ -12,10 +12,11 @@ $(document).ready(function () {
     console.log("dynamic_url", dynamic_url)
     const token = localStorage.getItem('clickbuy_access')
     console.log(token)
-    if(!token){
-        window.location.href = `/test/login`
-        // window.location.href = `${dynamic_url.url}/${dynamic_url.login_redirect}`
-    }
+    
+    // if(!token){
+    //     window.location.href = `/test/login`
+    //     // window.location.href = `${dynamic_url.url}/${dynamic_url.login_redirect}`
+    // }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
    
@@ -221,7 +222,7 @@ $(document).ready(function () {
                     localStorage.setItem("clickbuy_refresh", retry.refresh_token);
                     fetchDataAndUpdatePagination(pageNumber, token);
                 } catch (error) {
-                    window.location.href = "/login";
+                    window.location.href =  `${dynamic_url.url}/${dynamic_url.login_redirect}`;
                 }   
               
                 $(".loaderContainer").hide();
