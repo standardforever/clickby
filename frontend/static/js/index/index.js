@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     const token = localStorage.getItem('clickbuy_access')
     if(!token){
-        window.location.href = `${dynamic_url.url}`
+        window.location.href = `${dynamic_url.url}/login`
     }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
@@ -218,7 +218,7 @@ $(document).ready(function () {
                     localStorage.setItem("clickbuy_refresh", retry.refresh_token);
                     fetchDataAndUpdatePagination(pageNumber, token);
                 } catch (error) {
-                    window.location.href = dynamic_url.url;
+                    window.location.href = `${dynamic_url.url}/login`;
                 }   
               
                 $(".loaderContainer").hide();
