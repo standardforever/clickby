@@ -5,7 +5,6 @@ $(document).ready(function () {
     
     // Handle form submission
     $('.submitBtn').on('click', function (event) {
-        console.log('I am here')
         event.preventDefault(); // Prevent the default form submission
         
         var username = $('#username').val();
