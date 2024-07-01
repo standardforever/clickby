@@ -201,7 +201,7 @@ $(document).ready(function () {
                 updatePagination();
                 $(".loaderContainer").hide();
             })
-            .fail(async function (err) {
+            .fail(function (err) {
                 console.log('An error occurred during AJAX calls.', err);
                 const retry = await $.ajax({
                     url: `${dynamic_url.api_url}/auth/token/refresh/`,
