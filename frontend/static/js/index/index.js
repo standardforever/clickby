@@ -124,7 +124,7 @@ $(document).ready(function () {
         });
     }
 
-    function makePostRequest(url, data) {
+    function makePostRequest(url, data, token) {
         return $.ajax({
             url: url,
             method: 'POST',
@@ -185,14 +185,14 @@ $(document).ready(function () {
         $('#unique-product-count').text(totalCount.toLocaleString());
     }
 
-    function fetchDataAndUpdatePagination(pageNumber) {
+    function fetchDataAndUpdatePagination(pageNumber, token) {
         pageNumber = currentPage;
         const itemsPerPage = 50;
         const apiUrl = `${dynamic_url.api_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`;
         
-        return makePostRequest(apiUrl, updateDataObject())
+        return makePostRequest(apiUrl, updateDataObject(), token)
             .done(async function (response) {
-                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject());
+                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject(), token);
                 populateTable(response.data);
                 holdData = response.data;
                 currentPage = pageNumber;
@@ -216,7 +216,7 @@ $(document).ready(function () {
                 if (retry) {
                     localStorage.setItem("clickbuy_access", retry.access_token);
                     localStorage.setItem("clickbuy_refresh", retry.refresh_token);
-                    fetchDataAndUpdatePagination(pageNumber);
+                    fetchDataAndUpdatePagination(pageNumber, token);
                 } else {
                     window.location.href = "/login";
                 }
@@ -329,7 +329,7 @@ $(document).ready(function () {
                 $('#myTable tbody').show();
                 currentPage = 1;
                 populateTable(response.data);
-                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject());
+                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject(), token);
                 totalPages = Math.ceil(res.total_count / 50);
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
