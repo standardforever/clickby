@@ -10,9 +10,9 @@ $(document).ready(function () {
     const dynamic_url = get_environment_url()
 
     const token = localStorage.getItem('clickbuy_access')
-    // console.log(token)
+    console.log(token)
     if(!token){
-        window.location.href = `${dynamic_url.url}/login`
+        window.location.href = `${dynamic_url.url}/${dynamic_url.login_redirect}`
     }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
