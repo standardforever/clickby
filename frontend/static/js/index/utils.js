@@ -60,9 +60,10 @@ function populateTableWithData(data) {
             const sP = ['Store Price']
             const Icon = ['+']
 
+            console.log(headerTitle)
 
             if (Icon.includes(headerTitle)) {
-                row += `<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black text-white" style="width: max-content; font-size:10px" href=${get_environment_url().path/"product#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '"}>' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>`
+                row += '<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black text-white" style="width: max-content; font-size:10px" href="' + get_environment_url().path + '/product#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'
                 // row += '<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black  text-white" style="width: max-content; font-size:10px" href="/product_details.html#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'
             } else if (sP.includes(headerTitle)) {
                 row += '<td><a target="_blank" href="' + getObjectPath('Supplier Link', item, false) + '">' + objectPath + '</a></td>';
