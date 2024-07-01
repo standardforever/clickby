@@ -34,6 +34,7 @@ app.add_middleware(
 from router import api
 from router import auth_route
 from router import users_route
+from router import meterics_report
 
 app.include_router(api.router,
                     prefix='/api/v1')
@@ -44,6 +45,8 @@ app.include_router(auth_route.router,
 app.include_router(users_route.router,
                 prefix='/api/v1/user')
 
+app.include_router(meterics_report.router,
+                   prefix="/api/v1/metrics")
 @app.get('/')
 async def root():
     return {"Message": "Welcome to clickby Api with FastApi"}

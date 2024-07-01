@@ -40,7 +40,7 @@ async def login_for_access_token(
 	access_token_expires = timedelta(minutes=app_config.jwt_access_token_expire_minutes)
 	access_token = create_access_token(
 		data={"sub": user.email, "scopes": user.scopes},
-		expires_delta=access_token_expires
+		# expires_delta=access_token_expires
 	)
 
 	return access_token
