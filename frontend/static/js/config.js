@@ -2,14 +2,16 @@ const prod_config = {
     name: "production",
     url: "http://app.clickbuy.ai",
     api_url: "http://app.clickbuy.ai/prod-api/api/v1",
-    login_redirect: "/login"
+    login_redirect: "/login",
+    path: ''
 }
 
 const test_config = {
     name: "test",
     url: "http://app.clickbuy.ai/test",
     api_url: "http://app.clickbuy.ai/test-api/api/v1",
-    login_redirect: "/test/login"
+    login_redirect: "/test/login",
+    path: "/test"
 }
 
 
@@ -17,7 +19,8 @@ const local_config = {
     name: "localhost",
     url: "http://localhost:8003",
     api_url: "http://app.clickbuy.ai/test-api/api/v1",
-    login_redirect: "/test/login"
+    login_redirect: "/test/login",
+    path: '/test'
 }
 
 export const get_environment_url = () => {
