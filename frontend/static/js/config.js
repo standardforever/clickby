@@ -26,13 +26,12 @@ export const get_environment_url = () => {
     
     console.log("path", path)
 
-    let environment = url_variable + path
-    if (environment.includes('/test')) {
+    let environment;
+    if (path.startsWith('/test')) {
         return test_config
     } else if (url_variable === prod_config.url) {
         return prod_config
-    } 
- else {
+    } else {
         return local_config
     }
 }
