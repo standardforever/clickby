@@ -348,6 +348,7 @@ $(document).ready(function () {
         return $('.new-content-item input[type="checkbox"]:checked').length;
     }
 
+
     $('.new-content-item input[type="checkbox"]').on('change', function () {
         var isChecked = $(this).prop('checked');
         var itemName = $(this).closest('.new-content-item').text().trim();
@@ -358,7 +359,9 @@ $(document).ready(function () {
         }
         if (isChecked && countChecked() > 4) {
             if ($('#myTable th:contains(' + itemName + ')').length === 0) {
-                $('#myTable thead tr').append('<th>' + itemName + '</th>');
+                $('#myTable thead tr').append('<th>' + itemName + 
+                                              ' <i class="fa fa-sort-asc sort-icon" id="asc-' + itemName.replace(/\s+/g, '') + '" aria-hidden="true" role="button"></i>' + 
+                                              ' <i class="fa fa-sort-desc sort-icon" id="desc-' + itemName.replace(/\s+/g, '') + '" aria-hidden="true" role="button"></i></th>');
                 $('#myTable tbody tr').each(function () {
                     $(this).append('<td></td>');
                 });
@@ -373,6 +376,32 @@ $(document).ready(function () {
         var updatedData = holdData ?? fetchDataAndUpdatePagination();
         populateTable(updatedData);
     });
+
+    // $('.new-content-item input[type="checkbox"]').on('change', function () {
+    //     var isChecked = $(this).prop('checked');
+    //     var itemName = $(this).closest('.new-content-item').text().trim();
+    //     if (!isChecked && countChecked() <= 4) {
+    //         alert('You must have at least four checked columns.');
+    //         $(this).prop('checked', true);
+    //         return;
+    //     }
+    //     if (isChecked && countChecked() > 4) {
+    //         if ($('#myTable th:contains(' + itemName + ')').length === 0) {
+    //             $('#myTable thead tr').append('<th>' + itemName + '</th>');
+    //             $('#myTable tbody tr').each(function () {
+    //                 $(this).append('<td></td>');
+    //             });
+    //         }
+    //     } else if (!isChecked && countChecked() > 3) {
+    //         var index = $('#myTable th:contains(' + itemName + ')').index();
+    //         if (index !== -1) {
+    //             $('#myTable th:eq(' + index + ')').remove();
+    //             $('#myTable td:nth-child(' + (index + 1) + ')').remove();
+    //         }
+    //     }
+    //     var updatedData = holdData ?? fetchDataAndUpdatePagination();
+    //     populateTable(updatedData);
+    // });
 
     $('.new-content-item input[type="checkbox"]').each(function (index, item) {
         var itemName = $(item).closest('.new-content-item').text().trim();
