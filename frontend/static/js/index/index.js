@@ -13,7 +13,8 @@ $(document).ready(function () {
     const token = localStorage.getItem('clickbuy_access')
     console.log(token)
     if(!token){
-        window.location.href = `${dynamic_url.url}/${dynamic_url.login_redirect}`
+        window.location.href = `/test/login`
+        // window.location.href = `${dynamic_url.url}/${dynamic_url.login_redirect}`
     }
     
     const refresh_token = localStorage.getItem('clickbuy_refresh')
