@@ -20,6 +20,7 @@ $(document).ready(function () {
 
     // Make an AJAX request to the API
     function fetchProductData (token=localStorage.getItem('clickbuy_access')) {
+        console.log(token)
         $.ajax({
             url: apiUrl,
             type: 'GET',
@@ -65,7 +66,7 @@ $(document).ready(function () {
                     
                     localStorage.setItem("clickbuy_access", retry.access_token);
                     localStorage.setItem("clickbuy_refresh", retry.refresh_token);
-                    fetchProductData(token);
+                    fetchProductData(retry.access_token);
                 } catch (error) {
                     window.location.href = `${dynamic_url.url}/login`;
                 }  
