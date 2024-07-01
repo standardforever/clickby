@@ -10,6 +10,7 @@ $(document).ready(function () {
     const dynamic_url = get_environment_url()
 
     const token = localStorage.getItem('clickbuy_access')
+    // console.log(token)
     if(!token){
         window.location.href = `${dynamic_url.url}/login`
     }
@@ -124,7 +125,8 @@ $(document).ready(function () {
         });
     }
 
-    function makePostRequest(url, data, token) {
+    function makePostRequest(url, data, token=localStorage.getItem('clickbuy_access')) {
+        console.log("token", token)
         return $.ajax({
             url: url,
             method: 'POST',
@@ -203,24 +205,24 @@ $(document).ready(function () {
             })
             .fail(async function (err) {
                 console.log('An error occurred during AJAX calls.', err);
-                const retry = await $.ajax({
-                    url: `${dynamic_url.api_url}/auth/token/refresh/`,
-                    method: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("clickbuy_refresh")}`
-                    }
-                });
-    
-                if (retry) {
+                try {
+                    const retry = await $.ajax({
+                        url: `${dynamic_url.api_url}/auth/token/refresh/`,
+                        method: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem("clickbuy_refresh")}`
+                        }
+                    });
+                    
                     localStorage.setItem("clickbuy_access", retry.access_token);
                     localStorage.setItem("clickbuy_refresh", retry.refresh_token);
                     fetchDataAndUpdatePagination(pageNumber, token);
-                } else {
+                } catch (error) {
                     window.location.href = "/login";
-                }
-    
+                }   
+              
                 $(".loaderContainer").hide();
             });
     }
