@@ -41,34 +41,42 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src=""></script>
+    <!-- <script type="module" src=""></script> -->
 
     <script>
-        // Get the current URL path
-        const path = window.location.pathname;
-        console.log(path)
-        // Determine environment based on URL path
-        let environment;
-        if (path.startsWith('/test')) {
-            environment = 'test';
-        } else {
-            environment = 'production';
-        }
+        $(document).ready(function () {
+            // Get the current URL path
+            let scriptEle = document.createElement("script");
 
-        // Set base URL and script/module URLs based on environment
-        // const baseElement = document.getElementById('base-url');
-        const cssLink = document.getElementById('css-url');
-        const scriptModule = document.querySelector('script[type="module"]');
+            const path = window.location.pathname;
+            console.log(path)
+            // Determine environment based on URL path
+            let environment;
+            if (path.startsWith('/test')) {
+                environment = 'test';
+            } else {
+                environment = 'production';
+            }
+    
+            // Set base URL and script/module URLs based on environment
+            // const baseElement = document.getElementById('base-url');
+            const cssLink = document.getElementById('css-url');
+            const scriptModule = document.querySelector('script[type="module"]');
+    
+            scriptEle.setAttribute("type", "module");
 
-        if (environment === 'production') {
-            // baseElement.href = "/";
-            cssLink.href = "/static/css/login/styles.css";
-            scriptModule.src = "/static/js/login/index.js";
-        } else if (environment === 'test') {
-            // baseElement.href = "/test/";
-            cssLink.href = "/test/static/css/login/styles.css";
-            scriptModule.src = "/test/static/js/login/index.js";
-        }
+            if (environment === 'production') {
+                // baseElement.href = "/";
+                cssLink.href = "/static/css/login/styles.css";
+                // scriptModule.src = "/static/js/login/index.js";
+            } else if (environment === 'test') {
+                // baseElement.href = "/test/";
+                cssLink.href = "/test/static/css/login/styles.css";
+                scriptEle.setAttribute("src", "/test/static/js/login/index.js");
+                document.body.appendChild(scriptEle);
+                // scriptModule.src = "/test/static/js/login/index.js";
+            }
+        })
     </script>
 </body>
 </html>

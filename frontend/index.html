@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="/static/css/main.css" />
-    <link rel="stylesheet" href="/static/css/test.css" />
+    <!-- <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/test.css" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     
 
@@ -15,8 +15,19 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="/static/js/index/index.js"></script>
+    <!-- <script type="module" src="/static/js/index/index.js"></script> -->
+    <link rel="stylesheet" href="" id="css-main-css-url">
+    <link rel="stylesheet" href="" id="styles-css-url">
+    <link rel="stylesheet" href="" id="test-css-url">
 
+
+
+
+    
+
+
+    <!-- <link rel="stylesheet" href="/static/css/main.css" /> -->
+    <!-- <link rel="stylesheet" href="/static/css/test.css" /> -->
 </head>
 
 <body>
@@ -669,6 +680,47 @@
         </div>
     </div>
     
+    <script>
+        $(document).ready(function () {
+            console.log("index")
+            // Get the current URL path
+            let scriptEle = document.createElement("script");
+
+            const path = window.location.pathname;
+            console.log(path)
+            // Determine environment based on URL path
+            let environment;
+            if (path.startsWith('/test')) {
+                environment = 'test';
+            } else {
+                environment = 'production';
+            }
+    
+            // Set base URL and script/module URLs based on environment
+            // const baseElement = document.getElementById('base-url');
+            const mainCssLink = document.getElementById('css-main-css-url');
+            const testCssLink = document.getElementById('test-css-url');
+            const stylesCssLink = document.getElementById('styles-css-url');
+            scriptEle.setAttribute("type", "module");
+            
+            if (environment === 'production') {
+                // baseElement.href = "/";
+                mainCssLink.href = "/static/css/main.css";
+                testCssLink.href = "/static/css/styles.css";
+                stylesCssLink.href = "/static/css/test.css";
+
+                scriptEle.setAttribute("src", "/static/js/index/index.js");
+                document.body.appendChild(scriptEle);
+                // scriptModule.src = "/static/js/login/index.js";
+            } else if (environment === 'test') {
+                // baseElement.href = "/test/";
+                cssLink.href = "/test/static/css/login/styles.css";
+                scriptEle.setAttribute("src", "/test/static/js/index/index.js");
+                document.body.appendChild(scriptEle);
+                // scriptModule.src = "/test/static/js/login/index.js";
+            }
+        })
+    </script>
 </body>
 
 </html>

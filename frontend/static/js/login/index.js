@@ -2,9 +2,10 @@ import { get_environment_url } from "../config.js";
 
 $(document).ready(function () {
     const dynamic_url = get_environment_url();
-
+    
     // Handle form submission
     $('.submitBtn').on('click', function (event) {
+        console.log('I am here')
         event.preventDefault(); // Prevent the default form submission
         
         var username = $('#username').val();

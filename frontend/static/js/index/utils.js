@@ -59,7 +59,6 @@ function populateTableWithData(data) {
             const sP = ['Store Price']
             const Icon = ['+']
 
-            console.log(headerTitle)
 
             if (Icon.includes(headerTitle)) {
                 row += '<td><a target="_blank" id="dynamicLink" class="btn btn-sm py-1 bg-black text-white" style="width: max-content; font-size:10px" href="/product#' + getObjectPath('asin', item, false) + '?' + getObjectPath('Category', item, false) + '">' + "<i class='bi bi-send-arrow-up'></i>" + '</a></td>'
