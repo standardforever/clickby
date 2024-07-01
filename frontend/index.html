@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="./static/css/main.css" />
-    <link rel="stylesheet" href="./static/css/test.css" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/test.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     
 
@@ -15,7 +15,7 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="./static/js/index/index.js"></script>
+    <script type="module" src="/static/js/index/index.js"></script>
 
 </head>
 
@@ -546,13 +546,6 @@
                                             <label for="usa_amazon-link-checkbox7" class="mb-0">Sub sub category</label>
                                         </div>
                                     </div>
-                                
-
-
-
-
-
-
 
 
 
@@ -667,7 +660,6 @@
                                 <!-- Last Page Button -->
                                 <li class="page-item">
                                     <a class="page-link text-black"
-                                        href="{{ url_for('main.home', page=num_pages, sort_by=sort_by, search=search, category=category, supplier_name=supplier_name, store_price=store_price, amazon_price=amazon_price, uk_profit=uk_profit, sales_rank=sales_rank) }}">Last</a>
                                 </li>
                             </ul>
                         </nav>

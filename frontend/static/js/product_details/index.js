@@ -3,18 +3,20 @@ import { formatNumber, formatPercentage, roundToTwoDP } from "../utils.js";
 import { getUrlComponents } from "./utils.js"
 
 $(document).ready(function () {
+
+    const token = localStorage.getItem('clickbuy_access')
+    const dynamic_url = get_environment_url()
+    if(!token){
+        window.location.href = `${dynamic_url.url}/login`
+    }
     document.getElementById('productASIN').textContent = getUrlComponents().productId
     document.getElementById('productCategory').textContent = getUrlComponents().categoryPath;
-
-    const token = sessionStorage.getItem('clickbuy')
-
-    const dynamic_url = get_environment_url()
-
-
+   
+    
     const productId = getUrlComponents().productId;
 
     // Construct the API endpoint URL
-    const apiUrl = `${dynamic_url}/product/${productId}`;
+    const apiUrl = `${dynamic_url.api_url}/product/${productId}`;
 
     // Make an AJAX request to the API
     $.ajax({

@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/css/login/styles.css">
 </head>
 <body>
     <div class="login-container">
         <div class="login-form">
             <a href="" style="color: inherit; text-decoration: none">
-                <img src="../../static/image/clickbuy.jpg" alt="Clickbuy" id="logo-1" class="me-2" style="width: 150px;" />
-                <!-- <img src="./static/image/clickbuy.jpg" alt="Clickbuy" id="logo-1" class="me-2" style="width: 150px;" /> -->
+                <img src="/static/image/clickbuy.jpg" alt="Clickbuy" id="logo-1" class="me-2" style="width: 150px;" />
             </a>
             <h2>Login</h2>
+            <div id="error-message" class="error-message" style="color: red; display: none; padding-bottom: 10px;"></div>
             <form>
                 <div class="input-group">
                     <label for="username"><i class="fas fa-user"></i> Username</label>
-                    <input type="text" id="username" name="username"  >
+                    <input type="text" id="username" name="username">
                 </div>
                 <div class="input-group">
                     <label for="password"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="password" name="password"  >
+                    <input type="password" id="password" name="password">
                 </div>
                 <div class="input-group">
                     <label class="remember-me">
@@ -35,10 +35,11 @@
                 <div class="forgot-password">
                     <a href="#">Forgot Password?</a>
                 </div>
+            
             </form>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="module" src="../../static/js/login/index.js"></script>
+    <script type="module" src="/static/js/login/index.js"></script>
 </body>
 </html>

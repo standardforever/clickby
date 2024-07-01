@@ -9,12 +9,13 @@ $(document).ready(function () {
     $(".loaderContainer").show();
     const dynamic_url = get_environment_url()
 
-    const token = sessionStorage.getItem('clickbuy_access')
-    const refresh_token = sessionStorage.getItem('clickbuy_refresh')
-
+    const token = localStorage.getItem('clickbuy_access')
     if(!token){
-        window.location.href = 'http://127.0.0.1:5500/frontend/views/login/index.html'
+        window.location.href = `${dynamic_url.url}/login`
     }
+    
+    const refresh_token = localStorage.getItem('clickbuy_refresh')
+
    
     // PAGINATION CONTROL
     var currentPage = 1;
@@ -188,10 +189,10 @@ $(document).ready(function () {
     function fetchDataAndUpdatePagination(pageNumber) {
         pageNumber = currentPage;
         const itemsPerPage = 50;
-        return makePostRequest(`${dynamic_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
+        return makePostRequest(`${dynamic_url.api_url}/home?limit=${itemsPerPage}&skip=${((pageNumber - 1) * itemsPerPage)}&count_doc=false&sort_by_column=${sortByColumn}&ascend_decend=${ascendDecend}`, updateDataObject())
             .done(async function (response) {
                 
-                const res = await makePostRequest(`${dynamic_url}/home?count_doc=true`, updateDataObject());
+                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject());
                 populateTable(response.data);
                 holdData = response.data;
                 currentPage = pageNumber;
@@ -203,7 +204,7 @@ $(document).ready(function () {
             .fail(async function (err) {
                 console.log('An error occurred during AJAX calls.', err);
                 const retry = await $.ajax({
-                    url: `${dynamic_url}/auth/token/refresh/`,
+                    url: `${dynamic_url.api_url}/auth/token/refresh/`,
                     method: 'GET',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -228,11 +229,11 @@ $(document).ready(function () {
 
     const OnLoadPageFunc = () => {
         var promises = [
-            makeAjaxCall(`${dynamic_url}/category`),
-            makeAjaxCall(`${dynamic_url}/supplier-name`),
-            makeAjaxCall(`${dynamic_url}/roi`),
-            makeAjaxCall(`${dynamic_url}/store-price`),
-            makeAjaxCall(`${dynamic_url}/sales-rank`)
+            makeAjaxCall(`${dynamic_url.api_url}/category`),
+            makeAjaxCall(`${dynamic_url.api_url}/supplier-name`),
+            makeAjaxCall(`${dynamic_url.api_url}/roi`),
+            makeAjaxCall(`${dynamic_url.api_url}/store-price`),
+            makeAjaxCall(`${dynamic_url.api_url}/sales-rank`)
         ];
 
         $.when.apply($, promises).then(function () {
@@ -309,7 +310,7 @@ $(document).ready(function () {
         $(".tableLoadContainer").show();
         $('#myTable tbody').hide();
         $.ajax({
-            url: `${dynamic_url}/home?limit=50&skip=0`,
+            url: `${dynamic_url.api_url}/home?limit=50&skip=0`,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
@@ -329,7 +330,7 @@ $(document).ready(function () {
                 $('#myTable tbody').show();
                 currentPage = 1;
                 populateTable(response.data);
-                const res = await makePostRequest(`${dynamic_url}/home?count_doc=true`, updateDataObject());
+                const res = await makePostRequest(`${dynamic_url.api_url}/home?count_doc=true`, updateDataObject());
                 totalPages = Math.ceil(res.total_count / 50);
                 updateUniqueProductCount(res.total_count);
                 updatePagination();
