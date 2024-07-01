@@ -19,7 +19,7 @@ $(document).ready(function () {
     const apiUrl = `${dynamic_url.api_url}/product/${productId}`;
 
     // Make an AJAX request to the API
-    function fetchProductData (token) {
+    function fetchProductData (token=localStorage.getItem('clickbuy_access')) {
         $.ajax({
             url: apiUrl,
             type: 'GET',
