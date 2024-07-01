@@ -9,6 +9,7 @@ $(document).ready(function () {
     $(".loaderContainer").show();
     const dynamic_url = get_environment_url()
 
+    console.log("dynamic_url", dynamic_url)
     const token = localStorage.getItem('clickbuy_access')
     console.log(token)
     if(!token){
@@ -126,7 +127,6 @@ $(document).ready(function () {
     }
 
     function makePostRequest(url, data, token=localStorage.getItem('clickbuy_access')) {
-        console.log("token", token)
         return $.ajax({
             url: url,
             method: 'POST',
