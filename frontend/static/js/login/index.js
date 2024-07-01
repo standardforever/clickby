@@ -24,7 +24,9 @@ $(document).ready(function () {
                 const res = JSON.parse(JSON.stringify(response));
                 localStorage.setItem("clickbuy_access", response.access_token);
                 localStorage.setItem("clickbuy_refresh", response.refresh_token);
-                window.location.href = '/';
+
+                const dynamic_url = get_environment_url()
+                window.location.href = dynamic_url.url;
             },
             error: function (xhr, status, error) {
                 console.log('Login failed', xhr.responseJSON);
